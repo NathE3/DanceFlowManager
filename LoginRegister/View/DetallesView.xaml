@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="InfoManager.View.DetallesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:InfoManager.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="450">
+
+    <UserControl.Resources>
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="Background" Value="#0078D7"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="2"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#005A9E"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Border Background="White" CornerRadius="15" Padding="20" BorderBrush="Gray" BorderThickness="2" 
+        Margin="20">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+
+
+            <!-- Left Panel with Text Info -->
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="20,0,20,0" VerticalAlignment="Center" Height="165">
+                <TextBlock Foreground="Black" FontSize="18" FontWeight="Bold" Text="{Binding Dicatador.Id, StringFormat='Id: {0}'}"/>
+                <TextBlock Foreground="Black" FontSize="18" FontWeight="Bold" Text="{Binding Dicatador.Nombre, StringFormat='Name: {0}'}"/>
+                <TextBlock Foreground="Black" FontSize="16" TextWrapping="Wrap" Text="{Binding Dicatador.Descripcion, StringFormat='Descripción: {0}'}"/>
+                <TextBlock Foreground="Black" FontSize="16" TextWrapping="Wrap" Text="{Binding Dicatador.CreatedDate, StringFormat='Fecha de envio: {0}'}"/>
+                <!-- Button Container -->
+            </StackPanel>
+
+            <StackPanel Grid.Row="1">
+                <UniformGrid Columns="3">
+                    <Button Content="Aprobar" Command="{Binding AprobarCommand}" Style="{DynamicResource RoundedButton}" />
+                    <Button Content="Denegar" Command="{Binding DenegarCommand}" Style="{DynamicResource RoundedButton}" />
+                    <Button Content="Cerrar" Command="{Binding CloseCommand}" Style="{DynamicResource RoundedButton}" />
+                </UniformGrid>
+            </StackPanel>
+
+            <!-- Right Panel with Image -->
+
+        </Grid>
+    </Border>
+
+</UserControl>

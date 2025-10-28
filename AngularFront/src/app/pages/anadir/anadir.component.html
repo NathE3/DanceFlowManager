@@ -1,0 +1,26 @@
+<div class="container">
+  <button class="back-button" (click)="goBack()">⬅ Volver</button>
+  <h1 class="title">Trabajo Fin de Grado</h1>
+
+  <div class="form-group">
+
+    <label for="name">Nombre del proyecto:</label>
+    <input id="name" type="text" placeholder="Nombre del proyecto:" [(ngModel)]="propuesta.nombre" required />
+
+    <label for="description">Descripción del proyecto:</label>
+    <input id="description" type="text" placeholder="Descripción del proyecto:" [(ngModel)]="propuesta.descripcion" />
+    
+  </div>
+
+  <div class="form-group">
+    <label for="orders">Tipo de proyecto:</label>
+    <select id="orders" [(ngModel)]="propuesta.tipo">
+      <option id="inovacion">Inovación</option> 
+      <option id="gestion">Gestión</option> 
+      <option id="documentacion">Documentación</option> 
+    </select>
+  </div>
+
+  <button class="update-button" (click)="crearObjeto()">Mandar proyecto</button>
+</div>
+
