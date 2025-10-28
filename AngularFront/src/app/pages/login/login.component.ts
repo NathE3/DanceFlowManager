@@ -5,6 +5,8 @@ import { LoginDTO } from '../../models/loginDTO';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ToastrService} from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-login',
@@ -17,7 +19,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router,private toastr: ToastrService ) {}
 
   async login() {
     const loginDto: LoginDTO = {
@@ -29,12 +31,13 @@ export class LoginComponent {
       const response = await firstValueFrom(this.authService.login(loginDto));
       if (response?.result?.token) {
         localStorage.setItem('token', response.result.token);
+        this.toastr.success('Has iniciado sesión correctamente', 'Éxito');
         this.router.navigate(['/principal']);
       } else {
-        alert('Error: Usuario o contraseña incorrectos.');
+       this.toastr.error('Usuario o contraseña incorrectos.', 'Error');
       }      
     } catch (error: any) {
-      alert(error.message);
+     this.toastr.error(error.message || 'Ocurrió un error inesperado', 'Error');
     }
   }
 

@@ -5,6 +5,7 @@ import { RegistroDTO } from '../../models/registroDTO';
 import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -19,16 +20,16 @@ export class RegisterComponent {
   password: string = '';
   confirmPassword: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService ) {}
 
   async register() {
     if (!this.username || !this.email || !this.password || !this.confirmPassword) {
-      alert('Todos los campos son obligatorios.');
+      this.toastr.warning('Todos los campos son obligatorios.', 'Aviso');
       return;
     }
 
     if (this.password !== this.confirmPassword) {
-      alert('Las contraseñas no coinciden.');
+      this.toastr.error('Las contraseñas no coinciden.', 'Error');
       return;
     }
 
@@ -42,10 +43,10 @@ export class RegisterComponent {
 
     try {
       await firstValueFrom(this.authService.register(registroDto));
-      alert('Usuario registrado con éxito');
+      this.toastr.success('Usuario registrado con éxito', 'Éxito');
       this.router.navigate(['/']);
     } catch (error: any) {
-      alert(error.message);
+      this.toastr.error(error.message || 'Ocurrió un error inesperado', 'Error');
     }
   }
 
