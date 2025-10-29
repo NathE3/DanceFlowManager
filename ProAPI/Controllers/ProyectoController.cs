@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestAPI.Controllers.RestAPI.Controllers;
 using RestAPI.Models.DTOs;
+using RestAPI.Models.DTOs.Clases;
 using RestAPI.Models.Entity;
 using RestAPI.Repository;
 using RestAPI.Repository.IRepository;
@@ -15,11 +16,11 @@ namespace RestAPI.Controllers
         [ApiController]
     public  class ProyectoController : ControllerBase
         {
-            private readonly IProyectoRepository _proyectoRepository;
+            private readonly IClasesRepository _proyectoRepository;
             private readonly IMapper _mapper;
             //protected readonly ILogger _logger;
 
-        public ProyectoController(IProyectoRepository repository, IMapper mapper /*ILogger logger*/)
+        public ProyectoController(IClasesRepository repository, IMapper mapper /*ILogger logger*/)
             {
                 _proyectoRepository = repository;
                 _mapper = mapper;
@@ -35,7 +36,7 @@ namespace RestAPI.Controllers
             try
             {
 
-                var entities = _mapper.Map<List<ProyectoDTO>>(await _proyectoRepository.GetAllAsync());
+                var entities = _mapper.Map<List<ClaseDTO>>(await _proyectoRepository.GetAllAsync());
                 return Ok(entities);
             }
             catch (Exception ex)
@@ -54,7 +55,7 @@ namespace RestAPI.Controllers
             try
             {
 
-                var entities = _mapper.Map<List<ProyectoDTO>>(await _proyectoRepository.GetAllFromUserAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+                var entities = _mapper.Map<List<ClaseDTO>>(await _proyectoRepository.GetAllFromUserAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)));
                 return Ok(entities);
             }
             catch (Exception ex)
@@ -75,7 +76,7 @@ namespace RestAPI.Controllers
                 var entity = await _proyectoRepository.GetAsync(id);
                 if (entity == null) return NotFound();
 
-                return Ok(_mapper.Map<ProyectoDTO>(entity));
+                return Ok(_mapper.Map<ClaseDTO>(entity));
             }
             catch (Exception ex)
             {
@@ -88,26 +89,24 @@ namespace RestAPI.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromBody] CreateProyectoDTO createDto)
+        public async Task<IActionResult> Create([FromBody] CreateClaseDTO createDto)
         {
             try
             {
                 if (!ModelState.IsValid) return BadRequest(ModelState);
                
-                var entity = _mapper.Map<ProyectoEntity>(new CreateProyectoUserDTO
+                var entity = _mapper.Map<ClaseEntity>(new CreateClaseDTO
                 {
                     Nombre = createDto.Nombre,
                     Tipo = createDto.Tipo,
                     Descripcion = createDto.Descripcion,
                     Estado = createDto.Estado,
-                    IdProfesor = createDto.IdProfesor,
-                    IdAlumno = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                    
+                    Id_profesor = createDto.Id_profesor,                    
                     
                 });
                 await _proyectoRepository.CreateAsync(entity);
 
-                var dto = _mapper.Map<ProyectoDTO>(entity);
+                var dto = _mapper.Map<ClaseDTO>(entity);
                 return CreatedAtRoute($"{ControllerContext.ActionDescriptor.ControllerName}_GeProyectoEntity", new { id = entity.GetHashCode() }, dto);
             }
             catch (Exception ex)
@@ -121,7 +120,7 @@ namespace RestAPI.Controllers
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(int id, [FromBody] ProyectoDTO dto)
+        public async Task<IActionResult> Update(int id, [FromBody] ClaseDTO dto)
         {
             try
             {
@@ -133,7 +132,7 @@ namespace RestAPI.Controllers
                 _mapper.Map(dto, entity);
                 await _proyectoRepository.UpdateAsync(entity);
 
-                return Ok(_mapper.Map<ProyectoDTO>(entity));
+                return Ok(_mapper.Map<ClaseDTO>(entity));
             }
             catch (Exception ex)
             {
@@ -146,14 +145,14 @@ namespace RestAPI.Controllers
         [HttpPut("State/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateState(int id, [FromBody] ProyectoDTO dto)
+        public async Task<IActionResult> UpdateState(int id, [FromBody] ClaseDTO dto)
         {
             try
             {
                 if (!ModelState.IsValid) return BadRequest(ModelState);
                 if(dto.Estado== "Aprobado")
                 {
-                    dto.IdProfesor = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    dto.Id_profesor = User.FindFirstValue(ClaimTypes.NameIdentifier);
                     //dto.ProfesorNombre=User.FindFirstValue(ClaimTypes.Name);
                 }
 
@@ -164,7 +163,7 @@ namespace RestAPI.Controllers
                 _mapper.Map(dto, entity);
                 await _proyectoRepository.UpdateAsync(entity);
 
-                return Ok(_mapper.Map<ProyectoDTO>(entity));
+                return Ok(_mapper.Map<ClaseDTO>(entity));
             }
             catch (Exception ex)
             {

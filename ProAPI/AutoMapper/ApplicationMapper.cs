@@ -1,13 +1,9 @@
 ﻿
 using AutoMapper;
-using RestAPI.Models.DTOs;
-using RestAPI.Models.DTOs;
-using RestAPI.Models.DTOs.UserDto;
-
-
-
-//using RestAPI.Models.DTOs.LibroDTO;
+using RestAPI.Models.DTOs.Clases;
+using RestAPI.Models.DTOs.Alumnos;
 using RestAPI.Models.Entity;
+using RestAPI.Models.DTOs.Profesores;
 
 namespace RestAPI.AutoMapper
 {
@@ -15,10 +11,10 @@ namespace RestAPI.AutoMapper
     {
         public ApplicationMapper()
         {
-            CreateMap<AppUser, UserDto>().ReverseMap();
-            CreateMap<ProyectoDTO, ProyectoEntity>().ReverseMap();
-            CreateMap<CreateProyectoDTO, ProyectoEntity>().ReverseMap();
-            CreateMap<CreateProyectoUserDTO, ProyectoEntity>().ReverseMap();
+            CreateMap<AlumnoEntity, AlumnoDTO>().ReverseMap();
+            CreateMap<ClaseDTO, ClaseEntity>().ReverseMap();
+            CreateMap<CreateClaseDTO, ClaseEntity>().ReverseMap();
+            CreateMap<ProfesorEntity, ProfesorDTO>().ReverseMap();
 
         }
     }

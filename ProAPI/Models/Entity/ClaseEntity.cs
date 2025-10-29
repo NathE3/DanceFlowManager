@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RestAPI.Models.Entity
 {
-    public class ProyectoEntity
+    public class ClaseEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -20,22 +20,14 @@ namespace RestAPI.Models.Entity
 
         [Required]
         [MaxLength(50)]
-        //Documental, Innovación, Gestión
         public string Tipo { get; set; }
 
-        [ForeignKey("IdAlumno")]
-        public string IdAlumno { get; set; }
+        [ForeignKey("IdProfesor")]
         public string? IdProfesor { get; set; }
+        public ProfesorEntity Profesor { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        //Aprovado, Pendiente, Rechazado, Cerrado
-        public String Estado { get; set; }
-
-        public AppUser Alumno { get; set; }
-
-        public AppUser? Profesor { get; set; }
-
-
+        public ICollection<AlumnoEntity> AlumnosInscritos { get; set; } = new List<AlumnoEntity>();
     }
+
 }
+

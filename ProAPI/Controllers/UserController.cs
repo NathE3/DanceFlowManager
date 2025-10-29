@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestAPI.Models.DTOs;
+using RestAPI.Models.DTOs.Alumnos;
 using RestAPI.Models.DTOs.UserDto;
 using RestAPI.Repository.IRepository;
 using System.Net;
@@ -13,10 +14,10 @@ namespace RestAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IAlumnoRepository _userRepository;
         private readonly IMapper _mapper;
         protected ResponseApi _reponseApi;
-        public UserController(IUserRepository userRepository, IMapper mapper)
+        public UserController(IAlumnoRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _reponseApi = new ResponseApi();
@@ -94,7 +95,7 @@ namespace RestAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Login(UserLoginDto userLoginDto)
+        public async Task<IActionResult> Login(AlumnoLoginDTO userLoginDto)
         {
             var responseLogin = await _userRepository.Login(userLoginDto);
 
