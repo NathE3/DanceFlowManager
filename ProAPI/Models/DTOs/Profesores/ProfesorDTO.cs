@@ -1,5 +1,4 @@
 ﻿using RestAPI.Models.DTOs.Clases;
-using RestAPI.Models.DTOs.ProfesorDTO;
 
 namespace RestAPI.Models.DTOs.Profesores
 {

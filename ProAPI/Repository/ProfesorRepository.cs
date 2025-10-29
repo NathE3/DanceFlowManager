@@ -8,12 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using RestAPI.Models.Entity;
 using RestAPI.Repository.IRepository;
 using RestAPI.Data;
-using RestAPI.Models.DTOs.Alumnos;
+using RestAPI.Models.DTOs.Profesores;
 using RestAPI.Models.DTOs.Login;
-
 namespace RestAPI.Repository
 {
-    public class AlumnoRepository : IAlumnoRepository
+    public class ProfesorRepository
     {
         private readonly ApplicationDbContext _context;
         private readonly string secretKey;
@@ -21,7 +20,7 @@ namespace RestAPI.Repository
         private readonly IMapper _mapper;
         private readonly int TokenExpirationDays = 7;
 
-        public AlumnoRepository(ApplicationDbContext context, IConfiguration config,
+        public ProfesorRepository(ApplicationDbContext context, IConfiguration config,
             UserManager<AppUser> userManager, IMapper mapper)
         {
             _context = context;
@@ -30,15 +29,18 @@ namespace RestAPI.Repository
             _mapper = mapper;
         }
 
-        public AppUser GetUser(string id)
+        public AppUser GetProfesor(string id)
         {
-            return _context.Alumnos.FirstOrDefault(user => user.Id == id);
+            ProfesorEntity profe = _context.Profesores.FirstOrDefault(user => user.Id == id);
+            return profe;
         }
 
-        public ICollection<AlumnoEntity> GetAlumnos()
+        public ICollection<ProfesorEntity> GetProfesores()
         {
-            return _context.Alumnos
-                           .Include(user => user.ClasesInscritas)
+           
+
+            return _context.Profesores
+                           .Include(user => user.ClasesCreadas)
                            .OrderBy(user => user.UserName)
                            .ToList();
         }
@@ -50,3 +52,4 @@ namespace RestAPI.Repository
 
     }
 }
+

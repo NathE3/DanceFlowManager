@@ -16,8 +16,8 @@ public class CreateClaseDTO
     [MaxLength(50, ErrorMessage = "Max char is 50")]
     public string Tipo { get; set; }
 
-    public string Id_profesor { get; set; }
+    public string? Id_profesor { get; set; }
 
-    [Required(ErrorMessage = "Estado is required")]
-    public string Estado { get; set; }
+    [Required(ErrorMessage = "Fecha is required")]
+    public DateTime FechaClase { get; set; }
 }
