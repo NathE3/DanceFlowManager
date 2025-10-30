@@ -6,9 +6,13 @@ namespace RestAPI.Repository.IRepository
 {
     public interface IAlumnoRepository
     {
-        ICollection<AlumnoEntity> GetAlumnos();
-        AppUser GetUser(string id);
-        bool IsUniqueUser(string userName);
-      
+        Task<AlumnoEntity> CreateAsync(AlumnoEntity alumno);
+
+        Task<ICollection<AlumnoEntity>> GetAlumnos();
+        Task<AlumnoEntity?> GetById(string id);
+
+        Task<AlumnoEntity?> UpdateAsync(string id, AlumnoEntity alumno);
+
+        Task<bool> DeleteAsync(string username);
     }
 }

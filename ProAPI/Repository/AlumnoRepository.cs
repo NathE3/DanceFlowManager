@@ -1,51 +1,72 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using RestAPI.Models.Entity;
 using RestAPI.Repository.IRepository;
 using RestAPI.Data;
-using RestAPI.Models.DTOs.Alumnos;
-using RestAPI.Models.DTOs.Login;
 
 namespace RestAPI.Repository
 {
     public class AlumnoRepository : IAlumnoRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly string secretKey;
         private readonly UserManager<AppUser> _userManager;
-        private readonly IMapper _mapper;
-        private readonly int TokenExpirationDays = 7;
+    
 
         public AlumnoRepository(ApplicationDbContext context, IConfiguration config,
             UserManager<AppUser> userManager, IMapper mapper)
         {
             _context = context;
-            secretKey = config.GetValue<string>("ApiSettings:SecretKey");
             _userManager = userManager;
-            _mapper = mapper;
         }
 
-        public AppUser GetUser(string id)
+        public async Task<ICollection<AlumnoEntity>> GetAlumnos()
         {
-            return _context.Alumnos.FirstOrDefault(user => user.Id == id);
+            return await _context.Alumnos
+                .Include(a => a.ClasesInscritas)
+                .OrderBy(a => a.UserName)
+                .ToListAsync();
         }
 
-        public ICollection<AlumnoEntity> GetAlumnos()
+        public async Task<AlumnoEntity?> GetById(string id)
         {
-            return _context.Alumnos
-                           .Include(user => user.ClasesInscritas)
-                           .OrderBy(user => user.UserName)
-                           .ToList();
+            return await _context.Alumnos
+                .Include(a => a.ClasesInscritas)
+                .FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        public bool IsUniqueUser(string userName)
+        public async Task<AlumnoEntity> CreateAsync(AlumnoEntity alumno)
         {
-            return !_context.Alumnos.Any(user => user.UserName == userName);
+            _context.Alumnos.Add(alumno);
+            await _context.SaveChangesAsync();
+            return alumno;
+        }
+
+        public async Task<AlumnoEntity?> UpdateAsync(string id, AlumnoEntity alumno)
+        {
+            var existing = await _context.Alumnos.FirstOrDefaultAsync(a => a.Id == id);
+            if (existing == null)
+                return null;
+
+            existing.Name = alumno.Name;
+            existing.Email = alumno.Email;
+            existing.UserName = alumno.UserName;
+
+            _context.Alumnos.Update(existing);
+            await _context.SaveChangesAsync();
+
+            return existing;
+        }
+
+        public async Task<bool> DeleteAsync(string username)
+        {
+            var alumno = await _context.Alumnos.FirstOrDefaultAsync(a => a.UserName == username);
+            if (alumno == null)
+                return false;
+
+            _context.Alumnos.Remove(alumno);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
     }
