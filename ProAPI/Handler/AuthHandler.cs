@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using RestAPI.Data;
-using RestAPI.Handler.IHandler;
 using RestAPI.Models.DTOs.Commons;
 using RestAPI.Models.DTOs.Login;
 using RestAPI.Models.Entity;

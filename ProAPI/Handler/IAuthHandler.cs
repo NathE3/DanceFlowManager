@@ -1,6 +1,6 @@
 ﻿using RestAPI.Models.DTOs.Login;
 
-namespace RestAPI.Handler.IHandler
+namespace RestAPI.Handler
 {
     public interface IAuthHandler
     {
