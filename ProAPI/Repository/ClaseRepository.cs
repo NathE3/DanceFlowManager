@@ -56,11 +56,11 @@ namespace RestAPI.Repository
             return ClaseFromDb;
         }
 
-        public async Task<ClaseEntity> GetAsync(int id)
+        public async Task<ClaseEntity> GetAsync(string id)
         {
-            if (_cache.TryGetValue(ClaseEntityCacheKey, out ICollection<ClaseEntity> ProyectosCached))
+            if (_cache.TryGetValue(ClaseEntityCacheKey, out ICollection<ClaseEntity> ClasesCached))
             {
-                var ProyectoEntity = ProyectosCached.FirstOrDefault(c => c.Id == id);
+                var ProyectoEntity = ClasesCached.FirstOrDefault(c => c.Id == id);
                 if (ProyectoEntity != null)
                     return ProyectoEntity;
             }
@@ -68,7 +68,7 @@ namespace RestAPI.Repository
             return await _context.Clases.FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<bool> ExistsAsync(int id)
+        public async Task<bool> ExistsAsync(string id)
         {
             return await _context.Clases.AnyAsync(c => c.Id == id);
         }
@@ -87,13 +87,13 @@ namespace RestAPI.Repository
             return await Save();
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(string id)
         {
-            var ProyectoEntity = await GetAsync(id);
-            if (ProyectoEntity == null)
+            var ClaseEntity = await GetAsync(id);
+            if (ClaseEntity == null)
                 return false;
 
-            _context.Clases.Remove(ProyectoEntity);
+            _context.Clases.Remove(ClaseEntity);
             return await Save();
         }
     }

@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using RestAPI.Models.DTOs.Alumnos;
 using RestAPI.Models.Entity;
+using RestAPI.Repository;
 using RestAPI.Repository.IRepository;
+using System.Collections.Generic;
 
 namespace RestAPI.Controllers
 {
@@ -9,6 +13,8 @@ namespace RestAPI.Controllers
     public class AlumnoController : ControllerBase
     {
         private readonly IAlumnoRepository _alumnoRepository;
+        private readonly IMapper _mapper;
+
 
         public AlumnoController(IAlumnoRepository alumnoRepository)
         {
@@ -16,26 +22,38 @@ namespace RestAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<AlumnoEntity>>> GetAlumnos()
+        public async Task<ActionResult<IEnumerable<AlumnoDTO>>> GetAll()
         {
-            var alumnos = await _alumnoRepository.GetAlumnos();
-            return Ok(alumnos);
+            try
+            {
+
+                var alumnos = await _alumnoRepository.GetAlumnos();
+                if(alumnos == null)return NotFound();
+                var alumnosMapped = _mapper.Map<List<AlumnoDTO>>(alumnos);
+                return Ok(alumnosMapped);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<AlumnoEntity>> GetAlumno(string id)
+        public async Task<ActionResult<AlumnoDTO>> GetAlumno(string id)
         {
-            var alumno = await _alumnoRepository.GetById(id);
-            if (alumno == null)
-                return NotFound();
-            return Ok(alumno);
-        }
+            try
+            {
+                var alumno = await _alumnoRepository.GetById(id);
+                if (alumno == null) return NotFound();
+                var alumnoMapped = _mapper.Map<AlumnoDTO>(alumno);
+                return Ok(alumnoMapped);
 
-        [HttpPost]
-        public async Task<ActionResult<AlumnoEntity>> CreateAlumno([FromBody] AlumnoEntity alumno)
-        {
-            var createdAlumno = await _alumnoRepository.CreateAsync(alumno);
-            return CreatedAtAction(nameof(GetAlumno), new { id = createdAlumno.Id }, createdAlumno);
+            }
+            catch (Exception ex) 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
         }
 
         [HttpPut("{id}")]

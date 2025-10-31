@@ -6,8 +6,8 @@ namespace RestAPI.Models.DTOs.Alumnos
 {
     public class AlumnoDTO
     {
-        public string Id_alumno { get; set; }
-        public string Nombre { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
         public string Apellidos { get; set; }
         public string Email { get; set; }
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestAPI.Controllers.RestAPI.Controllers;
 using RestAPI.Models.DTOs;
+using RestAPI.Models.DTOs.Alumnos;
 using RestAPI.Models.DTOs.Clases;
 using RestAPI.Models.Entity;
 using RestAPI.Repository;
@@ -28,7 +29,7 @@ namespace RestAPI.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<ClaseDTO>>> GetAll()
         {
             try
             {
@@ -55,15 +56,15 @@ namespace RestAPI.Controllers
             }
             catch (Exception ex)
             {
-                //_logger.LogError(ex, "Error fetching data");
+                
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
-        [HttpGet("{id:int}", Name = "[controller]_GeProyectoEntity")]
+        [HttpGet("{id:string}", Name = "[controller]_GetClaseEntity")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(string id)
         {
             try
             {
@@ -103,7 +104,6 @@ namespace RestAPI.Controllers
             }
             catch (Exception ex)
             {
-                //_logger.LogError(ex, "Error creating data");
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -127,8 +127,7 @@ namespace RestAPI.Controllers
                 return Ok(_mapper.Map<ClaseDTO>(entity));
             }
             catch (Exception ex)
-            {
-                //_logger.LogError(ex, "Error updating data");
+            {            
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -148,8 +147,7 @@ namespace RestAPI.Controllers
                 return Ok();
             }
             catch (Exception ex)
-            {
-                //_logger.LogError(ex, "Error deleting data");
+            {           
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }

@@ -35,13 +35,6 @@ namespace RestAPI.Repository
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        public async Task<AlumnoEntity> CreateAsync(AlumnoEntity alumno)
-        {
-            _context.Alumnos.Add(alumno);
-            await _context.SaveChangesAsync();
-            return alumno;
-        }
-
         public async Task<AlumnoEntity?> UpdateAsync(string id, AlumnoEntity alumno)
         {
             var existing = await _context.Alumnos.FirstOrDefaultAsync(a => a.Id == id);
