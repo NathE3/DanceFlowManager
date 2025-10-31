@@ -8,7 +8,7 @@ namespace RestAPI.Repository.IRepository
     {
         ICollection<ProfesorEntity> GetProfesores();
         AppUser GetProfesor(string id);
-        bool IsUniqueProfesor(string userName);
+       // bool IsUniqueProfesor(string userName);
     }
 }
 
