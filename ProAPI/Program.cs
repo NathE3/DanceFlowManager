@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RestAPI.AutoMapper;
 using RestAPI.Data;
+using RestAPI.Handler;
 using RestAPI.Models.Entity;
 using RestAPI.Repository;
 using RestAPI.Repository.IRepository;
@@ -27,6 +28,8 @@ builder.Services.AddScoped<IAlumnoRepository, AlumnoRepository>();
 builder.Services.AddScoped<IClasesRepository, ClaseRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProfesorRepository, ProfesorRepository>();
+builder.Services.AddScoped<IAuthHandler , AuthHandler>();
+builder.Services.AddScoped<IRegisterHandler , RegisterHandler>();
 builder.Services.AddAutoMapper(typeof(ApplicationMapper));
 //Logger setup
 builder.Logging.ClearProviders();
