@@ -18,11 +18,13 @@ namespace RestAPI.Repository
         private readonly IRegisterHandler _registerHandler;
         private readonly IMapper _mapper;
         public UserRepository(ApplicationDbContext context, IConfiguration config,
-            UserManager<AppUser> userManager, IMapper mapper)
+            UserManager<AppUser> userManager, IMapper mapper, IRegisterHandler registerHandler)
         {
             _context = context;
             _userManager = userManager;
             _mapper = mapper;
+            _registerHandler = registerHandler;
+
         }
 
         public async Task<UserLoginResponse> Login(UserLoginRequest userLogin)

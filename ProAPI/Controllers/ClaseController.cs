@@ -61,7 +61,7 @@ namespace RestAPI.Controllers
             }
         }
 
-        [HttpGet("{id:string}", Name = "[controller]_GetClaseEntity")]
+        [HttpGet("{id}", Name = "[controller]_GetClaseEntity")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(string id)
@@ -109,10 +109,10 @@ namespace RestAPI.Controllers
         }
 
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(int id, [FromBody] ClaseDTO dto)
+        public async Task<IActionResult> Update(string id, [FromBody] ClaseDTO dto)
         {
             try
             {
@@ -132,11 +132,10 @@ namespace RestAPI.Controllers
             }
         }
 
-        [Authorize(Roles = "profesor,alumno")]
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             try
             {

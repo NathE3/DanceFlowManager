@@ -11,6 +11,6 @@ namespace RestAPI.Models.DTOs.Login
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Field required: isProfesor")]
-        public bool IsProfesor { get; set; }
+        public bool IsProfesor { get; set;  }
     }
 }

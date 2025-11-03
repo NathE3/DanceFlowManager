@@ -27,9 +27,8 @@ namespace RestAPI.Handler
                     UserName = userRegisterRequest.UserName,
                     Name = userRegisterRequest.Name,
                     Email = userRegisterRequest.Email,
-                    NormalizedEmail = userRegisterRequest.Email.ToUpper(),
-                    NormalizedUserName = userRegisterRequest.UserName.ToUpper(),
-                    Estado = userRegisterRequest.Estado,
+                    Telefono = userRegisterRequest.Telefono,
+                    Estado = "activo",
                 };
 
                 var userResponse = await _context.Profesores
@@ -62,8 +61,9 @@ namespace RestAPI.Handler
                     UserName = userRegisterRequest.UserName,
                     Name = userRegisterRequest.Name,
                     Email = userRegisterRequest.Email,
-                    NormalizedEmail = userRegisterRequest.Email.ToUpper(),
-                    NormalizedUserName = userRegisterRequest.UserName.ToUpper()
+                    Telefono = userRegisterRequest.Telefono,
+                    FechaAlta = DateTime.Now,
+                    FechaBaja = null
                 };
 
                 var userResponse = await _context.Alumnos

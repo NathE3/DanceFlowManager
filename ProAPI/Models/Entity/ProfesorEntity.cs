@@ -4,6 +4,7 @@
     {
         public string Estado { get; set; }
         public string Apellido { get; set; }
+        public int Telefono { get; set; }
         public ICollection<ClaseEntity> ClasesCreadas { get; set; } = new List<ClaseEntity>();
     }
 }

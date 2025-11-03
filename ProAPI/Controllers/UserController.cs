@@ -35,10 +35,10 @@ namespace RestAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return new UserRegisterResponse {Status = Status.ERROR };
-            }        
+                return new UserRegisterResponse { Status = Status.ERROR };
+            }
             var newUser = await _userRepository.Register(userRegisterRequest);
-            
+
             return newUser;
         }
 

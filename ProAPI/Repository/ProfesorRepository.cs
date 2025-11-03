@@ -12,7 +12,7 @@ using RestAPI.Models.DTOs.Profesores;
 using RestAPI.Models.DTOs.Login;
 namespace RestAPI.Repository
 {
-    public class ProfesorRepository
+    public class ProfesorRepository : IProfesorRepository
     {
         private readonly ApplicationDbContext _context;
         private readonly string secretKey;
