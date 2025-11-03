@@ -1,19 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RestAPI.Controllers.RestAPI.Controllers;
-using RestAPI.Models.DTOs;
-using RestAPI.Models.DTOs.Alumnos;
 using RestAPI.Models.DTOs.Clases;
 using RestAPI.Models.Entity;
-using RestAPI.Repository;
 using RestAPI.Repository.IRepository;
 using System.Security.Claims;
 
 namespace RestAPI.Controllers
 {
         
-        [Route("api/[controller]")]
+        [Route("DanceFlowApi/[controller]")]
         [ApiController]
     public  class ClaseController : ControllerBase
         {
@@ -33,8 +29,7 @@ namespace RestAPI.Controllers
         {
             try
             {
-
-                var entities = _mapper.Map<List<ClaseDTO>>(await _claseRepository.GetAllAsync());
+                var entities = await _claseRepository.GetAllAsync();
                 return Ok(entities);
             }
             catch (Exception ex)
@@ -50,8 +45,7 @@ namespace RestAPI.Controllers
         {
             try
             {
-
-                var entities = _mapper.Map<List<ClaseDTO>>(await _claseRepository.GetAllFromUserAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+                var entities = await _claseRepository.GetAllFromProfesorAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 return Ok(entities);
             }
             catch (Exception ex)
@@ -64,14 +58,14 @@ namespace RestAPI.Controllers
         [HttpGet("{id}", Name = "[controller]_GetClaseEntity")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> GetClase(string id)
         {
             try
             {
-                var entity = await _claseRepository.GetAsync(id);
-                if (entity == null) return NotFound();
+                var clase = await _claseRepository.GetAsync(id);
+                if (clase == null) return NotFound();
 
-                return Ok(_mapper.Map<ClaseDTO>(entity));
+                return Ok(clase);
             }
             catch (Exception ex)
             {
@@ -88,7 +82,7 @@ namespace RestAPI.Controllers
             {
                 if (!ModelState.IsValid) return BadRequest(ModelState);
                
-                var entity = _mapper.Map<ClaseEntity>(new CreateClaseDTO
+                var entity = new CreateClaseDTO
                 {
                     Nombre = createDto.Nombre,
                     Tipo = createDto.Tipo,
@@ -96,10 +90,9 @@ namespace RestAPI.Controllers
                     FechaClase = createDto.FechaClase,
                     Id_profesor = createDto.Id_profesor,                    
                     
-                });
-                await _claseRepository.CreateAsync(entity);
+                };
+                var dto =  _claseRepository.CreateAsync(entity);
 
-                var dto = _mapper.Map<ClaseDTO>(entity);
                 return CreatedAtRoute($"{ControllerContext.ActionDescriptor.ControllerName}_GeProyectoEntity", new { id = entity.GetHashCode() }, dto);
             }
             catch (Exception ex)
@@ -124,7 +117,7 @@ namespace RestAPI.Controllers
                 _mapper.Map(dto, entity);
                 await _claseRepository.UpdateAsync(entity);
 
-                return Ok(_mapper.Map<ClaseDTO>(entity));
+                return Ok();
             }
             catch (Exception ex)
             {            

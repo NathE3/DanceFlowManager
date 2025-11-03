@@ -8,12 +8,11 @@ using System.Collections.Generic;
 
 namespace RestAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("DanceFlowApi/[controller]")]
     [ApiController]
     public class AlumnoController : ControllerBase
     {
         private readonly IAlumnoRepository _alumnoRepository;
-        private readonly IMapper _mapper;
 
 
         public AlumnoController(IAlumnoRepository alumnoRepository)
@@ -26,11 +25,9 @@ namespace RestAPI.Controllers
         {
             try
             {
-
                 var alumnos = await _alumnoRepository.GetAlumnos();
                 if(alumnos == null)return NotFound();
-                var alumnosMapped = _mapper.Map<List<AlumnoDTO>>(alumnos);
-                return Ok(alumnosMapped);
+                return Ok(alumnos);
             }
             catch (Exception ex)
             {
@@ -45,8 +42,7 @@ namespace RestAPI.Controllers
             {
                 var alumno = await _alumnoRepository.GetById(id);
                 if (alumno == null) return NotFound();
-                var alumnoMapped = _mapper.Map<AlumnoDTO>(alumno);
-                return Ok(alumnoMapped);
+                return Ok(alumno);
 
             }
             catch (Exception ex) 
@@ -57,21 +53,26 @@ namespace RestAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<AlumnoEntity>> UpdateAlumno(string id, [FromBody] AlumnoEntity alumno)
         {
             var updatedAlumno = await _alumnoRepository.UpdateAsync(id, alumno);
             if (updatedAlumno == null)
                 return NotFound();
-            return Ok(updatedAlumno);
+            return Ok();
         }
 
         [HttpDelete("{username}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
         public async Task<ActionResult> DeleteAlumno(string username)
         {
             var result = await _alumnoRepository.DeleteAsync(username);
             if (!result)
                 return NotFound();
-            return NoContent();
+            return Ok();
         }
     }
 }

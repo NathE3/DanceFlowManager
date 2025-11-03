@@ -6,9 +6,14 @@ namespace RestAPI.Repository.IRepository
 {
     public interface IProfesorRepository
     {
-        ICollection<ProfesorEntity> GetProfesores();
-        AppUser GetProfesor(string id);
-       // bool IsUniqueProfesor(string userName);
+        Task <List<ProfesorDTO?>> GetProfesores();
+        Task<ProfesorDTO?> GetProfesor(string id);
+
+        Task<ProfesorEntity?> UpdateProfesor(string id, ProfesorEntity profesor);
+
+        Task<bool> DeleteProfesor(string username);
+
+
     }
 }
 

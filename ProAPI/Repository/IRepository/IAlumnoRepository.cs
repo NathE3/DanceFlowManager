@@ -6,8 +6,8 @@ namespace RestAPI.Repository.IRepository
 {
     public interface IAlumnoRepository
     {
-        Task<ICollection<AlumnoEntity>> GetAlumnos();
-        Task<AlumnoEntity?> GetById(string id);
+        Task<List<AlumnoDTO>> GetAlumnos();
+        Task<AlumnoDTO?> GetById(string id);
 
         Task<AlumnoEntity?> UpdateAsync(string id, AlumnoEntity alumno);
 

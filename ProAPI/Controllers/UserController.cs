@@ -12,7 +12,7 @@ using System.Net;
 
 namespace RestAPI.Controllers
 {
-    [Route("api/users")]
+    [Route("DanceFlowApi/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {

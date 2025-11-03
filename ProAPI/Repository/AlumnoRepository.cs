@@ -1,38 +1,47 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RestAPI.Data;
+using RestAPI.Models.DTOs.Alumnos;
 using RestAPI.Models.Entity;
 using RestAPI.Repository.IRepository;
-using RestAPI.Data;
 
 namespace RestAPI.Repository
 {
     public class AlumnoRepository : IAlumnoRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<AppUser> _userManager;
-    
+        private readonly IMapper _mapper;
+
+
 
         public AlumnoRepository(ApplicationDbContext context, IConfiguration config,
-            UserManager<AppUser> userManager, IMapper mapper)
+             IMapper mapper)
         {
             _context = context;
-            _userManager = userManager;
+            _mapper = mapper;
         }
-
-        public async Task<ICollection<AlumnoEntity>> GetAlumnos()
+        public async Task<List<AlumnoDTO>> GetAlumnos()
         {
-            return await _context.Alumnos
+            var alumnosEntity = await _context.Alumnos
                 .Include(a => a.ClasesInscritas)
                 .OrderBy(a => a.UserName)
                 .ToListAsync();
+
+            return TransForListEntityToDTO(alumnosEntity);
         }
 
-        public async Task<AlumnoEntity?> GetById(string id)
+
+        public async Task<AlumnoDTO?> GetById(string id)
         {
-            return await _context.Alumnos
+            var alumno = await _context.Alumnos
                 .Include(a => a.ClasesInscritas)
                 .FirstOrDefaultAsync(a => a.Id == id);
+
+            return await TransforDTOtoEntity(alumno);
+
         }
 
         public async Task<AlumnoEntity?> UpdateAsync(string id, AlumnoEntity alumno)
@@ -44,6 +53,7 @@ namespace RestAPI.Repository
             existing.Name = alumno.Name;
             existing.Email = alumno.Email;
             existing.UserName = alumno.UserName;
+            existing.Telefono = alumno.Telefono;
 
             _context.Alumnos.Update(existing);
             await _context.SaveChangesAsync();
@@ -61,6 +71,18 @@ namespace RestAPI.Repository
             await _context.SaveChangesAsync();
             return true;
         }
+
+        private async Task<AlumnoDTO> TransforDTOtoEntity(AlumnoEntity alumnoEntity)
+        {
+            var alumno = _mapper.Map<AlumnoDTO>(alumnoEntity);
+            return alumno;
+        }
+
+        private List<AlumnoDTO> TransForListEntityToDTO(List<AlumnoEntity> alumnosEntity)
+        {
+            return _mapper.Map<List<AlumnoDTO>>(alumnosEntity);
+        }
+
 
     }
 }

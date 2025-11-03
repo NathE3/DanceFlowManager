@@ -1,54 +1,87 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
+using RestAPI.Data;
+using RestAPI.Models.DTOs.Alumnos;
+using RestAPI.Models.DTOs.Profesores;
 using RestAPI.Models.Entity;
 using RestAPI.Repository.IRepository;
-using RestAPI.Data;
-using RestAPI.Models.DTOs.Profesores;
-using RestAPI.Models.DTOs.Login;
 namespace RestAPI.Repository
 {
     public class ProfesorRepository : IProfesorRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly string secretKey;
-        private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
-        private readonly int TokenExpirationDays = 7;
+
 
         public ProfesorRepository(ApplicationDbContext context, IConfiguration config,
             UserManager<AppUser> userManager, IMapper mapper)
         {
             _context = context;
-            secretKey = config.GetValue<string>("ApiSettings:SecretKey");
-            _userManager = userManager;
             _mapper = mapper;
         }
 
-        public AppUser GetProfesor(string id)
+        public async Task<ProfesorDTO?> GetProfesor(string id)
         {
-            ProfesorEntity profe = _context.Profesores.FirstOrDefault(user => user.Id == id);
-            return profe;
+            var profesor = await _context.Profesores
+                 .Include(a => a.ClasesCreadas)
+                 .FirstOrDefaultAsync(a => a.Id == id);
+
+            return await TransforDTOtoEntity(profesor);
         }
 
-        public ICollection<ProfesorEntity> GetProfesores()
+        public async Task<List<ProfesorDTO>> GetProfesores()
         {
-           
-
-            return _context.Profesores
+            var profesores = await _context.Profesores
                            .Include(user => user.ClasesCreadas)
                            .OrderBy(user => user.UserName)
-                           .ToList();
+                           .ToListAsync();
+
+            return  TransForListEntityToDTO(profesores);
         }
 
-        public bool IsUniqueUser(string userName)
+        public async Task<ProfesorEntity?> UpdateProfesor(string id, ProfesorEntity profesor)
         {
-            return !_context.Alumnos.Any(user => user.UserName == userName);
+            var existing = await _context.Profesores.FirstOrDefaultAsync(a => a.Id == id);
+            if (existing == null)
+                return null;
+
+            existing.Name = profesor.Name;
+            existing.Email = profesor.Email;
+            existing.UserName = profesor.UserName;
+            existing.Estado = profesor.Estado;
+            existing.Telefono = profesor.Telefono;
+
+
+            _context.Profesores.Update(existing);
+            await _context.SaveChangesAsync();
+
+            return existing;
         }
+
+        public async Task<bool> DeleteProfesor(string username)
+        {
+            var profesor = await _context.Profesores.FirstOrDefaultAsync(a => a.UserName == username);
+            if (profesor == null)
+                return false;
+
+            _context.Profesores.Remove(profesor);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        private async Task<ProfesorDTO> TransforDTOtoEntity(ProfesorEntity profesorEntity)
+        {
+            var alumno = _mapper.Map<ProfesorDTO>(profesorEntity);
+            return alumno;
+        }
+
+        private List<ProfesorDTO> TransForListEntityToDTO(List<ProfesorEntity> profesorEntity)
+        {
+            return _mapper.Map<List<ProfesorDTO>>(profesorEntity);
+        }
+
+
 
     }
 }
