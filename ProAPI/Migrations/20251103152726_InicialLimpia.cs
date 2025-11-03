@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RestAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class PrimeraMigration : Migration
+    public partial class InicialLimpia : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,6 +32,14 @@ namespace RestAPI.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
+                    Apellidos = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FechaAlta = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    FechaBaja = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Telefono = table.Column<int>(type: "int", nullable: true),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Apellido = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfesorEntity_Telefono = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -158,34 +166,54 @@ namespace RestAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Proyectos",
+                name: "Clases",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Tipo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    IdAlumno = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IdProfesor = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Estado = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    IdProfesor = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Proyectos", x => x.Id);
+                    table.PrimaryKey("PK_Clases", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Proyectos_AspNetUsers_IdAlumno",
-                        column: x => x.IdAlumno,
+                        name: "FK_Clases_AspNetUsers_IdProfesor",
+                        column: x => x.IdProfesor,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AlumnoClases",
+                columns: table => new
+                {
+                    AlumnosInscritosId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClasesInscritasId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AlumnoClases", x => new { x.AlumnosInscritosId, x.ClasesInscritasId });
+                    table.ForeignKey(
+                        name: "FK_AlumnoClases_AspNetUsers_AlumnosInscritosId",
+                        column: x => x.AlumnosInscritosId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Proyectos_AspNetUsers_IdProfesor",
-                        column: x => x.IdProfesor,
-                        principalTable: "AspNetUsers",
+                        name: "FK_AlumnoClases_Clases_ClasesInscritasId",
+                        column: x => x.ClasesInscritasId,
+                        principalTable: "Clases",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AlumnoClases_ClasesInscritasId",
+                table: "AlumnoClases",
+                column: "ClasesInscritasId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -227,19 +255,17 @@ namespace RestAPI.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Proyectos_IdAlumno",
-                table: "Proyectos",
-                column: "IdAlumno");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Proyectos_IdProfesor",
-                table: "Proyectos",
+                name: "IX_Clases_IdProfesor",
+                table: "Clases",
                 column: "IdProfesor");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AlumnoClases");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -256,7 +282,7 @@ namespace RestAPI.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Proyectos");
+                name: "Clases");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

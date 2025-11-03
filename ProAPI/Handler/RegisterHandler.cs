@@ -25,6 +25,7 @@ namespace RestAPI.Handler
                 var user = new ProfesorEntity
                 {
                     UserName = userRegisterRequest.UserName,
+                    Apellido = userRegisterRequest.Apellido,
                     Name = userRegisterRequest.Name,
                     Email = userRegisterRequest.Email,
                     Telefono = userRegisterRequest.Telefono,
@@ -60,6 +61,7 @@ namespace RestAPI.Handler
                 {
                     UserName = userRegisterRequest.UserName,
                     Name = userRegisterRequest.Name,
+                    Apellidos = userRegisterRequest.Apellido,
                     Email = userRegisterRequest.Email,
                     Telefono = userRegisterRequest.Telefono,
                     FechaAlta = DateTime.Now,

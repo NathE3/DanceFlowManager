@@ -12,8 +12,8 @@ using RestAPI.Data;
 namespace RestAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250825140957_PrimeraMigration")]
-    partial class PrimeraMigration
+    [Migration("20251103152726_InicialLimpia")]
+    partial class InicialLimpia
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace RestAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AlumnoClases", b =>
+                {
+                    b.Property<string>("AlumnosInscritosId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ClasesInscritasId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("AlumnosInscritosId", "ClasesInscritasId");
+
+                    b.HasIndex("ClasesInscritasId");
+
+                    b.ToTable("AlumnoClases");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -170,6 +185,11 @@ namespace RestAPI.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -226,15 +246,17 @@ namespace RestAPI.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("AppUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("RestAPI.Models.Entity.ProyectoEntity", b =>
+            modelBuilder.Entity("RestAPI.Models.Entity.ClaseEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -244,16 +266,8 @@ namespace RestAPI.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("IdAlumno")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("IdProfesor")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Nombre")
@@ -268,11 +282,68 @@ namespace RestAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdAlumno");
-
                     b.HasIndex("IdProfesor");
 
-                    b.ToTable("Proyectos");
+                    b.ToTable("Clases");
+                });
+
+            modelBuilder.Entity("RestAPI.Models.Entity.AlumnoEntity", b =>
+                {
+                    b.HasBaseType("RestAPI.Models.Entity.AppUser");
+
+                    b.Property<string>("Apellidos")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaAlta")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaBaja")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Telefono")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("AlumnoEntity");
+                });
+
+            modelBuilder.Entity("RestAPI.Models.Entity.ProfesorEntity", b =>
+                {
+                    b.HasBaseType("RestAPI.Models.Entity.AppUser");
+
+                    b.Property<string>("Apellido")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Telefono")
+                        .HasColumnType("int");
+
+                    b.ToTable("AspNetUsers", t =>
+                        {
+                            t.Property("Telefono")
+                                .HasColumnName("ProfesorEntity_Telefono");
+                        });
+
+                    b.HasDiscriminator().HasValue("ProfesorEntity");
+                });
+
+            modelBuilder.Entity("AlumnoClases", b =>
+                {
+                    b.HasOne("RestAPI.Models.Entity.AlumnoEntity", null)
+                        .WithMany()
+                        .HasForeignKey("AlumnosInscritosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RestAPI.Models.Entity.ClaseEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ClasesInscritasId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -326,28 +397,20 @@ namespace RestAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RestAPI.Models.Entity.ProyectoEntity", b =>
+            modelBuilder.Entity("RestAPI.Models.Entity.ClaseEntity", b =>
                 {
-                    b.HasOne("RestAPI.Models.Entity.AppUser", "Alumno")
-                        .WithMany("ProyectosAlumno")
-                        .HasForeignKey("IdAlumno")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("RestAPI.Models.Entity.ProfesorEntity", "Profesor")
+                        .WithMany("ClasesCreadas")
+                        .HasForeignKey("IdProfesor")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("RestAPI.Models.Entity.AppUser", "Profesor")
-                        .WithMany("ProyectosProfesor")
-                        .HasForeignKey("IdProfesor");
-
-                    b.Navigation("Alumno");
 
                     b.Navigation("Profesor");
                 });
 
-            modelBuilder.Entity("RestAPI.Models.Entity.AppUser", b =>
+            modelBuilder.Entity("RestAPI.Models.Entity.ProfesorEntity", b =>
                 {
-                    b.Navigation("ProyectosAlumno");
-
-                    b.Navigation("ProyectosProfesor");
+                    b.Navigation("ClasesCreadas");
                 });
 #pragma warning restore 612, 618
         }

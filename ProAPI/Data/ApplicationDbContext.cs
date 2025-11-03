@@ -14,18 +14,30 @@ namespace RestAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // ProfesorEntity -> ClasesCreadas (uno a muchos)
             modelBuilder.Entity<ClaseEntity>()
-                .HasOne(c => c.Profesor)
-                .WithMany(p => p.ClasesCreadas)
-                .HasForeignKey(c => c.IdProfesor)
-                .IsRequired();
+        .HasOne(c => c.Profesor)
+        .WithMany(p => p.ClasesCreadas)
+        .HasForeignKey(c => c.IdProfesor)
+        .IsRequired()
+        .OnDelete(DeleteBehavior.Restrict); // evita cascadas múltiples
 
             // AlumnoEntity -> ClasesInscritas (muchos a muchos)
             modelBuilder.Entity<ClaseEntity>()
                 .HasMany(c => c.AlumnosInscritos)
                 .WithMany(a => a.ClasesInscritas)
-                .UsingEntity(j => j.ToTable("AlumnoClases"));
+                .UsingEntity<Dictionary<string, object>>(
+                    "AlumnoClases",
+                    j => j
+                        .HasOne<AlumnoEntity>()
+                        .WithMany()
+                        .HasForeignKey("AlumnosInscritosId")
+                        .OnDelete(DeleteBehavior.Cascade), // solo una cascada
+                    j => j
+                        .HasOne<ClaseEntity>()
+                        .WithMany()
+                        .HasForeignKey("ClasesInscritasId")
+                        .OnDelete(DeleteBehavior.NoAction) // desactiva la segunda
+                );
         }
 
         public DbSet<ProfesorEntity> Profesores { get; set; }
