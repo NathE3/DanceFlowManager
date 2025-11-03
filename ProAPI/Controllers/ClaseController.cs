@@ -91,7 +91,7 @@ namespace RestAPI.Controllers
                     Id_profesor = createDto.Id_profesor,                    
                     
                 };
-                var dto =  _claseRepository.CreateAsync(entity);
+                var dto =  await _claseRepository.CreateAsync(entity);
 
                 return CreatedAtRoute($"{ControllerContext.ActionDescriptor.ControllerName}_GeProyectoEntity", new { id = entity.GetHashCode() }, dto);
             }

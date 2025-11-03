@@ -83,16 +83,17 @@ namespace RestAPI.Repository
             return await _context.Clases.AnyAsync(c => c.Id == id);
         }
 
-        public async Task<bool> CreateAsync(ClaseDTO ClaseDTO)
+        public async Task<bool> CreateAsync(CreateClaseDTO ClaseDTO)
         {
-            var clase = await TransforDTOtoEntity(ClaseDTO);
+            var clase = await TransforCreateDTOtoDTO(ClaseDTO);
             _context.Clases.Add(clase);
             return await Save();
         }
 
-        public async Task<bool> UpdateAsync(ClaseEntity ClaseEntity)
+        public async Task<bool> UpdateAsync(ClaseDTO ClaseDTO)
         {
-            _context.Update(ClaseEntity);
+            var clase = await TransforDTOtoEntity(ClaseDTO);
+            _context.Update(clase);
             return await Save();
         }
 
@@ -122,6 +123,12 @@ namespace RestAPI.Repository
         {
             var clase = _mapper.Map<ClaseEntity>(claseDTO);
             return clase;
+        }
+
+        private async Task<ClaseEntity> TransforCreateDTOtoDTO(CreateClaseDTO claseDTO)
+        {
+            var clase =  _mapper.Map<ClaseEntity>(claseDTO);
+            return  clase;
         }
 
     }
