@@ -12,7 +12,6 @@ namespace InfoManager.ViewModel
     public partial class LoginViewModel : ViewModelBase
     {
         private readonly IHttpJsonProvider<UserDTO> _httpJsonProvider;
-        private readonly IProyectoServiceToApi _proyectoServiceToApi;
 
        
 
@@ -22,11 +21,9 @@ namespace InfoManager.ViewModel
         [ObservableProperty]
         private string _passwordView;
 
-        public LoginViewModel(IHttpJsonProvider<UserDTO> httpJsonProvider, IProyectoServiceToApi proyectoServiceToApi)
+        public LoginViewModel(IHttpJsonProvider<UserDTO> httpJsonProvider)
         {
-            _httpJsonProvider = httpJsonProvider;
-            _proyectoServiceToApi = proyectoServiceToApi;
-       
+            _httpJsonProvider = httpJsonProvider;       
         }
 
         [RelayCommand]

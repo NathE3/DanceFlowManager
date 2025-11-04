@@ -6,13 +6,13 @@ namespace InfoManager.Interface
     public interface IProyectoServiceToApi
     {
         // Obtiene un Proyectos desde la API
-        Task<IEnumerable<ProyectoDTO>> GetProyectos();
+        Task<IEnumerable<ProfesorDTO>> GetProyectos();
 
         // Agrega un Proyecto a la API
-        Task PostProyecto(ProyectoDTO proyecto);
+        Task PostProyecto(ProfesorDTO proyecto);
 
         // Modifica un Proyecto ya existente
-        Task PutProyecto(ProyectoDTO proyecto);
-        Task CambiarEstado(ProyectoDTO proyecto);
+        Task PutProyecto(ProfesorDTO proyecto);
+        Task CambiarEstado(ProfesorDTO proyecto);
     }
 }

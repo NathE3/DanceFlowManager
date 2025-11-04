@@ -19,39 +19,39 @@ namespace InfoManager.ViewModel
     {
 
         [ObservableProperty]
-        private ObservableCollection<ProyectoDTO> _items;
+        private ObservableCollection<ProfesorDTO> _profesores;
 
-        private int _dicatadorId;
+        private string _profesorId;
         private InformacionViewModel _informacionViewModel;
-        private readonly IHttpJsonProvider<ProyectoDTO> _httpJsonProvider;
+        private readonly IHttpJsonProvider<ProfesorDTO> _httpJsonProvider;
         private readonly IProyectoServiceToApi _proyectoServiceToApi;
-        private readonly IFileService<ProyectoDTO> _fileService;
+        private readonly IFileService<ProfesorDTO> _fileService;
 
         [ObservableProperty]
-        private ProyectoDTO _Dicatador;
+        private ProfesorDTO _Profesor;
 
-        public DetallesViewModel(IProyectoServiceToApi proyectoServiceToApi, IHttpJsonProvider<ProyectoDTO> httpJsonProvider, IFileService<ProyectoDTO> fileService)
+        public DetallesViewModel(IProyectoServiceToApi proyectoServiceToApi, IHttpJsonProvider<ProfesorDTO> httpJsonProvider, IFileService<ProfesorDTO> fileService)
         {
             _httpJsonProvider = httpJsonProvider;
             _proyectoServiceToApi = proyectoServiceToApi;
             _fileService = fileService;
-            _items = new ObservableCollection<ProyectoDTO>();
+            _profesores = new ObservableCollection<ProfesorDTO>();
         }
 
-        public void SetIdDicatador(int id)
+        public void SetIdProfesor(string id)
         {
-            _dicatadorId = id;
+            _profesorId = id;
         }
 
         public override async Task LoadAsync()
         {
-            IEnumerable<ProyectoDTO> dicatadores = await _httpJsonProvider.GetAsync(Constants.PROYECTO_URL);
-            foreach (var dicatador in dicatadores)
+            IEnumerable<ProfesorDTO> profesores = await _httpJsonProvider.GetAsync(Constants.PROYECTO_URL);
+            foreach (var profesor in profesores)
             {
                
-                Items.Add(dicatador);
+                Profesores.Add(profesor);
             }
-            Dicatador = dicatadores.FirstOrDefault(x => x.Id == _dicatadorId) ?? new ProyectoDTO();
+            Profesor = profesores.FirstOrDefault(x => x.Id == _profesorId) ?? new ProfesorDTO();
         }
 
         internal void SetParentViewModel(ViewModelBase informacionViewModel)
@@ -74,15 +74,15 @@ namespace InfoManager.ViewModel
         [RelayCommand]
         public async Task Aprobar()
         {
-            Dicatador.Estado = "Aprobado";
-            await _proyectoServiceToApi.CambiarEstado(Dicatador);
+            Profesor.Estado = "Activo";
+            await _proyectoServiceToApi.CambiarEstado(Profesor);
         }
 
         [RelayCommand]
         public async Task Denegar()
         {
-            Dicatador.Estado = "Denegado";
-            await _proyectoServiceToApi.CambiarEstado(Dicatador);
+            Profesor.Estado = "De Baja";
+            await _proyectoServiceToApi.CambiarEstado(Profesor);
         }
 
     }

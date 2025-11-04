@@ -1,33 +1,35 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using InfoManager.Helpers;
 using InfoManager.Interface;
 using InfoManager.Models;
 using InfoManager.View;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
+using System.Reflection.Metadata;
 using System.Windows.Controls;
 
 namespace InfoManager.ViewModel;
 
 public partial class DashboardViewModel : ViewModelBase
 {
-    private readonly IProyectoServiceToApi _proyectoServiceToApi;
+    private readonly IHttpJsonProvider<ClaseDTO> _httpJsonProvider;
 
-    public DashboardViewModel(IProyectoServiceToApi proyectoServiceToApi)
+    public DashboardViewModel(IHttpJsonProvider<ClaseDTO> httpJsonProvider)
     {
-        _proyectoServiceToApi = proyectoServiceToApi;
+        _httpJsonProvider = httpJsonProvider;
 
-        Proyectos = new List<ProyectoDTO>(); 
-        PagedProyectos = new ObservableCollection<ProyectoDTO>();
+        Clases = new List<ClaseDTO>(); 
+        PagedProyectos = new ObservableCollection<ClaseDTO>();
 
         ItemsPerPage = 5; 
         CurrentPage = 0; 
     }
 
-    private List<ProyectoDTO> Proyectos; 
+    private readonly List<ClaseDTO> Clases; 
 
     [ObservableProperty]
-    private ObservableCollection<ProyectoDTO> pagedProyectos;
+    private ObservableCollection<ClaseDTO> pagedProyectos;
 
     [ObservableProperty]
     private int currentPage; 
@@ -35,20 +37,20 @@ public partial class DashboardViewModel : ViewModelBase
     [ObservableProperty]
     private int itemsPerPage; 
 
-    public int TotalPages => (int)Math.Ceiling((double)Proyectos.Count / ItemsPerPage);
+    public int TotalPages => (int)Math.Ceiling((double)Clases.Count / ItemsPerPage);
 
  
     public override async Task LoadAsync()
     {
         try
         {
-            
-            Proyectos.Clear();
+
+            Clases.Clear();
             PagedProyectos.Clear();
 
           
-            IEnumerable<ProyectoDTO> listaProyectos= await _proyectoServiceToApi.GetProyectos();
-            Proyectos.AddRange(listaProyectos.OrderBy(d => d.Id));
+            IEnumerable<ClaseDTO> listaProyectos= await _httpJsonProvider.GetAsync(Constants.BASE_URL + "");
+            Clases.AddRange(listaProyectos.OrderBy(d => d.Id_Profesor));
 
           
             CurrentPage = 0;
@@ -67,7 +69,7 @@ public partial class DashboardViewModel : ViewModelBase
        
         PagedProyectos.Clear();
 
-        var pagedItems = Proyectos.Skip(CurrentPage * ItemsPerPage).Take(ItemsPerPage).ToList();
+        var pagedItems = Clases.Skip(CurrentPage * ItemsPerPage).Take(ItemsPerPage).ToList();
         foreach (var item in pagedItems)
         {
             PagedProyectos.Add(item);
@@ -102,7 +104,7 @@ public partial class DashboardViewModel : ViewModelBase
     }
     public async void  MyDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
     {
-        if (e.Row.Item is ProyectoDTO proyectoDTO)
+        if (e.Row.Item is ClaseDTO proyectoDTO)
         {
            await _proyectoServiceToApi.PutProyecto(proyectoDTO);
         }

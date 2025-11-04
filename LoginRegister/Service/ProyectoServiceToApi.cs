@@ -10,25 +10,25 @@ namespace InfoManager.Service
 
    public class ProyectoServiceToApi : IProyectoServiceToApi
     {
-        private readonly IHttpJsonProvider<ProyectoDTO> _httpJsonProvider;
+        private readonly IHttpJsonProvider<ProfesorDTO> _httpJsonProvider;
       
 
-        public ProyectoServiceToApi(IHttpJsonProvider<ProyectoDTO>  httpJsonProvider) 
+        public ProyectoServiceToApi(IHttpJsonProvider<ProfesorDTO>  httpJsonProvider) 
         {
             _httpJsonProvider = httpJsonProvider;
         }
 
 
 
-         public async  Task<IEnumerable<ProyectoDTO>> GetProyectos()
+         public async  Task<IEnumerable<ProfesorDTO>> GetProyectos()
          {
  
-            IEnumerable<ProyectoDTO> proyectos = await _httpJsonProvider.GetAsync(Constants.PROYECTO_URL);
+            IEnumerable<ProfesorDTO> proyectos = await _httpJsonProvider.GetAsync(Constants.PROYECTO_URL);
 
          return proyectos;
          }
 
-        public async Task PostProyecto(ProyectoDTO proyecto)
+        public async Task PostProyecto(ProfesorDTO proyecto)
             {
                 try
                 {
@@ -41,7 +41,7 @@ namespace InfoManager.Service
                 }
         }
 
-        public async Task PutProyecto(ProyectoDTO proyecto)
+        public async Task PutProyecto(ProfesorDTO proyecto)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace InfoManager.Service
                 Console.WriteLine(ex.Message);
             }
         }
-        public async Task CambiarEstado(ProyectoDTO proyecto)
+        public async Task CambiarEstado(ProfesorDTO proyecto)
         {
             try
             {
