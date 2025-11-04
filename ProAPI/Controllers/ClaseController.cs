@@ -80,20 +80,21 @@ namespace RestAPI.Controllers
         {
             try
             {
-                if (!ModelState.IsValid) return BadRequest(ModelState);
-               
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
                 var entity = new CreateClaseDTO
                 {
                     Nombre = createDto.Nombre,
                     Tipo = createDto.Tipo,
                     Descripcion = createDto.Descripcion,
                     FechaClase = createDto.FechaClase,
-                    Id_profesor = createDto.Id_profesor,                    
-                    
+                    IdProfesor = createDto.IdProfesor
                 };
-                var dto =  await _claseRepository.CreateAsync(entity);
 
-                return CreatedAtRoute($"{ControllerContext.ActionDescriptor.ControllerName}_GeProyectoEntity", new { id = entity.GetHashCode() }, dto);
+                var dto = await _claseRepository.CreateAsync(entity);
+
+                return StatusCode(StatusCodes.Status201Created, dto);
             }
             catch (Exception ex)
             {

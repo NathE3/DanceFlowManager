@@ -69,7 +69,7 @@ namespace RestAPI.Repository
         {
             if (_cache.TryGetValue(ClaseEntityCacheKey, out List<ClaseDTO> ClasesCached))
             {
-                var Clases = ClasesCached.FirstOrDefault(c => c.Id_clase == id);
+                var Clases = ClasesCached.FirstOrDefault(c => c.Id_clase.ToString() == id);
                 if (Clases != null)
                     return Clases;
             }
@@ -86,6 +86,7 @@ namespace RestAPI.Repository
         public async Task<bool> CreateAsync(CreateClaseDTO ClaseDTO)
         {
             var clase = await TransforCreateDTOtoDTO(ClaseDTO);
+            if (clase == null) return false;
             _context.Clases.Add(clase);
             return await Save();
         }
