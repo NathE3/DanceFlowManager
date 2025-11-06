@@ -16,9 +16,12 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RegisterComponent {
   username: string = '';
+  name: string = '';
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
+  apellido: string = '';
+  telefono: number = 0;
 
   constructor(private authService: AuthService, private router: Router, private toastr: ToastrService ) {}
 
@@ -34,11 +37,13 @@ export class RegisterComponent {
     }
 
     const registroDto: RegistroDTO = {
-      name: this.username,
+      name: this.name,
       userName: this.username,
       email: this.email,
       password: this.password,
-      role: 'alumno'
+      apellido: this.username,
+      telefono: this.telefono,
+      isProfesor: false
     };
 
     try {

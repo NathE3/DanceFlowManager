@@ -1,7 +1,9 @@
 export interface RegistroDTO {
     name: string;
     userName: string;
+    apellido: string;
     email: string;
     password: string;
-    role: string;
+    telefono: number;
+    isProfesor: boolean;
 }

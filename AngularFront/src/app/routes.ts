@@ -3,7 +3,7 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { PrincipalComponent } from './pages/principal/prinicpal.component';
-import { ClasePageComponent } from './pages/propuesta-page/propuesta-page.component';
+import { ClasePageComponent } from './pages/clase-page/clase-page.component';
 
 const routeConfig: Routes = [
   {

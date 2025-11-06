@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { propuestaModel } from '../../models/claseDTO';
+import { ClaseDTO } from '../../models/claseDTO';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -10,6 +10,6 @@ import { CommonModule } from '@angular/common';
   templateUrl: './propuesta.component.html',
   styleUrls: ['./propuesta.component.css']
 })
-export class PropuestaComponent {
-  @Input() propuesta!: propuestaModel;
+export class ClaseComponent {
+  @Input() clase!: ClaseDTO;
 }

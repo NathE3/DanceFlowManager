@@ -1,49 +1,91 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 150px); /* deja hueco para el footer */
+  background: url('/assets/harteraphia-bg.png') no-repeat center center fixed;
+  background-size: cover;
+  padding: 40px 0;
+  box-sizing: border-box;
+}
+
+/* Formulario */
 .registro-form {
-  width: 300px;
-  margin: 5% auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  width: 320px;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 25px 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+  color: #f8f9fa;
   text-align: center;
-  color: aliceblue;
 }
 
 .registro-form h2 {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
+/* Etiquetas e inputs */
 .registro-form label {
   display: block;
   margin: 10px 0 5px;
+  color: #cba26c;
+  text-align: left;
 }
 
 .registro-form input {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  background-color: #1a1a1a;
+  color: #fff;
   box-sizing: border-box;
-  text-align: left;
+  font-size: 0.95rem;
 }
 
+.registro-form input:focus {
+  outline: none;
+  border-color: #cba26c;
+  box-shadow: 0 0 5px rgba(203, 162, 108, 0.5);
+}
 
+/* Mensaje informativo */
+.mensaje {
+  color: #cba26c;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Botones */
 .registro-form button {
   width: 100%;
   padding: 10px;
-  background-color: #28a745;
+  background: linear-gradient(90deg, #cba26c, #9c784f);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   margin-top: 10px;
+  transition: all 0.3s ease;
 }
 
 .registro-form button:hover {
-  background-color: #218838;
+  opacity: 0.9;
+  transform: scale(1.02);
 }
 
-.mensaje{
-  color: orange;
+/* Botón secundario */
+.registro-form button[type="button"] {
+  background: transparent;
+  border: 1px solid #cba26c;
+  color: #cba26c;
+}
+
+.registro-form button[type="button"]:hover {
+  background: rgba(203, 162, 108, 0.1);
 }
