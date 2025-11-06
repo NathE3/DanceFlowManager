@@ -17,7 +17,7 @@ namespace InfoManager.ViewModel
         private ObservableCollection<ClaseDTO> items;
 
 
-        private readonly IProyectoServiceToApi _dicatadorServiceToApi;
+        private readonly IClaseServiceToApi _claseServiceToApi;
         private readonly DetallesViewModel _detallesViewModel;
         private readonly IStringUtils _stringUtils;
 
@@ -26,7 +26,7 @@ namespace InfoManager.ViewModel
 
         public InformacionViewModel(IProyectoServiceToApi dicatadorServiceToApi, DetallesViewModel detallesViewModel, IStringUtils stringUtils)
         {
-            _dicatadorServiceToApi = dicatadorServiceToApi;
+            _claseServiceToApi = dicatadorServiceToApi;
             _detallesViewModel = detallesViewModel;
             _stringUtils = stringUtils;
             items = new ObservableCollection<ClaseDTO>();
@@ -35,7 +35,7 @@ namespace InfoManager.ViewModel
         public override async Task LoadAsync()
         {
             Items.Clear();
-            IEnumerable<ClaseDTO> dicatatores = await _dicatadorServiceToApi.GetProyectos();
+            IEnumerable<ClaseDTO> dicatatores = await _claseServiceToApi.GetProyectos();
             foreach (var dicatador in dicatatores)
             {
                 

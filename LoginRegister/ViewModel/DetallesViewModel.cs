@@ -24,16 +24,16 @@ namespace InfoManager.ViewModel
         private string _profesorId;
         private InformacionViewModel _informacionViewModel;
         private readonly IHttpJsonProvider<ProfesorDTO> _httpJsonProvider;
-        private readonly IProyectoServiceToApi _proyectoServiceToApi;
+        private readonly IClaseServiceToApi _claseServiceToApi;
         private readonly IFileService<ProfesorDTO> _fileService;
 
         [ObservableProperty]
         private ProfesorDTO _Profesor;
 
-        public DetallesViewModel(IProyectoServiceToApi proyectoServiceToApi, IHttpJsonProvider<ProfesorDTO> httpJsonProvider, IFileService<ProfesorDTO> fileService)
+        public DetallesViewModel(IClaseServiceToApi proyectoServiceToApi, IHttpJsonProvider<ProfesorDTO> httpJsonProvider, IFileService<ProfesorDTO> fileService)
         {
             _httpJsonProvider = httpJsonProvider;
-            _proyectoServiceToApi = proyectoServiceToApi;
+            _claseServiceToApi = proyectoServiceToApi;
             _fileService = fileService;
             _profesores = new ObservableCollection<ProfesorDTO>();
         }
@@ -45,7 +45,7 @@ namespace InfoManager.ViewModel
 
         public override async Task LoadAsync()
         {
-            IEnumerable<ProfesorDTO> profesores = await _httpJsonProvider.GetAsync(Constants.PROYECTO_URL);
+            IEnumerable<ProfesorDTO> profesores = await _httpJsonProvider.GetAsync(Constants.CLASE_URL);
             foreach (var profesor in profesores)
             {
                
@@ -75,14 +75,14 @@ namespace InfoManager.ViewModel
         public async Task Aprobar()
         {
             Profesor.Estado = "Activo";
-            await _proyectoServiceToApi.CambiarEstado(Profesor);
+            await _claseServiceToApi.CambiarEstado(Profesor);
         }
 
         [RelayCommand]
         public async Task Denegar()
         {
             Profesor.Estado = "De Baja";
-            await _proyectoServiceToApi.CambiarEstado(Profesor);
+            await _claseServiceToApi.CambiarEstado(Profesor);
         }
 
     }

@@ -19,25 +19,17 @@ public partial class DashboardViewModel : ViewModelBase
     {
         _httpJsonProvider = httpJsonProvider;
 
-        Clases = new List<ClaseDTO>(); 
-        PagedProyectos = new ObservableCollection<ClaseDTO>();
 
-        ItemsPerPage = 5; 
-        CurrentPage = 0; 
+        Clases = [];
+        _clasesMostradas = [];
+
     }
 
     private readonly List<ClaseDTO> Clases; 
 
     [ObservableProperty]
-    private ObservableCollection<ClaseDTO> pagedProyectos;
+    private readonly ObservableCollection<ClaseDTO> _clasesMostradas;
 
-    [ObservableProperty]
-    private int currentPage; 
-
-    [ObservableProperty]
-    private int itemsPerPage; 
-
-    public int TotalPages => (int)Math.Ceiling((double)Clases.Count / ItemsPerPage);
 
  
     public override async Task LoadAsync()
@@ -46,15 +38,15 @@ public partial class DashboardViewModel : ViewModelBase
         {
 
             Clases.Clear();
-            PagedProyectos.Clear();
 
           
-            IEnumerable<ClaseDTO> listaProyectos= await _httpJsonProvider.GetAsync(Constants.BASE_URL + "");
-            Clases.AddRange(listaProyectos.OrderBy(d => d.Id_Profesor));
+            IEnumerable<ClaseDTO> listaClases= await _httpJsonProvider.GetAsync(Constants.BASE_URL + Constants.CLASE_URL);
+            Clases.AddRange(listaClases.OrderBy(d => d.Id_Profesor));
 
-          
-            CurrentPage = 0;
-            UpdatePagedProyectos();
+            foreach (ClaseDTO clase in Clases) 
+            {
+                _clasesMostradas.Add(clase);            
+            }
         }
         catch (Exception ex)
         {
@@ -63,18 +55,7 @@ public partial class DashboardViewModel : ViewModelBase
         }
     }
 
-   
-    private void UpdatePagedProyectos()
-    {
-       
-        PagedProyectos.Clear();
 
-        var pagedItems = Clases.Skip(CurrentPage * ItemsPerPage).Take(ItemsPerPage).ToList();
-        foreach (var item in pagedItems)
-        {
-            PagedProyectos.Add(item);
-        }
-    }
 
     [RelayCommand]
     public async Task Logout() 
@@ -83,34 +64,5 @@ public partial class DashboardViewModel : ViewModelBase
         App.Current.Services.GetService<MainViewModel>().SelectedViewModel = App.Current.Services.GetService<MainViewModel>().LoginViewModel;
     }
 
-    [RelayCommand]
-    public void PreviousPage()
-    {
-        if (CurrentPage > 0)
-        {
-            CurrentPage--;
-            UpdatePagedProyectos();
-        }
-    }
-
-    [RelayCommand]
-    public void NextPage()
-    {
-        if (CurrentPage < TotalPages - 1)
-        {
-            CurrentPage++;
-            UpdatePagedProyectos();
-        }
-    }
-    public async void  MyDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-    {
-        if (e.Row.Item is ClaseDTO proyectoDTO)
-        {
-           await _proyectoServiceToApi.PutProyecto(proyectoDTO);
-        }
-    }
-    private bool CanGoToPreviousPage() => CurrentPage > 0;
-
-    private bool CanGoToNextPage() => CurrentPage < TotalPages - 1;
 }
 

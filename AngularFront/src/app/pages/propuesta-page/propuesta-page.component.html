@@ -1,22 +1,22 @@
 <div class="container">
   <button class="back-button" (click)="goBack()">⬅ Volver</button>
-  <h1 class="title">Detalles del proyecto</h1>
+  <h1 class="title">Detalles de la clase</h1>
 
   <div class="form-group">
-    <label for="name">Nombre del proyecto:</label>
-    <input id="name" type="text" [(ngModel)]="propuesta.nombre" />
+    <label for="name">Nombre:</label>
+    <input id="name" type="text" [(ngModel)]="clase.nombre" />
 
-    <label for="descripcion">Descripción del proyecto:</label>
-    <input id="descripcion" type="text" [(ngModel)]="propuesta.descripcion" />
+    <label for="descripcion">Descripción:</label>
+    <input id="descripcion" type="text" [(ngModel)]="clase.descripcion" />
 
-    <p name="EstadoProyecto" id="estado" >Estado del proyecto: {{ propuesta.estado}}</p>
+    <p name="TipoClase" id="tipo" >Tipo de la clase: {{ clase.tipo}}</p>
 
-    <p name="TipoProyecto" id="tipo" >Tipo de proyecto: {{ propuesta.tipo}}</p>
+    <p name="TipoProyecto" id="tipo" >Fecha de la clase: {{ clase.fechaClase.toLocaleDateString()}}</p>
 
-    <p name="FechaProyecto" id="fecha">Fecha del proyecto: {{ propuesta.createDate.toLocaleDateString()}}</p> 
+    <p name="FechaProyecto" id="fecha">Fecha del proyecto: {{clase.alumnosInscritos}}</p> 
    
   </div>
 
-  <button class="update-button" (click)="actualizarPropuesta()">Actualizar</button>
-  <button class="delete-button" (click)="eliminarPropuesta()">Eliminar</button>
+  <button class="update-button" (click)="InscribirseClase()">Inscribirse</button>
+  <button class="delete-button" (click)="eliminarInscripcion()">Eliminar inscripción</button>
 </div>

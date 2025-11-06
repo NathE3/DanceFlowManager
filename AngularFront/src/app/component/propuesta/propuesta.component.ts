@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { propuestaModel } from '../../models/propuestaModel';
+import { propuestaModel } from '../../models/claseDTO';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 

@@ -3,34 +3,34 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { PrincipalComponent } from './pages/principal/prinicpal.component';
-import { PropuestaPageComponent } from './pages/propuesta-page/propuesta-page.component';
+import { ClasePageComponent } from './pages/propuesta-page/propuesta-page.component';
 import { AnadirComponent } from './pages/anadir/anadir.component';
 
 const routeConfig: Routes = [
   {
     path: '',
     component: LoginComponent,
-    title: 'I.E.S. Comercio',
+    title: 'Harteraphia Login',
   },
   {
     path: 'registro',
     component: RegisterComponent,
-    title: 'I.E.S. Comercio',
+    title: 'Harteraphia Register',
   },
   {
     path: 'principal',
     component: PrincipalComponent,
-    title: 'I.E.S. Comercio',
+    title: 'Harteraphia Principal',
   },
   {
-    path: 'propuestaPage/:id',
-    component: PropuestaPageComponent,
-    title: 'I.E.S. Comercio'
+    path: 'ClasePage/:id',
+    component: ClasePageComponent,
+    title: 'Harteraphia Clase'
   },
   {
-    path: 'anadir',
+    path: 'inscribirseClase',
     component: AnadirComponent,
-    title: 'I.E.S. Comercio'
+    title: 'Harteraphia inscripciónClase'
   },
   {
     path: '**',

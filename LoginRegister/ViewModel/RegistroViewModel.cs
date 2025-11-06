@@ -22,6 +22,12 @@ namespace InfoManager.ViewModel
         [ObservableProperty]
         private string _password;
 
+        [ObservableProperty]
+        private string _apellido;
+
+        [ObservableProperty]
+        private string _telefono;
+
         public LoginViewModel LoginViewModel { get; }
 
         private readonly IHttpJsonProvider<UserDTO> _httpJsonProvider;
@@ -38,7 +44,9 @@ namespace InfoManager.ViewModel
             if (string.IsNullOrEmpty(Name) ||
                 string.IsNullOrEmpty(UserName) ||
                 string.IsNullOrEmpty(Email) ||
-                string.IsNullOrEmpty(Password))
+                string.IsNullOrEmpty(Password) ||
+                string.IsNullOrEmpty(Apellido) || 
+                string.IsNullOrEmpty(Telefono))
             {
                 MessageBox.Show("Por favor, rellene todos los campos.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -47,10 +55,12 @@ namespace InfoManager.ViewModel
             UserRegistroDTO userRegistroDTO = new()
             {
                 Name = Name,
+                apellido = Apellido,
                 UserName = UserName,
                 Email = Email,
+                Telefono = Telefono,
                 Password = Password,
-                Role = "profesor"
+
             };
 
             try

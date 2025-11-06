@@ -12,10 +12,10 @@ namespace InfoManager.Helpers
         public const string JSON_FILTER = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
 
         public const string BASE_URL = "https://localhost:7777/DanceFlowApi/";
-        public const string PROYECTO_URL = "Proyecto";
+        public const string CLASE_URL = "Clase";
         public const string PROYECTO_STATE_URL = "Proyecto/State";
-        public const string LOGIN_PATH = "users/login";
-        public const string REGISTER_PATH = "users/register";
+        public const string LOGIN_PATH = "User/login";
+        public const string REGISTER_PATH = "User/register";
 
     }
 }

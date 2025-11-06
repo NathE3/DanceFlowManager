@@ -10,9 +10,4 @@ public partial class DashboardView : UserControl
     {
         InitializeComponent();
     }
-
-    private void MyDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-    {
-        App.Current.Services.GetService<DashboardViewModel>().MyDataGrid_CellEditEnding(sender, e);
-    }
 }

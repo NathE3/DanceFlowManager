@@ -207,6 +207,31 @@ namespace InfoManager.Services
             }
             return default;
         }
+
+        public async Task<bool> DeleteAsync(string path)
+        {
+            try
+            {
+                using HttpClient httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
+
+                HttpResponseMessage response = await httpClient.DeleteAsync($"{Constants.BASE_URL}{path}");
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    await Authenticate(path, httpClient, response);
+                    response = await httpClient.DeleteAsync($"{Constants.BASE_URL}{path}");
+                }
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en la solicitud DELETE: {ex.Message}");
+                return false;
+            }
+        }
+
     }
 }
 

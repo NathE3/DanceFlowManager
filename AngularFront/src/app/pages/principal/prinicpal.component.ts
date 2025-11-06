@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PropuestaComponent } from 'src/app/component/propuesta/propuesta.component';
-import { propuestaModel } from 'src/app/models/propuestaModel';
+import { ClaseDTO } from 'src/app/models/claseDTO';
 import { ObjetoService } from 'src/app/service/objeto.service';
 
 @Component(
@@ -16,11 +16,11 @@ import { ObjetoService } from 'src/app/service/objeto.service';
 
 export class PrincipalComponent{
 
-  porpuestasList: propuestaModel[] = [];
+  ListaClases: ClaseDTO[] = [];
 
   constructor(private objetoService: ObjetoService){ 
-    this.objetoService.getProductByUsuario().then((porpuestasList: propuestaModel[]) => {
-      this.porpuestasList = porpuestasList;
+    this.objetoService.getProductByUsuario().then((porpuestasList: ClaseDTO[]) => {
+      this.ListaClases = porpuestasList;
   });
 }
 }

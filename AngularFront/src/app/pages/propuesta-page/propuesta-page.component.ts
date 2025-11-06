@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ObjetoService } from 'src/app/service/objeto.service';
-import { propuestaModel } from '../../models/propuestaModel';
+import { ClaseDTO } from '../../models/claseDTO';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AlumnoDTO } from 'src/app/models/alumnoDTO';
 
 @Component({
   selector: 'app-propuesta-page',
@@ -13,9 +14,10 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './propuesta-page.component.html',
   styleUrls: ['./propuesta-page.component.css']
 })
-export class PropuestaPageComponent implements OnInit {
-  propuestaId: number | null = null;
-  propuesta: propuestaModel = { id: 0, nombre: '', descripcion: '',tipo:'',estado:'', createDate: new Date() };
+export class ClasePageComponent implements OnInit {
+  claseId: string | null = null;
+  clase: ClaseDTO = { id_clase: '', nombre: '', descripcion: '',tipo:'',fechaClase: new Date(),idProfesor: '',alumnosInscritos:[] };
+  alumnoActual : AlumnoDTO | undefined
 
   constructor(
     private route: ActivatedRoute,
@@ -27,48 +29,58 @@ export class PropuestaPageComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        this.propuestaId = +id;
-        this.cargarPropuesta();
+        this.claseId = id;
+        this.cargarClase();
       }
     });
   }
 
-  async cargarPropuesta() {
-    if (this.propuestaId) {
-      const objetoData = await this.objetoService.getProductById(this.propuestaId);
+  async cargarClase() {
+    if (this.claseId) {
+      const objetoData = await this.objetoService.getProductById(this.claseId);
       if (objetoData) {
-        this.propuesta = objetoData;
+        this.clase = objetoData;
       }
     }
   }
 
-  async actualizarPropuesta() {
-    if (this.propuestaId) {
+  
+async InscribirseClase() {
+  if (this.claseId && this.alumnoActual) {
+    try {
+      const existe = this.clase.alumnosInscritos.some(a => a.id === this.alumnoActual.id);
+      if (!existe) {
+        this.clase.alumnosInscritos.push(this.alumnoActual);
+      }
+
+      await this.objetoService.updateProduct(this.claseId, this.clase);
+      alert('Se ha inscrito correctamente.');
+    } catch (error) {
+      console.error('Hubo un error al inscribirse a la clase.', error);
+      alert('Hubo un error al inscribirse a la clase.');
+    }
+  }
+}
+
+
+ 
+async eliminarInscripcion() {
+  if (this.claseId && this.alumnoActual) {
+    const confirmacion = confirm('¿Estás seguro de que deseas eliminar tu inscripción?');
+    if (confirmacion) {
       try {
-        await this.objetoService.updateProduct(this.propuestaId, this.propuesta);
-        alert('Propuesta actualizado correctamente.');
-      } catch (error) {
-        console.error('Error al actualizar el proyecto', error);
-        alert('Hubo un error al actualizar el proyecto.');
-      }
-    }
-  }
+        this.clase.alumnosInscritos = this.clase.alumnosInscritos.filter(a => a.id !== this.alumnoActual.id);
 
-  async eliminarPropuesta() {
-    if (this.propuestaId) {
-      const confirmacion = confirm('¿Estás seguro de que deseas eliminar este proyecto?');
-      if (confirmacion) {
-        try {
-          await this.objetoService.deleteProduct(this.propuestaId);
-          alert('Objeto eliminado correctamente.');
-          this.location.back();
-        } catch (error) {
-          console.error('Error al eliminar el proyecto', error);
-          alert('Hubo un error al eliminar el proyecto.');
-        }
+        await this.objetoService.updateProduct(this.claseId, this.clase);
+        alert('Inscripción eliminada correctamente.');
+        this.location.back();
+      } catch (error) {
+        console.error('Error al eliminar la inscripción', error);
+        alert('Hubo un error al eliminar la inscripción.');
       }
     }
   }
+}
 
   goBack() {
     this.location.back();

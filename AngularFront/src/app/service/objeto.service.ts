@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { propuestaModel } from '../models/propuestaModel';
-import { CreatePropuestaModel } from '../models/CreatePropuestaModel';
+import { ClaseDTO } from '../models/claseDTO';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ObjetoService {
-  readonly baseUrl = 'https://localhost:7777/api/Proyecto';
+  readonly baseUrl = 'https://localhost:7777/DanceFlowApi/Clase';
 
   constructor() {}
 
@@ -18,7 +17,7 @@ export class ObjetoService {
     };
   }
 
-  async getAllProduct(): Promise<propuestaModel[]> {
+  async getAllClases(): Promise<ClaseDTO[]> {
     const response = await fetch(this.baseUrl, {
       method: 'GET',
       headers: this.getAuthHeaders()
@@ -26,15 +25,15 @@ export class ObjetoService {
     return (await response.json()) ?? [];
   }
 
-  async getProductById(id: number): Promise<propuestaModel | undefined> {
+  async getProductById(id: string): Promise<ClaseDTO | undefined> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
       method: 'GET',
       headers: this.getAuthHeaders()
     });
-    return (await response.json()) as propuestaModel | undefined;
+    return (await response.json()) as ClaseDTO | undefined;
   }
 
-  async getProductByUsuario(): Promise<propuestaModel[]> {
+  async getProductByUsuario(): Promise<ClaseDTO[]> {
     const response = await fetch(`${this.baseUrl}/user`, {
       method: 'GET',
       headers: this.getAuthHeaders()
@@ -42,7 +41,7 @@ export class ObjetoService {
     return (await response.json()) ?? [];
   }
 
-  async updateProduct(id: number, partialProduct: Partial<propuestaModel>): Promise<propuestaModel> {
+  async updateProduct(id: string, partialProduct: Partial<ClaseDTO>): Promise<ClaseDTO> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
       method: "PATCH",
       headers: this.getAuthHeaders(),
@@ -51,18 +50,8 @@ export class ObjetoService {
 
     return await response.json();
   }
-
-  async createProduct(product: CreatePropuestaModel): Promise<CreatePropuestaModel> {
-    const response = await fetch(this.baseUrl, {
-      method: "POST",
-      headers: this.getAuthHeaders(),
-      body: JSON.stringify(product)
-    });
-
-    return await response.json();
-  }
   
-  async deleteProduct(id: number): Promise<boolean> {
+  async deleteProduct(id: string): Promise<boolean> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
       method: "DELETE",
       headers: this.getAuthHeaders()
