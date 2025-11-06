@@ -72,6 +72,24 @@ export class AuthService {
     return this.token || localStorage.getItem('authToken');
   }
 
+  
+getAlumnoIdFromToken(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const payload = token.split('.')[1];
+      const decodedPayload = atob(payload);
+      const parsedPayload = JSON.parse(decodedPayload);
+
+      return parsedPayload.id || parsedPayload.sub || null;
+    } catch (error) {
+      console.error('Error al decodificar el token', error);
+      return null;
+    }
+  }
+
+
   logout(): void {
     this.token = null;
     localStorage.removeItem('authToken');

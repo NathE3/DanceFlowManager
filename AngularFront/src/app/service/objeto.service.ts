@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ClaseDTO } from '../models/claseDTO';
+import { AlumnoDTO } from '../models/alumnoDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class ObjetoService {
     return (await response.json()) ?? [];
   }
 
-  async getProductById(id: string): Promise<ClaseDTO | undefined> {
+  async getClaseById(id: string): Promise<ClaseDTO | undefined> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
       method: 'GET',
       headers: this.getAuthHeaders()
@@ -33,7 +34,21 @@ export class ObjetoService {
     return (await response.json()) as ClaseDTO | undefined;
   }
 
-  async getProductByUsuario(): Promise<ClaseDTO[]> {
+  async getAlumnoById(id: string): Promise<AlumnoDTO | undefined> {
+  const response = await fetch(`${this.baseUrl}/alumnos/${id}`, {
+    method: 'GET',
+    headers: this.getAuthHeaders()
+  });
+
+  if (!response.ok) {
+    console.error('Error al obtener el alumno:', response.statusText);
+    return undefined;
+  }
+
+  return (await response.json()) as AlumnoDTO;
+}
+
+  async getClaseByUsuario(): Promise<ClaseDTO[]> {
     const response = await fetch(`${this.baseUrl}/user`, {
       method: 'GET',
       headers: this.getAuthHeaders()
@@ -41,7 +56,7 @@ export class ObjetoService {
     return (await response.json()) ?? [];
   }
 
-  async updateProduct(id: string, partialProduct: Partial<ClaseDTO>): Promise<ClaseDTO> {
+  async updateClase(id: string, partialProduct: Partial<ClaseDTO>): Promise<ClaseDTO> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
       method: "PATCH",
       headers: this.getAuthHeaders(),

@@ -4,7 +4,6 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { PrincipalComponent } from './pages/principal/prinicpal.component';
 import { ClasePageComponent } from './pages/propuesta-page/propuesta-page.component';
-import { AnadirComponent } from './pages/anadir/anadir.component';
 
 const routeConfig: Routes = [
   {
@@ -26,11 +25,6 @@ const routeConfig: Routes = [
     path: 'ClasePage/:id',
     component: ClasePageComponent,
     title: 'Harteraphia Clase'
-  },
-  {
-    path: 'inscribirseClase',
-    component: AnadirComponent,
-    title: 'Harteraphia inscripciónClase'
   },
   {
     path: '**',

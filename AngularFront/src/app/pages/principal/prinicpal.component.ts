@@ -15,12 +15,12 @@ import { ObjetoService } from 'src/app/service/objeto.service';
 })
 
 export class PrincipalComponent{
-
+  
   ListaClases: ClaseDTO[] = [];
 
   constructor(private objetoService: ObjetoService){ 
-    this.objetoService.getProductByUsuario().then((porpuestasList: ClaseDTO[]) => {
-      this.ListaClases = porpuestasList;
+    this.objetoService.getAllClases().then((clasesList: ClaseDTO[]) => {
+      this.ListaClases = clasesList;
   });
 }
 }
