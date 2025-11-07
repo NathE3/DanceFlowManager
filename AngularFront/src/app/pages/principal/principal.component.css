@@ -1,31 +1,202 @@
-.add-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  text-decoration: none;
-  background-color: #28a745;
-  color: white;
-  border-radius: 5px;
-  position: fixed; 
-  top: 95px;
-  left: 20px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: auto; 
-  max-width: 200px; 
-  box-sizing: border-box; 
+/* ===========================
+   Navbar
+=========================== */
+.main-nav {
+  background-color: rgba(20, 20, 20, 0.95);
+  padding: 15px 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(203,162,108,0.3);
+  margin: 20px auto;
+  max-width: 1200px;
 }
 
-  
-  .add-button:hover {
-    background-color: #218838; 
+.main-nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav a {
+  color: #f8f9fa;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.main-nav a:hover {
+  color: #cba26c;
+  transform: scale(1.05);
+}
+
+/* ===========================
+   Hero Banner
+=========================== */
+.hero-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 30px;
+  background: url('/assets/BannerBailarina.png') no-repeat center center;
+  background-size: cover;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  margin: 30px auto;
+}
+
+.hero-banner img {
+  max-width: 500px;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(203,162,108,0.3);
+}
+
+.hero-content h1 {
+  font-size: 48px;
+  color: #cba26c;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.hero-content p {
+  font-size: 20px;
+  color: #f8f9fa;
+  margin-bottom: 30px;
+  max-width: 600px;
+}
+
+/* ===========================
+   Secciones generales
+=========================== */
+section {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.sobre-nosotros h2,
+.clases-destacadas h2,
+.beneficios h2,
+.testimonios h2 {
+  font-size: 36px;
+  color: #cba26c;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.sobre-nosotros p {
+  max-width: 700px;
+  margin: auto;
+  font-size: 18px;
+  color: #f8f9fa;
+}
+
+/* ===========================
+   Listado de Clases
+=========================== */
+.listado-objetos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+.listado-objetos app-clase {
+  background: rgba(20, 20, 20, 0.85);
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 20px;
+  min-width: 260px;
+  max-width: 320px;
+  flex: 1 1 280px;
+  text-align: center;
+  color: #f8f9fa;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.listado-objetos app-clase:hover {
+  border-color: #cba26c;
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(203, 162, 108, 0.4);
+}
+
+/* ===========================
+   Beneficios
+=========================== */
+.beneficio-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+.beneficio {
+  background: rgba(20,20,20,0.85);
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 300px;
+  box-shadow: 0 0 15px rgba(203,162,108,0.3);
+}
+
+.beneficio h3 {
+  color: #cba26c;
+  margin-bottom: 10px;
+}
+
+.beneficio p {
+  color: #f8f9fa;
+}
+
+/* ===========================
+   Testimonios
+=========================== */
+.testimonio-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.testimonio {
+  background: rgba(20,20,20,0.85);
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 280px;
+  font-style: italic;
+  box-shadow: 0 0 15px rgba(203,162,108,0.3);
+}
+
+.testimonio span {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #cba26c;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+@media (max-width: 768px) {
+  .hero-banner {
+    flex-direction: column;
+    padding: 30px 20px;
   }
 
-  .listado-objetos {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    justify-content: center;
-    padding: 30px;
+  .hero-banner img {
+    margin-top: 20px;
   }
+
+  .main-nav ul {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
   

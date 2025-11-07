@@ -4,11 +4,11 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-propuesta',
+  selector: 'app-clase',
   imports: [RouterModule, CommonModule],
   standalone: true,
-  templateUrl: './propuesta.component.html',
-  styleUrls: ['./propuesta.component.css']
+  templateUrl: './clase.component.html',
+  styleUrls: ['./clase.component.css']
 })
 export class ClaseComponent {
   @Input() clase!: ClaseDTO;

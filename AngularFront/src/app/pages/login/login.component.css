@@ -1,44 +1,86 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 150px); /* deja espacio para el footer */
+  background-size: cover;
+  padding: 40px 0;
+  box-sizing: border-box;
+}
+
+/* Contenedor principal del formulario */
 .login-form {
-  width: 300px;
-  margin: 5% auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 2px 2px 10px rgba(31, 153, 1, 0.1);
+  width: 320px;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 25px 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+  color: #f8f9fa;
   text-align: center;
-  color: aliceblue;
 }
 
+/* Título */
 .login-form h2 {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
+/* Etiquetas e inputs */
 .login-form label {
   display: block;
   margin: 10px 0 5px;
+  color: #cba26c;
+  text-align: left;
 }
 
 .login-form input {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  background-color: #1a1a1a;
+  color: #fff;
   box-sizing: border-box;
-  text-align: left;
+  font-size: 0.95rem;
 }
 
+.login-form input:focus {
+  outline: none;
+  border-color: #cba26c;
+  box-shadow: 0 0 5px rgba(203, 162, 108, 0.5);
+}
+
+/* Botón principal */
 .login-form button {
   width: 100%;
   padding: 10px;
-  background-color: #00a716;
+  background: linear-gradient(90deg, #cba26c, #9c784f);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   margin-top: 10px;
+  transition: all 0.3s ease;
 }
 
 .login-form button:hover {
-  background-color: rgba(54, 253, 4, 0.1);
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+/* Enlace o texto inferior */
+.login-form a {
+  display: block;
+  margin-top: 15px;
+  font-size: 0.85rem;
+  color: #cba26c;
+  text-decoration: none;
+}
+
+.login-form a:hover {
+  color: #fff;
+  text-decoration: underline;
 }

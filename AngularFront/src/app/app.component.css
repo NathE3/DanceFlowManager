@@ -1,26 +1,91 @@
-/* --- Reset y layout general --- */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+/* --- Header general --- */
+header.brand-name {
   display: flex;
-  flex-direction: column;
-  font-family: 'Poppins', sans-serif;
-  background: url('/assets/matrix-bg.gif') no-repeat center center fixed;
-  background-size: cover;
-  color: white;
-}
-
-/* --- Contenedor principal de las páginas --- */
-main {
-  flex: 1; /* ocupa todo el espacio disponible */
-  display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between; 
+  padding: 15px 40px;
+  background-color: #000; 
+  height: 120px; 
+  box-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
 }
 
-/* --- Footer global --- */
-app-footer {
-  flex-shrink: 0; /* evita que se reduzca y se mantenga abajo */
-  width: 100%;
+/* Logo a la izquierda */
+.brand-logo {
+  height: 60px;
+  width: auto;
 }
+
+/* Nombre de la academia centrado y estilizado */
+header.brand-name h1 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Lora', sans-serif;
+  font-size: 36px;             
+  font-weight: 800;          
+  color: #cba26c;           
+  letter-spacing: 2px;          
+  text-transform: uppercase;    
+  text-shadow:
+    1px 1px 2px rgba(0,0,0,0.7),
+    0 0 10px rgba(203,162,108,0.6),
+    0 0 20px rgba(203,162,108,0.4);
+  transition: all 0.3s ease;
+}
+
+header.brand-name h1:hover {
+  color: #ffd27f;
+  text-shadow:
+    1px 1px 2px rgba(0,0,0,0.7),
+    0 0 15px rgba(203,162,108,0.8),
+    0 0 30px rgba(203,162,108,0.5);
+  transform: translateX(-50%) scale(1.05);
+}
+
+/* Logout a la derecha */
+header .logout {
+  text-decoration: none;
+  background: linear-gradient(90deg, #cba26c, #9c784f);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+header .logout:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+header .logout:active {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3) inset;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  header.brand-name {
+    flex-direction: column;
+    height: auto;
+    padding: 20px;
+  }
+
+  header.brand-name h1 {
+    position: static;
+    transform: none;
+    margin: 10px 0;
+    font-size: 28px;
+    text-shadow:
+      1px 1px 2px rgba(0,0,0,0.7),
+      0 0 8px rgba(203,162,108,0.6),
+      0 0 12px rgba(203,162,108,0.4);
+  }
+}
+
+
+

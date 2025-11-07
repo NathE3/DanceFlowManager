@@ -11,12 +11,12 @@
 
     <p name="TipoClase" id="tipo" >Tipo de la clase: {{ clase.tipo}}</p>
 
-    <p name="TipoProyecto" id="tipo" >Fecha de la clase: {{ clase.fechaClase.toLocaleDateString()}}</p>
+    <p name="TipoClase" id="tipo" >Fecha de la clase: {{ clase.fechaClase.toLocaleDateString()}}</p>
 
-    <p name="FechaProyecto" id="fecha">Fecha del proyecto: {{clase.alumnosInscritos}}</p> 
+    <p name="alumnosInscritos" id="fecha">Alumnos inscritos: {{clase.alumnosInscritos}}</p> 
    
   </div>
 
-  <button class="update-button" (click)="InscribirseClase()">Inscribirse</button>
+  <button class="inscribirse-button" (click)="InscribirseClase()">Inscribirse</button>
   <button class="delete-button" (click)="eliminarInscripcion()">Eliminar inscripción</button>
 </div>

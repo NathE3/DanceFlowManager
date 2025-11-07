@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { ClaseComponent } from 'src/app/component/propuesta/propuesta.component';
+import { ClaseComponent } from 'src/app/component/clase/clase.component';
 import { ClaseDTO } from 'src/app/models/claseDTO';
+import { AuthService } from 'src/app/service/Auth.service';
 import { ObjetoService } from 'src/app/service/objeto.service';
+import { RouterModule } from '@angular/router';
 
 @Component(
 {
   selector: 'app-principal',
-  imports: [CommonModule, ClaseComponent],
+  imports: [CommonModule, ClaseComponent,RouterModule],
   standalone: true,
   templateUrl: './principal.component.html',
   styleUrls: ['./principal.component.css']
@@ -17,8 +18,11 @@ import { ObjetoService } from 'src/app/service/objeto.service';
 export class PrincipalComponent{
   
   ListaClases: ClaseDTO[] = [];
+  usuarioId: string;
 
-  constructor(private objetoService: ObjetoService){ 
+  constructor(private objetoService: ObjetoService, private authService: AuthService){ 
+    this.usuarioId = this.authService.getAlumnoIdFromToken()?? '';
+
     this.objetoService.getAllClases().then((clasesList: ClaseDTO[]) => {
       this.ListaClases = clasesList;
   });

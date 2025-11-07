@@ -4,6 +4,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { PrincipalComponent } from './pages/principal/prinicpal.component';
 import { ClasePageComponent } from './pages/clase-page/clase-page.component';
+import { GuardAuth } from './service/GuardAuth';
+import { ClasesInscritasComponent } from './pages/clasesInscritas/clasesInscritas.component';
 
 const routeConfig: Routes = [
   {
@@ -20,11 +22,21 @@ const routeConfig: Routes = [
     path: 'principal',
     component: PrincipalComponent,
     title: 'Harteraphia Principal',
+    canActivate : [GuardAuth]
   },
   {
     path: 'ClasePage/:id',
     component: ClasePageComponent,
     title: 'Harteraphia Clase'
+  },
+  {
+    path: 'ClasesUsuario/:id',
+    component: ClasesInscritasComponent,
+    title: 'Harteraphia Clase'
+  },
+  {
+      path: 'login',
+      redirectTo: ''
   },
   {
     path: '**',

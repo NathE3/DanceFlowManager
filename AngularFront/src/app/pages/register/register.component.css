@@ -1,38 +1,38 @@
-:host {
+/* Contenedor principal centrado */
+.main-content {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 150px); /* deja hueco para el footer */
-  background: url('/assets/harteraphia-bg.png') no-repeat center center fixed;
-  background-size: cover;
+  min-height: calc(100vh - 60px); 
   padding: 40px 0;
   box-sizing: border-box;
+  flex-direction: column;
 }
 
-/* Formulario */
+/* Formulario de registro */
 .registro-form {
-  width: 320px;
-  background: rgba(0, 0, 0, 0.75);
-  padding: 25px 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+  width: 360px;
+  background: rgba(0, 0, 0, 0.75); 
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(203,162,108,0.3);
   color: #f8f9fa;
   text-align: center;
 }
 
+/* Títulos y etiquetas */
 .registro-form h2 {
   margin-bottom: 20px;
-  color: #ffffff;
+  color: #cba26c; /* dorado */
   font-weight: 600;
   letter-spacing: 1px;
 }
 
-/* Etiquetas e inputs */
 .registro-form label {
   display: block;
   margin: 10px 0 5px;
-  color: #cba26c;
   text-align: left;
+  color: #cba26c; /* dorado */
 }
 
 .registro-form input {
@@ -43,7 +43,6 @@
   border-radius: 6px;
   background-color: #1a1a1a;
   color: #fff;
-  box-sizing: border-box;
   font-size: 0.95rem;
 }
 
@@ -51,14 +50,6 @@
   outline: none;
   border-color: #cba26c;
   box-shadow: 0 0 5px rgba(203, 162, 108, 0.5);
-}
-
-/* Mensaje informativo */
-.mensaje {
-  color: #cba26c;
-  font-size: 0.8rem;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
 }
 
 /* Botones */
@@ -79,13 +70,17 @@
   transform: scale(1.02);
 }
 
-/* Botón secundario */
-.registro-form button[type="button"] {
-  background: transparent;
-  border: 1px solid #cba26c;
-  color: #cba26c;
+/* Mensaje de contraseña */
+.registro-form .mensaje {
+  font-size: 0.85rem;
+  margin: 10px 0;
+  color: #f8f9fa;
 }
 
-.registro-form button[type="button"]:hover {
-  background: rgba(203, 162, 108, 0.1);
+/* Footer dorado debajo del formulario */
+footer {
+  margin-top: 20px;
+  color: #cba26c; /* dorado */
+  text-align: center;
+  font-weight: bold;
 }

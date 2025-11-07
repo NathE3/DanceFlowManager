@@ -1,6 +1,74 @@
+<nav class="main-nav">
+  <ul>
+    <li><a routerLink="/principal">Inicio</a></li>
+    <li><a [routerLink]="['/ClasesUsuario', usuarioId]">Mis Clases</a></li>
+    <li><a routerLink="/noticias">Noticias</a></li>
+  </ul>
+</nav>
 
-<div class="listado-objetos">
-  <app-propuesta *ngFor="let obj of ListaClases" [clase]="obj"></app-propuesta>
-</div>
+<!-- Hero Banner -->
+<section class="hero-banner">
+  <div class="hero-content">
+    <h1>Harteraphia Dance School</h1>
+    <p>¡Descubre tu pasión por el baile y alcanza tu máximo potencial con nosotros!</p>
+  </div>
+  <img src="/assets/BannerBailarina.png" alt="Foto de la escuela">
+</section>
+
+<!-- Sobre Nosotros -->
+<section class="sobre-nosotros">
+  <h2>Sobre Harteraphia</h2>
+  <p>
+    Somos la escuela de baile líder en el norte de España, ofreciendo clases para todos los niveles y estilos. 
+    Nuestros instructores certificados te guiarán en cada paso, asegurando que disfrutes del aprendizaje y desarrolles tu talento.
+  </p>
+</section>
+
+<!-- Clases Destacadas -->
+<section class="clases-destacadas">
+  <h2>Nuestras Clases</h2>
+  <div class="listado-objetos">
+    <app-clase *ngFor="let clase of ListaClases" [clase]="clase"></app-clase>
+  </div>
+</section>
+
+<!-- Beneficios -->
+<section class="beneficios">
+  <h2>Por qué elegirnos</h2>
+  <div class="beneficio-grid">
+    <div class="beneficio">
+      <h3>Instructores Certificados</h3>
+      <p>Aprende con profesionales con años de experiencia en diferentes estilos de baile.</p>
+    </div>
+    <div class="beneficio">
+      <h3>Instalaciones de Primera</h3>
+      <p>Estudios modernos y equipados para brindar la mejor experiencia de aprendizaje.</p>
+    </div>
+    <div class="beneficio">
+      <h3>Comunidad Harteraphia</h3>
+      <p>Únete a una comunidad apasionada y motivadora que te acompañará en tu progreso.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonios -->
+<section class="testimonios">
+  <h2>Lo que dicen nuestros alumnos</h2>
+  <div class="testimonio-grid">
+    <div class="testimonio">
+      <p>"Gracias a Harteraphia he mejorado mis habilidades y conocido a gente increíble."</p>
+      <span>- Ana G.</span>
+    </div>
+    <div class="testimonio">
+      <p>"Los instructores son excepcionales y siempre motivadores."</p>
+      <span>- Luis M.</span>
+    </div>
+    <div class="testimonio">
+      <p>"Ambiente acogedor y profesional. ¡Recomendadísimo!"</p>
+      <span>- Carla R.</span>
+    </div>
+  </div>
+</section>
+
 
 

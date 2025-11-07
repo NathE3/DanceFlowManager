@@ -1,0 +1,9 @@
+<section class="listado-objetos">
+  <p *ngIf="ListaClasesInscritas.length === 0" class="no-clases">
+    No tienes clases inscritas.
+  </p>
+  <app-clase
+    *ngFor="let clase of ListaClasesInscritas"
+    [clase]="clase"
+  ></app-clase>
+</section>

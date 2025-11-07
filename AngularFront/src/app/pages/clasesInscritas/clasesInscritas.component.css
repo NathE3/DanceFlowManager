@@ -1,0 +1,45 @@
+/* Contenedor principal de las clases inscritas */
+.listado-objetos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  padding: 60px 30px;
+  background: rgba(0, 0, 0, 0.6); /* fondo oscuro translúcido */
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+  margin: 60px auto;
+  max-width: 1300px;
+  color: #f8f9fa;
+}
+
+/* Cada tarjeta de clase */
+.listado-objetos app-clase {
+  background: rgba(20, 20, 20, 0.85);
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 20px;
+  min-width: 260px;
+  max-width: 320px;
+  flex: 1 1 280px;
+  text-align: center;
+  color: #f8f9fa;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.listado-objetos app-clase:hover {
+  border-color: #cba26c; /* borde dorado al hover */
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(203, 162, 108, 0.4);
+}
+
+/* Mensaje cuando no hay clases */
+.no-clases {
+  width: 100%;
+  text-align: center;
+  color: #cba26c;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-top: 20px;
+}

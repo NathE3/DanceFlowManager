@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ClaseDTO } from '../models/claseDTO';
 import { AlumnoDTO } from '../models/alumnoDTO';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { AlumnoDTO } from '../models/alumnoDTO';
 export class ObjetoService {
   readonly baseUrl = 'https://localhost:7777/DanceFlowApi/Clase';
 
-  constructor() {}
+  constructor(private toastr: ToastrService ) { }
 
   private getAuthHeaders(): { [key: string]: string } {
     const token = localStorage.getItem('token');
@@ -35,26 +36,39 @@ export class ObjetoService {
   }
 
   async getAlumnoById(id: string): Promise<AlumnoDTO | undefined> {
-  const response = await fetch(`${this.baseUrl}/alumnos/${id}`, {
+  const response = await fetch(`${this.baseUrl}/alumno/${id}`, {
     method: 'GET',
     headers: this.getAuthHeaders()
   });
 
   if (!response.ok) {
-    console.error('Error al obtener el alumno:', response.statusText);
+    this.toastr.error('Error al obtener la clase:');
     return undefined;
   }
 
   return (await response.json()) as AlumnoDTO;
 }
 
-  async getClaseByUsuario(): Promise<ClaseDTO[]> {
-    const response = await fetch(`${this.baseUrl}/user`, {
+  async getClaseByUsuario(id: string): Promise<ClaseDTO[]> {
+  try {
+    const response = await fetch(`${this.baseUrl}/user/${id}`, {
       method: 'GET',
       headers: this.getAuthHeaders()
     });
-    return (await response.json()) ?? [];
+
+    if (!response.ok) {
+      this.toastr.error('Error al obtener las clases:');
+      return [];
+    }
+
+    const data: ClaseDTO[] = await response.json();
+    return data ?? [];
+  } catch (error) {
+    this.toastr.error('Error en la petición:');
+    return [];
   }
+}
+
 
   async updateClase(id: string, partialProduct: Partial<ClaseDTO>): Promise<ClaseDTO> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
