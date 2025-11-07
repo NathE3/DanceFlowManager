@@ -1,0 +1,19 @@
+<section class="noticias">
+  <h2>Últimas Noticias de Harteraphia</h2>
+
+  <div class="noticia-card" *ngFor="let noticia of noticias">
+    <h3>{{ noticia.titulo }}</h3>
+    <span class="fecha">{{ noticia.fecha }}</span>
+    <p>{{ noticia.contenido }}</p>
+
+
+    <div class="video-container" *ngIf="noticia.videoUrl">
+      <iframe 
+        [src]="noticia.videoUrl | safeUrl" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+</section>

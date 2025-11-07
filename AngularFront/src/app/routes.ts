@@ -6,6 +6,7 @@ import { PrincipalComponent } from './pages/principal/prinicpal.component';
 import { ClasePageComponent } from './pages/clase-page/clase-page.component';
 import { GuardAuth } from './service/GuardAuth';
 import { ClasesInscritasComponent } from './pages/clasesInscritas/clasesInscritas.component';
+import { NoticiasComponent } from './pages/noticias/noticias.component';
 
 const routeConfig: Routes = [
   {
@@ -17,6 +18,11 @@ const routeConfig: Routes = [
     path: 'registro',
     component: RegisterComponent,
     title: 'Harteraphia Register',
+  },
+  {
+    path: 'noticias',
+    component: NoticiasComponent,   
+    title: 'Noticias Harteraphia'
   },
   {
     path: 'principal',
