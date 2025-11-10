@@ -5,8 +5,18 @@
   
  
   <h1>Harteraphia</h1>
-  
-  <a *ngIf="authService.isLoggedIn" routerLink="/" class="logout">Logout</a>
+
+  <ng-container *ngIf="authService.isLoggedIn">
+    <nav class="main-nav">
+      <ul>
+        <li><a routerLink="/principal">Inicio</a></li>
+        <li><a [routerLink]="['/ClasesUsuario', usuarioId]">Mis Clases</a></li>
+        <li><a routerLink="/noticias">Noticias</a></li>
+      </ul>
+    </nav>
+
+    <a routerLink="/" class="logout">Logout</a>
+  </ng-container>
 
 </header>
 

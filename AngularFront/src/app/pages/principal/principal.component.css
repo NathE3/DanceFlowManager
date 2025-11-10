@@ -1,38 +1,4 @@
 /* ===========================
-   Navbar
-=========================== */
-.main-nav {
-  background-color: rgba(20, 20, 20, 0.95);
-  padding: 15px 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(203,162,108,0.3);
-  margin: 20px auto;
-  max-width: 1200px;
-}
-
-.main-nav ul {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.main-nav a {
-  color: #f8f9fa;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 18px;
-  transition: all 0.3s ease;
-}
-
-.main-nav a:hover {
-  color: #cba26c;
-  transform: scale(1.05);
-}
-
-/* ===========================
    Hero Banner
 =========================== */
 .hero-banner {

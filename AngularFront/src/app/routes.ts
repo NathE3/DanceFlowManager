@@ -12,33 +12,33 @@ const routeConfig: Routes = [
   {
     path: '',
     component: LoginComponent,
-    title: 'Harteraphia Login',
+    title: 'Harteraphia/Login',
   },
   {
     path: 'registro',
     component: RegisterComponent,
-    title: 'Harteraphia Register',
+    title: 'Harteraphia/Register',
   },
   {
     path: 'noticias',
     component: NoticiasComponent,   
-    title: 'Noticias Harteraphia'
+    title: 'Harteraphia/Noticias '
   },
   {
     path: 'principal',
     component: PrincipalComponent,
-    title: 'Harteraphia Principal',
+    title: 'Harteraphia/Principal',
     canActivate : [GuardAuth]
   },
   {
     path: 'ClasePage/:id',
     component: ClasePageComponent,
-    title: 'Harteraphia Clase'
+    title: 'Harteraphia/Clase'
   },
   {
     path: 'ClasesUsuario/:id',
     component: ClasesInscritasComponent,
-    title: 'Harteraphia Clase'
+    title: 'Harteraphia/UsuarioClases'
   },
   {
       path: 'login',

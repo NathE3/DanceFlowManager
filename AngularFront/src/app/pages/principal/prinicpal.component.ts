@@ -18,10 +18,9 @@ import { RouterModule } from '@angular/router';
 export class PrincipalComponent{
   
   ListaClases: ClaseDTO[] = [];
-  usuarioId: string;
 
   constructor(private objetoService: ObjetoService, private authService: AuthService){ 
-    this.usuarioId = this.authService.getAlumnoIdFromToken()?? '';
+
 
     this.objetoService.getAllClases().then((clasesList: ClaseDTO[]) => {
       this.ListaClases = clasesList;
