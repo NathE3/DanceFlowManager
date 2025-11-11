@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { PrincipalComponent } from './pages/principal/prinicpal.component';
+import { PrincipalComponent } from './pages/principal/principal.component';
 import { ClasePageComponent } from './pages/clase-page/clase-page.component';
 import { GuardAuth } from './service/GuardAuth';
 import { ClasesInscritasComponent } from './pages/clasesInscritas/clasesInscritas.component';

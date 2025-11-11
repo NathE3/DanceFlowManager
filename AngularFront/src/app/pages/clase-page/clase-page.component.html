@@ -4,16 +4,19 @@
 
   <div class="form-group">
     <label for="name">Nombre:</label>
-    <input id="name" type="text" [(ngModel)]="clase.nombre" />
+    <p name="name"  id="name" type="text">{{clase.nombre}}</p> 
 
     <label for="descripcion">Descripción:</label>
-    <input id="descripcion" type="text" [(ngModel)]="clase.descripcion" />
+    <p name="descripcion"  id="descripcion" >{{clase.descripcion}}</p>
 
-    <p name="TipoClase" id="tipo" >Tipo de la clase: {{ clase.tipo}}</p>
+    <label for="tipo">Tipo:</label>
+    <p name="TipoClase" id="tipo" >{{clase.tipo}}</p>
 
-    <p name="TipoClase" id="tipo" >Fecha de la clase: {{ clase.fechaClase.toLocaleDateString()}}</p>
+    <label for="fecha">Fecha:</label>
+    <p name="Fecha" id="fecha" >{{clase.fechaClase.toLocaleDateString()}}</p>
 
-    <p name="alumnosInscritos" id="fecha">Alumnos inscritos: {{clase.alumnosInscritos}}</p> 
+    <label for="alumnosInscritos">Alumnos:</label>
+    <p name="alumnosInscritos" id="alumnosInscritos">{{clase.alumnosInscritos}}</p> 
    
   </div>
 

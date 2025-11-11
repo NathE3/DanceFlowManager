@@ -32,7 +32,7 @@ login(credentials: LoginDTO): Observable<any> {
         console.log('Login response:', data);
         if (data?.result?.token) {
           this.setToken(data.result.token);
-          this.loggedIn = true; // 🔹 mover aquí
+          this.loggedIn = true; 
         } else {
           this.toastr.warning('⚠️ No se recibió un token válido:', data);
         }

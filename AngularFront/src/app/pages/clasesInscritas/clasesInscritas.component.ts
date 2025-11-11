@@ -29,7 +29,7 @@ export class ClasesInscritasComponent{
     this.ListaClasesInscritas = [];
     return;
   }
-
+  
   try {
     this.ListaClasesInscritas = await this.objetoService.getClaseByUsuario(usuarioId);
   } catch (error) {

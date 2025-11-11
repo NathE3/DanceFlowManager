@@ -2,23 +2,36 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
 }
 
 body {
   font-family: 'Be Vietnam Pro', sans-serif;
   background-image: url('assets/BackgroundBailarina.png');
-  background-size: cover;
+  background-size: cover;           /* Escala la imagen para cubrir toda la pantalla */
+  background-position: center;      /* Centra la imagen */
+  background-repeat: no-repeat;     /* Evita repeticiones */
+  background-attachment: fixed;     /* Mantiene la imagen fija al hacer scroll */
 }
+
+/* Variables globales */
 :root {
   --primary-color: #605DC8;
   --secondary-color: #8B89E6;
   --accent-color: #e8e7fa;
 }
 
+/* Botón principal */
 button.primary {
   padding: 10px;
   border: solid 1px var(--primary-color);
   background: var(--primary-color);
   color: white;
   border-radius: 8px;
+  cursor: pointer;
 }

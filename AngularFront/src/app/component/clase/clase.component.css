@@ -1,47 +1,91 @@
+/* Contenedor principal */
 .flex-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  padding: 20px;
+  justify-content: center;
+  align-items: stretch;
+  gap: 25px;
+  padding: 40px;
+  background: url('../../../assets/ClaseBanner.png') no-repeat center center fixed;
+  background-size: cover;
+  min-height: calc(100vh - 150px);
+  box-sizing: border-box;
 }
 
+/* Enlace envolvente */
 .listing-link {
   text-decoration: none;
   color: inherit;
   display: block;
+  transition: transform 0.3s ease;
 }
 
+/* Tarjeta individual */
 .listing {
-  width: auto;
-  height: auto;
-  background: var(--accent-color, #f9f9f9);
+  width: 280px;
+  height: 340px;
   border-radius: 15px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0);
-  transition: transform 0.2s ease-in-out;
-  background-image: url('../../../assets/nevergiveupchino.jpg');
+  overflow: hidden;
+  position: relative;
+  background-image: url('../../../assets/ClaseBanner.png');
   background-size: cover;
+  background-position: center;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  text-align: center;
+  color: #fff;
+  transition: all 0.3s ease;
 }
 
-.listing:hover {
-  transform: scale(1.05); 
+/* Capa oscura sobre la imagen */
+.listing::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 0;
+}
+
+/* Contenido dentro de la tarjeta */
+.listing h1,
+.listing .listing-heading {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 10px 15px;
 }
 
 .listing h1 a {
   text-decoration: none;
-  color: #39b300;
-  font-size: 24px;
-  font-weight: bold;
+  color: #cba26c; /* tono dorado */
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
 }
 
 .listing h1 a:hover {
-  color: #39b300;
-  text-decoration: underline;
+  color: #ffd88a;
+  text-shadow: 0 0 10px rgba(203, 162, 108, 0.7);
 }
 
 .listing-heading {
-  font-size: 20px;
-  color: #000000;
-  margin-top: 10px;
+  font-size: 16px;
+  color: #e8e7fa;
+  margin-bottom: 15px;
+}
+
+/* Efecto hover en la tarjeta */
+.listing:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(203, 162, 108, 0.6),
+              0 0 40px rgba(203, 162, 108, 0.3);
+}
+
+/* Animación al pasar el ratón */
+.listing-link:hover {
+  transform: scale(1.02);
 }
