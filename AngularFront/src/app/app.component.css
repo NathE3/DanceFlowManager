@@ -1,16 +1,23 @@
 /* --- Header general --- */
-header.brand-name {
+header.brand-header {
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   padding: 15px 40px;
-  background-color: #000; 
-  height: 120px; 
+  background-color: #000;
+  height: 120px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.6);
   width: 100%;
   box-sizing: border-box;
   position: relative;
   z-index: 10;
+}
+
+/* Contenedor del logo y nombre */
+.brand-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* separación entre logo y nombre */
 }
 
 /* Logo a la izquierda */
@@ -19,17 +26,14 @@ header.brand-name {
   width: auto;
 }
 
-/* Nombre de la academia centrado y estilizado */
-header.brand-name h1 {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Lora', sans-serif;
-  font-size: 36px;             
-  font-weight: 800;          
-  color: #cba26c;           
-  letter-spacing: 2px;          
-  text-transform: uppercase;    
+/* Nombre de la academia */
+.brand-logo-container h1 {
+  font-family: 'Lora', serif;
+  font-size: 36px;
+  font-weight: 800;
+  color: #cba26c;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   text-shadow:
     1px 1px 2px rgba(0,0,0,0.7),
     0 0 10px rgba(203,162,108,0.6),
@@ -37,13 +41,41 @@ header.brand-name h1 {
   transition: all 0.3s ease;
 }
 
-header.brand-name h1:hover {
+.brand-logo-container h1:hover {
   color: #ffd27f;
   text-shadow:
     1px 1px 2px rgba(0,0,0,0.7),
     0 0 15px rgba(203,162,108,0.8),
     0 0 30px rgba(203,162,108,0.5);
-  transform: translateX(-50%) scale(1.05);
+  transform: scale(1.05);
+}
+
+/* Navbar a la izquierda */
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.main-nav ul {
+  display: flex;
+  gap: 25px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav a {
+  color: #f8f9fa;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.main-nav a:hover {
+  color: #cba26c;
+  transform: scale(1.05);
 }
 
 /* Logout a la derecha */
@@ -66,58 +98,41 @@ header .logout:hover {
 header .logout:active {
   box-shadow: 0 2px 5px rgba(0,0,0,0.3) inset;
 }
+
 /* ===========================
-   Navbar
+   Responsive
 =========================== */
-.main-nav {
-  background-color: rgba(20, 20, 20, 0.95);
-  padding: 15px 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(203,162,108,0.3);
-  margin: 20px auto;
-  max-width: 1200px;
-}
-
-.main-nav ul {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.main-nav a {
-  color: #f8f9fa;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 18px;
-  transition: all 0.3s ease;
-}
-
-.main-nav a:hover {
-  color: #cba26c;
-  transform: scale(1.05);
-}
-/* Ajustes responsivos */
-@media (max-width: 768px) {
-  header.brand-name {
-    flex-direction: column;
+@media (max-width: 1024px) {
+  header.brand-header {
+    flex-wrap: wrap;
     height: auto;
-    padding: 20px;
+    justify-content: center;
+    gap: 15px;
   }
 
-  header.brand-name h1 {
-    position: static;
-    transform: none;
-    margin: 10px 0;
-    font-size: 28px;
-    text-shadow:
-      1px 1px 2px rgba(0,0,0,0.7),
-      0 0 8px rgba(203,162,108,0.6),
-      0 0 12px rgba(203,162,108,0.4);
+  .main-nav {
+    order: 1; 
+    justify-content: center;
+    width: 100%;
+  }
+
+  .brand-logo-container {
+    order: 2;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .logout {
+    order: 3;
   }
 }
 
+@media (max-width: 768px) {
+  .brand-logo-container h1 {
+    font-size: 28px;
+  }
 
-
+  .main-nav a {
+    font-size: 16px;
+  }
+}

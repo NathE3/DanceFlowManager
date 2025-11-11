@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlumnoDTO } from 'src/app/models/alumnoDTO';
 import { AuthService } from 'src/app/service/Auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-clase-page',
@@ -32,7 +33,8 @@ export class ClasePageComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private objetoService: ObjetoService,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -60,11 +62,11 @@ export class ClasePageComponent implements OnInit {
     const idAlumno = this.authService.getAlumnoIdFromToken();
     if (idAlumno) {
       try {
-        const alumno = await this.objetoService.getAlumnoById(idAlumno);
+        const alumno:AlumnoDTO = await this.objetoService.getAlumnoById(idAlumno);
         this.alumnoActual = alumno;
       } catch (error) {
-        console.error('Error al cargar el alumno', error);
-        alert('No se pudo cargar la información del alumno.');
+        this.toastr.error('Error al cargar el alumno');
+        this.toastr.warning('No se pudo cargar la información del alumno.');
       }
     }
   }
@@ -78,10 +80,9 @@ export class ClasePageComponent implements OnInit {
         }
 
         await this.objetoService.updateClase(this.claseId, this.clase);
-        alert('Se ha inscrito correctamente.');
+        this.toastr.warning('Se ha inscrito correctamente.');
       } catch (error) {
-        console.error('Hubo un error al inscribirse a la clase.', error);
-        alert('Hubo un error al inscribirse a la clase.');
+        this.toastr.warning('Hubo un error al inscribirse a la clase.');
       }
     }
   }
@@ -94,11 +95,10 @@ export class ClasePageComponent implements OnInit {
           this.clase.alumnosInscritos = this.clase.alumnosInscritos.filter(a => a.id !== this.alumnoActual!.id);
 
           await this.objetoService.updateClase(this.claseId, this.clase);
-          alert('Inscripción eliminada correctamente.');
-          this.location.back();
+          this.toastr.warning('Inscripción eliminada correctamente.');
         } catch (error) {
-          console.error('Error al eliminar la inscripción', error);
-          alert('Hubo un error al eliminar la inscripción.');
+          this.toastr.error('Error al eliminar la inscripción');
+          this.toastr.warning('Hubo un error al eliminar la inscripción.');
         }
       }
     }

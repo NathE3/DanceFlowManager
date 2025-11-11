@@ -27,27 +27,27 @@ export class ObjetoService {
     return (await response.json()) ?? [];
   }
 
-  async getClaseById(id: string): Promise<ClaseDTO | undefined> {
+  async getClaseById(id: string): Promise<ClaseDTO> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
       method: 'GET',
       headers: this.getAuthHeaders()
     });
-    return (await response.json()) as ClaseDTO | undefined;
+    return (await response.json()) as ClaseDTO;
   }
 
-  async getAlumnoById(id: string): Promise<AlumnoDTO | undefined> {
+ async getAlumnoById(id: string): Promise<AlumnoDTO> {
   const response = await fetch(`${this.baseUrl}/alumno/${id}`, {
     method: 'GET',
     headers: this.getAuthHeaders()
   });
 
   if (!response.ok) {
-    this.toastr.error('Error al obtener la clase:');
-    return undefined;
+    this.toastr.error('Error al obtener el alumno');
   }
 
   return (await response.json()) as AlumnoDTO;
 }
+
 
   async getClaseByUsuario(id: string): Promise<ClaseDTO[]> {
   try {

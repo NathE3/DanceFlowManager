@@ -6,7 +6,6 @@
     <span class="fecha">{{ noticia.fecha }}</span>
     <p>{{ noticia.contenido }}</p>
 
-
     <div class="video-container" *ngIf="noticia.videoUrl">
       <iframe 
         [src]="noticia.videoUrl | safeUrl" 
@@ -17,3 +16,4 @@
     </div>
   </div>
 </section>
+

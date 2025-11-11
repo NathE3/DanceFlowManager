@@ -6,17 +6,17 @@
  
   <h1>Harteraphia</h1>
 
-  <ng-container *ngIf="authService.isLoggedIn">
-    <nav class="main-nav">
-      <ul>
-        <li><a routerLink="/principal">Inicio</a></li>
-        <li><a [routerLink]="['/ClasesUsuario', usuarioId]">Mis Clases</a></li>
-        <li><a routerLink="/noticias">Noticias</a></li>
-      </ul>
-    </nav>
+ <ng-container *ngIf="authService.isLoggedIn$ | async">
+  <nav class="main-nav">
+    <ul>
+      <li><a routerLink="/principal">Inicio</a></li>
+      <li><a [routerLink]="['/ClasesUsuario', usuarioId]">Mis Clases</a></li>
+      <li><a routerLink="/noticias">Noticias</a></li>
+    </ul>
+  </nav>
 
-    <a routerLink="/" class="logout">Logout</a>
-  </ng-container>
+  <a (click)="logout()" class="logout">Logout</a>
+</ng-container>
 
 </header>
 
