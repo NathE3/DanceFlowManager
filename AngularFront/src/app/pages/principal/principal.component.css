@@ -146,9 +146,7 @@ section {
   color: #cba26c;
 }
 
-/* ===========================
-   Responsive
-=========================== */
+
 @media (max-width: 768px) {
   .hero-banner {
     flex-direction: column;

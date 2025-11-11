@@ -51,7 +51,7 @@ export class ObjetoService {
 
   async getClaseByUsuario(id: string): Promise<ClaseDTO[]> {
   try {
-    const response = await fetch(`${this.baseUrl}/user/${id}`, {
+    const response = await fetch(`${this.baseUrl}/alumno/${id}`, {
       method: 'GET',
       headers: this.getAuthHeaders()
     });

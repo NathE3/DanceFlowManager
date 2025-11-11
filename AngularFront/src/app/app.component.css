@@ -126,9 +126,6 @@ header.brand-header {
   box-shadow: 0 6px 18px rgba(244,194,113,0.8);
 }
 
-/* ===========================
-   Responsive
-=========================== */
 @media (max-width: 1024px) {
   header.brand-header {
     flex-wrap: wrap;

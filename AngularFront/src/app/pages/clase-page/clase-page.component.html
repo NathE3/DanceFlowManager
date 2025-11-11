@@ -20,6 +20,6 @@
    
   </div>
 
-  <button class="inscribirse-button" (click)="InscribirseClase()">Inscribirse</button>
-  <button class="delete-button" (click)="eliminarInscripcion()">Eliminar inscripción</button>
+  <button class="inscribirse-button" (click)="InscribirseClase()" [disabled]="isLoading"> {{ isLoading ? 'Inscribiendo...' : 'Inscribirse' }}</button>
+  <button class="delete-button" (click)="eliminarInscripcion()" [disabled]="isLoadingEliminar">{{ isLoadingEliminar ? 'Eliminando...' : 'Eliminar inscripción' }}</button>
 </div>

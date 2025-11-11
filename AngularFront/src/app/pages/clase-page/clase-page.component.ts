@@ -28,6 +28,8 @@ export class ClasePageComponent implements OnInit {
     alumnosInscritos: []
   };
   alumnoActual: AlumnoDTO | undefined; 
+  isLoading: boolean = false; 
+  isLoadingEliminar: boolean = false; 
 
   constructor(
     private route: ActivatedRoute,
@@ -71,38 +73,77 @@ export class ClasePageComponent implements OnInit {
     }
   }
 
-  async InscribirseClase() {
-    if (this.claseId && this.alumnoActual) {
-      try {
-        const existe = this.clase.alumnosInscritos.some(a => a.id === this.alumnoActual!.id);
-        if (!existe) {
-          this.clase.alumnosInscritos.push(this.alumnoActual);
-        }
 
-        await this.objetoService.updateClase(this.claseId, this.clase);
-        this.toastr.warning('Se ha inscrito correctamente.');
-      } catch (error) {
-        this.toastr.warning('Hubo un error al inscribirse a la clase.');
-      }
+
+async InscribirseClase() {
+  if (!this.claseId || !this.alumnoActual) return;
+
+
+  if (this.isLoading) return;
+
+  this.isLoading = true;
+
+  try {
+    // Verificar si el alumno ya está inscrito
+    const existe = this.clase.alumnosInscritos.some(a => a.id === this.alumnoActual!.id);
+    if (existe) {
+      this.toastr.info('El alumno ya está inscrito en esta clase.');
+      return;
     }
-  }
 
-  async eliminarInscripcion() {
-    if (this.claseId && this.alumnoActual) {
-      const confirmacion = confirm('¿Estás seguro de que deseas eliminar tu inscripción?');
-      if (confirmacion) {
-        try {
-          this.clase.alumnosInscritos = this.clase.alumnosInscritos.filter(a => a.id !== this.alumnoActual!.id);
+    // Crear un nuevo arreglo de alumnos sin mutar directamente this.clase
+    const alumnosActualizados = [...this.clase.alumnosInscritos, this.alumnoActual];
 
-          await this.objetoService.updateClase(this.claseId, this.clase);
-          this.toastr.warning('Inscripción eliminada correctamente.');
-        } catch (error) {
-          this.toastr.error('Error al eliminar la inscripción');
-          this.toastr.warning('Hubo un error al eliminar la inscripción.');
-        }
-      }
-    }
+    // Llamar al servicio para actualizar la clase
+    await this.objetoService.updateClase(this.claseId, { 
+      ...this.clase, 
+      alumnosInscritos: alumnosActualizados 
+    });
+
+    // Actualizar la UI solo si la operación fue exitosa
+    this.clase.alumnosInscritos = alumnosActualizados;
+    this.toastr.success('Se ha inscrito correctamente.');
+
+  } catch (error: any) {
+    this.toastr.error('Hubo un error al inscribirse a la clase.');
+  } finally {
+    this.isLoading = false;
   }
+}
+
+
+async eliminarInscripcion() {
+  if (!this.claseId || !this.alumnoActual) return;
+
+
+  if (this.isLoadingEliminar) return;
+
+  const confirmacion = confirm('¿Estás seguro de que deseas eliminar tu inscripción?');
+  if (!confirmacion) return;
+
+  this.isLoadingEliminar = true;
+
+  try {
+    // Crear un nuevo arreglo sin el alumno actual
+    const alumnosActualizados = this.clase.alumnosInscritos.filter(a => a.id !== this.alumnoActual!.id);
+
+    // Enviar al backend sin tocar la UI todavía
+    await this.objetoService.updateClase(this.claseId, { 
+      ...this.clase, 
+      alumnosInscritos: alumnosActualizados 
+    });
+
+    // Solo si el backend confirma, actualizamos la UI
+    this.clase.alumnosInscritos = alumnosActualizados;
+    this.toastr.success('Inscripción eliminada correctamente.');
+
+  } catch (error: any) {
+    console.error(error);
+    this.toastr.error('Hubo un error al eliminar la inscripción.');
+  } finally {
+    this.isLoadingEliminar = false;
+  }
+}
 
   goBack() {
     this.location.back();

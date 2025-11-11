@@ -13,10 +13,10 @@ html, body {
 body {
   font-family: 'Be Vietnam Pro', sans-serif;
   background-image: url('assets/BackgroundBailarina.png');
-  background-size: cover;           /* Escala la imagen para cubrir toda la pantalla */
-  background-position: center;      /* Centra la imagen */
-  background-repeat: no-repeat;     /* Evita repeticiones */
-  background-attachment: fixed;     /* Mantiene la imagen fija al hacer scroll */
+  background-size: cover;           
+  background-position: center;      
+  background-repeat: no-repeat;     
+  background-attachment: fixed;     
 }
 
 /* Variables globales */
