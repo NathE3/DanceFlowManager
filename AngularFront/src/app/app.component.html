@@ -1,23 +1,26 @@
-<header class="brand-name">
-  <a routerLink="/principal" aria-label="Ir a la página principal">
-    <img class="brand-logo" src="/assets/HarteraphiaIcono.png" alt="logo" aria-hidden="true" height="60"/>
-  </a>
-  
- 
-  <h1>Harteraphia</h1>
+<header class="brand-header">
+  <!-- Sección izquierda: nav + logo -->
+  <div class="left-section">
+    <nav class="main-nav" *ngIf="authService.isLoggedIn$ | async">
+      <ul>
+        <li><a routerLink="/principal">Inicio</a></li>
+        <li><a [routerLink]="['/ClasesUsuario', usuarioId]">Mis Clases</a></li>
+        <li><a routerLink="/noticias">Noticias</a></li>
+      </ul>
+    </nav>
 
- <ng-container *ngIf="authService.isLoggedIn$ | async">
-  <nav class="main-nav">
-    <ul>
-      <li><a routerLink="/principal">Inicio</a></li>
-      <li><a [routerLink]="['/ClasesUsuario', usuarioId]">Mis Clases</a></li>
-      <li><a routerLink="/noticias">Noticias</a></li>
-    </ul>
-  </nav>
+    <a routerLink="/principal" aria-label="Ir a la página principal">
+      <img class="brand-logo" src="/assets/HarteraphiaIcono.png" alt="logo" height="60"/>
+    </a>
+  </div>
 
-  <a (click)="logout()" class="logout">Logout</a>
-</ng-container>
+  <!-- Título centrado -->
+  <h1 class="brand-title">Harteraphia</h1>
 
+  <!-- Logout a la derecha -->
+  <ng-container *ngIf="authService.isLoggedIn$ | async">
+    <a (click)="logout()" class="logout">Logout</a>
+  </ng-container>
 </header>
 
 <main>
@@ -26,6 +29,9 @@
   </section>
 </main>
 
-<footer><app-footer></app-footer></footer>
+<footer>
+  <app-footer></app-footer>
+</footer>
+
 
 
