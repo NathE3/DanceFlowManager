@@ -44,7 +44,7 @@ html, body {
 /* Animación de tipeo */
 @keyframes type {
   from {
-    box-shadow: inset -3px 0px 0px #cba26c; /* cursor dorado */
+    box-shadow: inset -3px 0px 0px #cba26c; 
   }
   to {
     box-shadow: inset -3px 0px 0px transparent;

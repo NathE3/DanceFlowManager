@@ -19,7 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 export class ClasePageComponent implements OnInit {
   claseId: string | null = null;
   clase: ClaseDTO = {
-    id_clase: '',
+    id: '',
     nombre: '',
     descripcion: '',
     tipo: '',

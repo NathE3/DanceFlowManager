@@ -5,7 +5,7 @@
   justify-content: center;
   gap: 40px;
   padding: 60px 30px;
-  background: rgba(0, 0, 0, 0.6); /* fondo oscuro translúcido */
+  background: rgba(0, 0, 0, 0.6); 
   border-radius: 12px;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
   margin: 60px auto;
@@ -29,7 +29,7 @@
 }
 
 .listado-objetos app-clase:hover {
-  border-color: #cba26c; /* borde dorado al hover */
+  border-color: #cba26c; 
   transform: scale(1.03);
   box-shadow: 0 0 20px rgba(203, 162, 108, 0.4);
 }

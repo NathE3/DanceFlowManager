@@ -24,6 +24,10 @@
 .hero-content h1 {
   font-size: 48px;
   color: #cba26c;
+  background: linear-gradient(135deg, #444, #222); 
+  padding: 15px 30px; 
+  border-radius: 12px; 
+  box-shadow: 0 0 15px rgba(203,162,108,0.4), 0 0 30px rgba(203,162,108,0.2); 
   margin-bottom: 20px;
   letter-spacing: 1px;
 }
@@ -135,6 +139,7 @@ section {
   border-radius: 12px;
   padding: 20px;
   max-width: 280px;
+  color: white;
   font-style: italic;
   box-shadow: 0 0 15px rgba(203,162,108,0.3);
 }

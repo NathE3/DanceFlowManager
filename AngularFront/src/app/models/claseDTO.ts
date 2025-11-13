@@ -1,7 +1,7 @@
 import type { AlumnoDTO } from './alumnoDTO.ts';
 
 export interface ClaseDTO{
-    id_clase: string;
+    id: string;
     nombre: string
     descripcion: string
     tipo:string; 
