@@ -84,23 +84,19 @@ async InscribirseClase() {
   this.isLoading = true;
 
   try {
-    // Verificar si el alumno ya está inscrito
     const existe = this.clase.alumnosInscritos.some(a => a.id === this.alumnoActual!.id);
     if (existe) {
       this.toastr.info('El alumno ya está inscrito en esta clase.');
       return;
-    }
+    } 
 
-    // Crear un nuevo arreglo de alumnos sin mutar directamente this.clase
     const alumnosActualizados = [...this.clase.alumnosInscritos, this.alumnoActual];
 
-    // Llamar al servicio para actualizar la clase
     await this.objetoService.updateClase(this.claseId, { 
       ...this.clase, 
       alumnosInscritos: alumnosActualizados 
     });
 
-    // Actualizar la UI solo si la operación fue exitosa
     this.clase.alumnosInscritos = alumnosActualizados;
     this.toastr.success('Se ha inscrito correctamente.');
 
@@ -124,16 +120,15 @@ async eliminarInscripcion() {
   this.isLoadingEliminar = true;
 
   try {
-    // Crear un nuevo arreglo sin el alumno actual
+
     const alumnosActualizados = this.clase.alumnosInscritos.filter(a => a.id !== this.alumnoActual!.id);
 
-    // Enviar al backend sin tocar la UI todavía
     await this.objetoService.updateClase(this.claseId, { 
       ...this.clase, 
       alumnosInscritos: alumnosActualizados 
     });
 
-    // Solo si el backend confirma, actualizamos la UI
+
     this.clase.alumnosInscritos = alumnosActualizados;
     this.toastr.success('Inscripción eliminada correctamente.');
 

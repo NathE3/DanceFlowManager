@@ -6,8 +6,7 @@ namespace RestAPI.Models.Entity
     public class ClaseEntity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public Guid Id { get; } = Guid.NewGuid();
 
         [Required]
         [MaxLength(50)]

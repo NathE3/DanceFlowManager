@@ -5,7 +5,7 @@ namespace RestAPI.Models.DTOs.Clases;
 
 public class ClaseDTO : CreateClaseDTO
 {
-    public Guid Id_clase { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; }
     public ICollection<AlumnoDTO> AlumnosInscritos { get; set; }
               = new List<AlumnoDTO>();
 
