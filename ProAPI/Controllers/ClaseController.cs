@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RestAPI.Models.DTOs.Alumnos;
 using RestAPI.Models.DTOs.Clases;
 using RestAPI.Models.Entity;
 using RestAPI.Repository.IRepository;
@@ -58,11 +59,11 @@ namespace RestAPI.Controllers
         [HttpGet("{id}", Name = "[controller]_GetClaseEntity")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetClase(string id)
+        public async Task<IActionResult> GetClase(Guid id)
         {
             try
             {
-                var clase = await _claseRepository.GetAsync(id);
+                var clase = await _claseRepository.GetClaseAsync(id);
                 if (clase == null) return NotFound();
 
                 return Ok(clase);
@@ -106,13 +107,13 @@ namespace RestAPI.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(string id, [FromBody] ClaseDTO dto)
+        public async Task<IActionResult> Update(Guid id, [FromBody] ClaseDTO dto)
         {
             try
             {
                 if (!ModelState.IsValid) return BadRequest(ModelState);
 
-                var entity = await _claseRepository.GetAsync(id);
+                var entity = await _claseRepository.GetClaseAsync(id);
                 if (entity == null) return NotFound();
 
                 _mapper.Map(dto, entity);
@@ -129,11 +130,11 @@ namespace RestAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
-                var entity = await _claseRepository.GetAsync(id);
+                var entity = await _claseRepository.GetClaseAsync(id);
                 if (entity == null) return NotFound();
 
                 await _claseRepository.DeleteAsync(id);
@@ -144,5 +145,45 @@ namespace RestAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> AnadirAlumno(Guid Id, AlumnoDTO Alumno)
+        {
+            try
+            {
+                var entity = await _claseRepository.AnadirAlumno(Id, Alumno);
+                if (entity == false) return NotFound();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> EliminarAlumno(Guid Id, AlumnoDTO Alumno)
+        {
+            try
+            {
+                var entity = await _claseRepository.EliminarAlumno(Id, Alumno);
+                if (entity == false) return NotFound();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+
+
     }
 }

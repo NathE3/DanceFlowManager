@@ -1,4 +1,5 @@
-﻿using RestAPI.Models.DTOs.Clases;
+﻿using RestAPI.Models.DTOs.Alumnos;
+using RestAPI.Models.DTOs.Clases;
 using RestAPI.Models.Entity;
 
 namespace RestAPI.Repository.IRepository
@@ -9,11 +10,12 @@ namespace RestAPI.Repository.IRepository
         void ClearCache();
         Task<List<ClaseDTO>> GetAllAsync();
         Task<List<ClaseDTO>> GetAllFromProfesorAsync(string id);
-        Task<ClaseDTO> GetAsync(string id);
-        Task<bool> ExistsAsync(string id);
+        Task<ClaseDTO> GetClaseAsync(Guid id);
+        Task<bool> ExistsAsync(Guid id);
         Task<bool> CreateAsync(CreateClaseDTO claseDTO);
         Task<bool> UpdateAsync(ClaseDTO claseDTO);
-        Task<bool> DeleteAsync(string id);
-
+        Task<bool> DeleteAsync(Guid id);
+        Task<bool> EliminarAlumno(Guid Id, AlumnoDTO AlumnoDTO);
+        Task<bool> AnadirAlumno(Guid Id, AlumnoDTO AlumnoDTO);
     }
 }

@@ -29,8 +29,8 @@ export class LoginComponent {
     };
     try {
       const response = await firstValueFrom(this.authService.login(loginDto));
-      if (response?.result?.token) {
-        localStorage.setItem('token', response.result.token);
+      if (response?.token) {
+        localStorage.setItem('token', response.token);
         this.toastr.success('Has iniciado sesión correctamente', 'Éxito');
         this.router.navigate(['/principal']);
       } else {

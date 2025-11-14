@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ObjetoService {
   readonly baseUrl = 'https://localhost:7777/DanceFlowApi/Clase';
+  readonly baseUrl2 = 'https://localhost:7777/DanceFlowApi/Alumno';
 
   constructor(private toastr: ToastrService ) { }
 
@@ -36,7 +37,7 @@ export class ObjetoService {
   }
 
  async getAlumnoById(id: string): Promise<AlumnoDTO> {
-  const response = await fetch(`${this.baseUrl}/alumno/${id}`, {
+  const response = await fetch(`${this.baseUrl2}/${id}`, {
     method: 'GET',
     headers: this.getAuthHeaders()
   });
@@ -72,7 +73,7 @@ export class ObjetoService {
 
   async updateClase(id: string, partialProduct: Partial<ClaseDTO>): Promise<ClaseDTO> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
-      method: "PATCH",
+      method: "PUT",
       headers: this.getAuthHeaders(),
       body: JSON.stringify(partialProduct)
     });

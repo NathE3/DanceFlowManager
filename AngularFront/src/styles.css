@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+/* Reset básico */
 * {
   margin: 0;
   padding: 0;
@@ -10,13 +10,22 @@ html, body {
   width: 100%;
 }
 
+/* Fondo responsive */
 body {
   font-family: 'Be Vietnam Pro', sans-serif;
-  background-image: url('assets/BackgroundBailarina.png');
-  background-size: cover;           
-  background-position: center;      
-  background-repeat: no-repeat;     
-  background-attachment: fixed;     
+  background-image: url('/assets/BackgroundBailarina.png'); 
+  background-size: cover;          
+  background-position: center;     
+  background-repeat: no-repeat;   
+  background-attachment: fixed;    
+  min-height: 100vh;              
+}
+
+/* Ajuste para móviles */
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll; 
+  }
 }
 
 /* Variables globales */
@@ -26,12 +35,3 @@ body {
   --accent-color: #e8e7fa;
 }
 
-/* Botón principal */
-button.primary {
-  padding: 10px;
-  border: solid 1px var(--primary-color);
-  background: var(--primary-color);
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-}

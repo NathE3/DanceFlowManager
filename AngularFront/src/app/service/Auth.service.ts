@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class AuthService {
-  readonly baseUrl = 'https://localhost:7777/DanceFlowApi/users';
+  readonly baseUrl = 'https://localhost:7777/DanceFlowApi/User';
   private loginUrl = `${this.baseUrl}/login`;
   private registerUrl = `${this.baseUrl}/register`;
 
