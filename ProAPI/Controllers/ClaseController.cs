@@ -146,7 +146,7 @@ namespace RestAPI.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPost("{id}/anadir-alumno")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AnadirAlumno(Guid Id, AlumnoDTO Alumno)
@@ -165,17 +165,17 @@ namespace RestAPI.Controllers
         }
 
 
-        [HttpPut]
+        [HttpDelete("{idClase}/eliminar-alumno/{idAlumno}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> EliminarAlumno(Guid Id, AlumnoDTO Alumno)
+        public async Task<IActionResult> EliminarAlumno(Guid idClase, string idAlumno)
         {
             try
             {
-                var entity = await _claseRepository.EliminarAlumno(Id, Alumno);
-                if (entity == false) return NotFound();
+                var result = await _claseRepository.EliminarAlumno(idClase, idAlumno);
+                if (!result) return NotFound();
 
-                return Ok();
+                return Ok(true);
             }
             catch (Exception ex)
             {

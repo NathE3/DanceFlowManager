@@ -71,11 +71,60 @@ export class ObjetoService {
 }
 
 
-  async updateClase(id: string, partialProduct: Partial<ClaseDTO>): Promise<ClaseDTO> {
+async anadirAlumno(id: string, partialAlumno: Partial<AlumnoDTO>): Promise<boolean> {
+  try {
+    const response = await fetch(`${this.baseUrl}/${id}/anadir-alumno`, {
+      method: "PUT",
+      headers: {
+        ...this.getAuthHeaders(),
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(partialAlumno)
+    });
+
+    if (!response.ok) {
+      this.toastr.error(`Error HTTP: ${response.status}`);
+      return false;
+    }
+
+    const result = await response.json();
+    return Boolean(result); 
+  } catch (error) {
+    this.toastr.error("Error en la petición");
+    return false;
+  }
+}
+
+
+async eliminarAlumno(idClase: string, idAlumno: string): Promise<boolean> {
+  try {
+    const response = await fetch(`${this.baseUrl}/${idClase}/eliminar-alumno/${idAlumno}`, {
+      method: "DELETE",
+      headers: {
+        ...this.getAuthHeaders(),
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (!response.ok) {
+      this.toastr.error(`Error HTTP: ${response.status}`);
+      return false;
+    }
+
+    const result = await response.json();
+    return Boolean(result);
+  } catch (error) {
+    this.toastr.error("Error en la petición");
+    return false;
+  }
+}
+
+
+  async updateClase(id: string, partialClase: Partial<ClaseDTO>): Promise<ClaseDTO> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
       method: "PUT",
       headers: this.getAuthHeaders(),
-      body: JSON.stringify(partialProduct)
+      body: JSON.stringify(partialClase)
     });
 
     return await response.json();

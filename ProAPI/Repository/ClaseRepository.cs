@@ -119,24 +119,20 @@ namespace RestAPI.Repository
             return false; 
         }
 
-        public async Task<bool> EliminarAlumno(Guid Id, AlumnoDTO AlumnoDTO)
+        public async Task<bool> EliminarAlumno(Guid idClase, string idAlumno)
         {
-            var claseDTO = await GetClaseAsync(Id);
-            var clase = await MapClaseDTOtoEntity(claseDTO);
-            var alumno = await TransforDTOAlumnotoEntity(AlumnoDTO);
+            var clase = await _context.Clases
+                .Include(c => c.AlumnosInscritos)
+                .FirstOrDefaultAsync(c => c.Id == idClase);
 
-            if (clase == null || alumno == null)
-                return false;
+            if (clase == null) return false;
 
-            var alumnoExistente = clase.AlumnosInscritos.FirstOrDefault(a => a.Id == alumno.Id);
-            if (alumnoExistente != null)
-            {
-                clase.AlumnosInscritos.Remove(alumnoExistente);
-                _context.Update(clase);
-                return await Save();
-            }
+            var alumno = clase.AlumnosInscritos.FirstOrDefault(a => a.Id == idAlumno);
+            if (alumno == null) return false;
 
-            return false;
+            clase.AlumnosInscritos.Remove(alumno);
+            _context.Update(clase);
+            return await Save();
         }
 
         public async Task<bool> DeleteAsync(Guid id)

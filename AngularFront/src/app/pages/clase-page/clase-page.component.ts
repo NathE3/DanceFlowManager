@@ -77,8 +77,6 @@ export class ClasePageComponent implements OnInit {
 
 async InscribirseClase() {
   if (!this.claseId || !this.alumnoActual) return;
-
-
   if (this.isLoading) return;
 
   this.isLoading = true;
@@ -88,19 +86,16 @@ async InscribirseClase() {
     if (existe) {
       this.toastr.info('El alumno ya está inscrito en esta clase.');
       return;
-    } 
+    }
 
-    const alumnosActualizados = [...this.clase.alumnosInscritos, this.alumnoActual];
-
-    await this.objetoService.updateClase(this.claseId, { 
-      ...this.clase, 
-      alumnosInscritos: alumnosActualizados 
-    });
-
-    this.clase.alumnosInscritos = alumnosActualizados;
-    this.toastr.success('Se ha inscrito correctamente.');
-
-  } catch (error: any) {
+    const resultado = await this.objetoService.anadirAlumno(this.claseId, this.alumnoActual);
+    if (resultado) {
+      this.clase.alumnosInscritos.push(this.alumnoActual);
+      this.toastr.success('Se ha inscrito correctamente.');
+    } else {
+      this.toastr.warning('No se pudo inscribir al alumno.');
+    }
+  } catch (error) {
     this.toastr.error('Hubo un error al inscribirse a la clase.');
   } finally {
     this.isLoading = false;
@@ -110,8 +105,6 @@ async InscribirseClase() {
 
 async eliminarInscripcion() {
   if (!this.claseId || !this.alumnoActual) return;
-
-
   if (this.isLoadingEliminar) return;
 
   const confirmacion = confirm('¿Estás seguro de que deseas eliminar tu inscripción?');
@@ -120,25 +113,21 @@ async eliminarInscripcion() {
   this.isLoadingEliminar = true;
 
   try {
-
-    const alumnosActualizados = this.clase.alumnosInscritos.filter(a => a.id !== this.alumnoActual!.id);
-
-    await this.objetoService.updateClase(this.claseId, { 
-      ...this.clase, 
-      alumnosInscritos: alumnosActualizados 
-    });
-
-
-    this.clase.alumnosInscritos = alumnosActualizados;
-    this.toastr.success('Inscripción eliminada correctamente.');
-
-  } catch (error: any) {
+    const resultado = await this.objetoService.eliminarAlumno(this.claseId, this.alumnoActual.id);
+    if (resultado) {
+      this.clase.alumnosInscritos = this.clase.alumnosInscritos.filter(a => a.id !== this.alumnoActual!.id);
+      this.toastr.success('Inscripción eliminada correctamente.');
+    } else {
+      this.toastr.warning('No se pudo eliminar la inscripción.');
+    }
+  } catch (error) {
     console.error(error);
     this.toastr.error('Hubo un error al eliminar la inscripción.');
   } finally {
     this.isLoadingEliminar = false;
   }
 }
+
 
   goBack() {
     this.location.back();

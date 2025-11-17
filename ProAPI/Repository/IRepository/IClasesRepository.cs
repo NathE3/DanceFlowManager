@@ -15,7 +15,7 @@ namespace RestAPI.Repository.IRepository
         Task<bool> CreateAsync(CreateClaseDTO claseDTO);
         Task<bool> UpdateAsync(ClaseDTO claseDTO);
         Task<bool> DeleteAsync(Guid id);
-        Task<bool> EliminarAlumno(Guid Id, AlumnoDTO AlumnoDTO);
+        Task<bool> EliminarAlumno(Guid Id, string AlumnoDTO);
         Task<bool> AnadirAlumno(Guid Id, AlumnoDTO AlumnoDTO);
     }
 }
