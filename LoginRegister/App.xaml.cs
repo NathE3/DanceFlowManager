@@ -51,7 +51,7 @@ namespace InfoManager
 
             //Services
             services.AddSingleton<LoginDTO>();   
-            services.AddSingleton<IProyectoServiceToApi, ProyectoServiceToApi>();
+            services.AddSingleton<IClaseServiceToApi, ClaseServiceToApi>();
             services.AddSingleton(typeof(IHttpJsonProvider<>), typeof(HttpJsonService<>));
             services.AddSingleton<IStringUtils, StringUtils>();
             services.AddSingleton(typeof(IFileService<>), typeof(FileService<>));

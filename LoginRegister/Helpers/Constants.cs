@@ -13,8 +13,8 @@ namespace InfoManager.Helpers
 
         public const string BASE_URL = "https://localhost:7777/DanceFlowApi/";
         public const string CLASE_URL = "Clase";
-        public const string PROYECTO_STATE_URL = "Proyecto/State";
         public const string LOGIN_PATH = "User/login";
+        public const string ALUMNO_URL = "Alumno";
         public const string REGISTER_PATH = "User/register";
 
     }

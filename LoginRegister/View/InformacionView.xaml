@@ -16,45 +16,45 @@
 
     <UserControl.Background>
         <ImageBrush 
-        ImageSource="/Resources/Instituto.jpg" 
+        ImageSource="/Resources/BannerBailarina.png" 
         Stretch="UniformToFill" />
     </UserControl.Background>
-
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="200"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        
+        <!-- Título -->
+        <TextBlock Text="Listado de Alumnos" FontSize="22" FontWeight="Bold" 
+               Foreground="#333" Margin="10" Grid.Row="0"/>
 
         <!-- Scrollable Items Section -->
-        <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-            <ItemsControl ItemsSource="{Binding Items, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="10">
+            <ItemsControl ItemsSource="{Binding Items}" >
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal"/>
+                        <WrapPanel Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Margin="5" CornerRadius="10" BorderBrush="Gray" BorderThickness="1" Padding="5">
+                        <Border Margin="8" CornerRadius="12" BorderBrush="#DDD" BorderThickness="1" Padding="10" Background="White">
                             <StackPanel>
-                                <!-- Button for Selecting ViewModel -->
-                                <Button Height="100" Padding="5" 
-                                        Command="{Binding DataContext.SelectViewModelCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                        CommandParameter="{Binding Id}">
-                                    <Image Source="{Binding Image}" Stretch="Uniform" Width="80" Height="80"/>
+                                <!-- Imagen y Botón -->
+                                <Button Height="120" Width="120" Background="Transparent" BorderThickness="0"
+                                    Command="{Binding DataContext.SelectViewModelCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding Id}">
+                                    <Image Source="{Binding Image}" Stretch="Uniform" Width="100" Height="100"/>
                                 </Button>
 
-                                <!-- Text Label with Background -->
-                                <Border Background="Black" Height="50" CornerRadius="5">
-                                    <TextBlock Foreground="White" Text="{Binding Nombre}" 
-                                               FontSize="14" FontWeight="Bold"
-                                               HorizontalAlignment="Center" VerticalAlignment="Center"
-                                               TextWrapping="Wrap"/>
-                                </Border>
+                                <!-- Nombre con estilo -->
+                                <TextBlock Text="{Binding Nombre}" FontSize="16" FontWeight="SemiBold" 
+                                       Foreground="#444" HorizontalAlignment="Center" Margin="5"/>
                             </StackPanel>
+                            <Border.Effect>
+                                <DropShadowEffect Color="Gray" BlurRadius="8" ShadowDepth="2"/>
+                            </Border.Effect>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -62,6 +62,8 @@
         </ScrollViewer>
 
         <!-- Content Display Section -->
-        <ContentControl MinWidth="450" MaxWidth="600" Grid.Row="1" Content="{Binding SelectedViewModel}" Margin="10"/>
+        <ContentControl Grid.Row="2" Content="{Binding SelectedViewModel}" Margin="10" 
+                    Background="White" BorderBrush="#DDD" BorderThickness="1" Padding="15" 
+                    MinWidth="450" MaxWidth="600" HorizontalAlignment="Center"/>
     </Grid>
 </UserControl>

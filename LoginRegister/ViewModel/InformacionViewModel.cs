@@ -1,55 +1,41 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using InfoManager.Helpers;
 using InfoManager.Interface;
 using InfoManager.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection.Metadata;
+
 
 namespace InfoManager.ViewModel
 {
     public partial class InformacionViewModel : ViewModelBase
     {
         [ObservableProperty]
-        private ObservableCollection<ClaseDTO> items;
+        private ObservableCollection<AlumnoDTO> items;
 
-
-        private readonly IClaseServiceToApi _claseServiceToApi;
-        private readonly DetallesViewModel _detallesViewModel;
-        private readonly IStringUtils _stringUtils;
+        private readonly IHttpJsonProvider<AlumnoDTO> _httpJsonProvider;
 
         [ObservableProperty]
         private ViewModelBase? _selectedViewModel;
 
-        public InformacionViewModel(IProyectoServiceToApi dicatadorServiceToApi, DetallesViewModel detallesViewModel, IStringUtils stringUtils)
+        public InformacionViewModel(IHttpJsonProvider<AlumnoDTO> httpJsonProvider, DetallesViewModel detallesViewModel, IStringUtils stringUtils)
         {
-            _claseServiceToApi = dicatadorServiceToApi;
-            _detallesViewModel = detallesViewModel;
-            _stringUtils = stringUtils;
-            items = new ObservableCollection<ClaseDTO>();
+            _httpJsonProvider = httpJsonProvider;
+            items = [];
         }
 
         public override async Task LoadAsync()
         {
             Items.Clear();
-            IEnumerable<ClaseDTO> dicatatores = await _claseServiceToApi.GetProyectos();
-            foreach (var dicatador in dicatatores)
+            IEnumerable<AlumnoDTO> alumnos = await _httpJsonProvider.GetAsync(Constants.ALUMNO_URL);
+            var alumnosOrdenados = alumnos.OrderBy(a => a.Apellidos).ThenBy(a => a.Name);
+            foreach (var alumno in alumnos)
             {
-                
-                items.Add(dicatador);
-            }
-        }
 
-        [RelayCommand]
-        private async Task SelectViewModel(object? parameter)
-        {
-            _detallesViewModel.SetIdDicatador(_stringUtils.ConvertToInteger(parameter?.ToString() ?? string.Empty) ?? int.MinValue);
-            _detallesViewModel.SetParentViewModel(this);
-            SelectedViewModel = _detallesViewModel;
-            await _detallesViewModel.LoadAsync();
+                items.Add(alumno);
+            }
+
         }
     }
 }

@@ -13,7 +13,7 @@ namespace InfoManager.Interface
         Task<IEnumerable<T>> GetAsync(string api_url);
         Task<T?> PostAsync(string path, T data);
         Task<T?> PutAsync(string path, T data);
-        Task<T?> DeleteAsync(string path);
+        Task<bool> DeleteAsync(string path);
         Task Authenticate(string path, HttpClient httpClient, HttpResponseMessage request);
         Task<T?> LoginPostAsync(string path, LoginDTO data);
         Task<T?> RegisterPostAsync(string path, UserRegistroDTO data);

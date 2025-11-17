@@ -6,7 +6,7 @@ namespace InfoManager.Models
     public class ClaseDTO
     {
         [JsonPropertyName("Id_clase")]
-        public int Id_clase { get; set; }
+        public string Id_clase { get; set; }
 
         [JsonPropertyName("nombre")]
         public string Nombre { get; set; }

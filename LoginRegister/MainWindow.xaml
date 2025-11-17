@@ -56,9 +56,9 @@
                         </Style.Triggers>
                     </Style>
                 </Menu.Style>
-                <MenuItem Header="_Dashboard" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding DashboardViewModel}"/>
-                <MenuItem Header="_Informacion" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding InformacionViewModel}"/>
-                <MenuItem Header="_Login" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding LoginViewModel}"/>
+                <MenuItem Header="_Clases" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding DashboardViewModel}"/>
+                <MenuItem Header="_Crear Clase" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding DetallesViewModel}"/>
+                <MenuItem Header="_Alumnos" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding InformacionViewModel}"/>
             </Menu>
         </Grid>
 

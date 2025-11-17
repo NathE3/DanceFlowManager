@@ -4,38 +4,39 @@ using InfoManager.Helpers;
 using InfoManager.Interface;
 using InfoManager.Models;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace InfoManager.ViewModel
 {
-    public partial class DetallesViewModel : ViewModelBase
+    public partial class DetallesViewModel : ViewModelBase 
     {
-
-        [ObservableProperty]
-        private ObservableCollection<ProfesorDTO> _profesores;
 
         private string _profesorId;
         private InformacionViewModel _informacionViewModel;
-        private readonly IHttpJsonProvider<ProfesorDTO> _httpJsonProvider;
         private readonly IClaseServiceToApi _claseServiceToApi;
-        private readonly IFileService<ProfesorDTO> _fileService;
+
+        [ObservableProperty]
+        private string _nombre;
+
+        [ObservableProperty]
+        private string _descripcion;
+
+        [ObservableProperty]
+        private string _tipo;
+
+        [ObservableProperty]
+        private Date _fechaClase;
 
         [ObservableProperty]
         private ProfesorDTO _Profesor;
 
-        public DetallesViewModel(IClaseServiceToApi proyectoServiceToApi, IHttpJsonProvider<ProfesorDTO> httpJsonProvider, IFileService<ProfesorDTO> fileService)
+        public DetallesViewModel(IClaseServiceToApi claseServiceToApi)
         {
-            _httpJsonProvider = httpJsonProvider;
-            _claseServiceToApi = proyectoServiceToApi;
-            _fileService = fileService;
-            _profesores = new ObservableCollection<ProfesorDTO>();
+            _claseServiceToApi = claseServiceToApi;
         }
 
         public void SetIdProfesor(string id)
@@ -43,46 +44,54 @@ namespace InfoManager.ViewModel
             _profesorId = id;
         }
 
-        public override async Task LoadAsync()
+        [RelayCommand]
+        private async Task CrearClase() 
         {
-            IEnumerable<ProfesorDTO> profesores = await _httpJsonProvider.GetAsync(Constants.CLASE_URL);
-            foreach (var profesor in profesores)
+            if (string.IsNullOrEmpty(Nombre) ||
+               string.IsNullOrEmpty(Descripcion) ||
+               string.IsNullOrEmpty(Tipo))
             {
-               
-                Profesores.Add(profesor);
+                MessageBox.Show("Por favor, rellene todos los campos.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
-            Profesor = profesores.FirstOrDefault(x => x.Id == _profesorId) ?? new ProfesorDTO();
+            
+            ClaseDTO clase = new()
+            {
+                Nombre = Nombre,
+                Descripcion = Descripcion,
+                Tipo = Tipo,
+                FechaClase = DateTime.Parse(FechaClase.ToString()),
+                Id_Profesor = _profesorId,
+                Id_clase = "",
+                AlumnosInscritos = []
+
+            };
+            try
+            {
+                await _claseServiceToApi.PostClase(clase);
+
+                var mainViewModel = App.Current.Services.GetService<MainViewModel>();
+                if (mainViewModel != null)
+                {
+                    mainViewModel.SelectedViewModel = mainViewModel.DashboardViewModel;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error durante el registro: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+
         }
 
-        internal void SetParentViewModel(ViewModelBase informacionViewModel)
-        {
-            if (informacionViewModel is InformacionViewModel informacionview)
-            {
-                _informacionViewModel = informacionview;
-            }
-        }
 
         [RelayCommand]
-        private async Task Close(object? parameter)
+        private async Task Cancelar(object? parameter)
         {
             if (_informacionViewModel != null)
             {
                 _informacionViewModel.SelectedViewModel = null;
             }
-        }
-
-        [RelayCommand]
-        public async Task Aprobar()
-        {
-            Profesor.Estado = "Activo";
-            await _claseServiceToApi.CambiarEstado(Profesor);
-        }
-
-        [RelayCommand]
-        public async Task Denegar()
-        {
-            Profesor.Estado = "De Baja";
-            await _claseServiceToApi.CambiarEstado(Profesor);
         }
 
     }

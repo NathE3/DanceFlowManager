@@ -73,8 +73,6 @@ export class ClasePageComponent implements OnInit {
     }
   }
 
-
-
 async InscribirseClase() {
   if (!this.claseId || !this.alumnoActual) return;
   if (this.isLoading) return;
@@ -102,7 +100,6 @@ async InscribirseClase() {
   }
 }
 
-
 async eliminarInscripcion() {
   if (!this.claseId || !this.alumnoActual) return;
   if (this.isLoadingEliminar) return;
@@ -127,7 +124,6 @@ async eliminarInscripcion() {
     this.isLoadingEliminar = false;
   }
 }
-
 
   goBack() {
     this.location.back();

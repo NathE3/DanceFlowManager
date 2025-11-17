@@ -9,9 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\BackgroundBailarina.png" />
+    <None Remove="Resources\BannerBailarina.png" />
+    <None Remove="Resources\ClaseBanner.png" />
     <None Remove="Resources\edificio.jpg" />
+    <None Remove="Resources\HarteraphiaIcono.png" />
     <None Remove="Resources\IconComercio.png" />
     <None Remove="Resources\Instituto.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\BackgroundBailarina.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 	<ItemGroup>
@@ -25,7 +35,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Resource Include="Resources\edificio.jpg">
+	  <Resource Include="Resources\BannerBailarina.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Resource>
+	  <Resource Include="Resources\ClaseBanner.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Resource>
+	  <Resource Include="Resources\HarteraphiaIcono.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Resource>
 	  <Resource Include="Resources\IconComercio.png">

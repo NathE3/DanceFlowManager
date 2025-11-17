@@ -12,7 +12,7 @@
 
 
     <UserControl.Background>
-    <ImageBrush ImageSource="/Resources/Instituto.jpg" Stretch="UniformToFill" />
+    <ImageBrush ImageSource="/Resources/BannerBailarina.png" Stretch="UniformToFill" />
     </UserControl.Background>
 
     <Grid Margin="42" VerticalAlignment="Top">
@@ -32,6 +32,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Margin="10" />
+
 
         <!-- Lista de clases -->
         <ScrollViewer Grid.Row="1" Margin="10" VerticalScrollBarVisibility="Auto">

@@ -60,6 +60,7 @@ namespace InfoManager.ViewModel
                 Email = Email,
                 Telefono = Telefono,
                 Password = Password,
+                IsProfesor = true
 
             };
 

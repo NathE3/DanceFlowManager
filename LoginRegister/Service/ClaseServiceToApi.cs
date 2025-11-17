@@ -20,7 +20,7 @@ namespace InfoManager.Service
 
 
 
-         public async  Task<IEnumerable<ClaseDTO>> GetProyectos()
+         public async  Task<IEnumerable<ClaseDTO>> GetClases()
          {
  
             IEnumerable<ClaseDTO> clases = await _httpJsonProvider.GetAsync(Constants.CLASE_URL);
@@ -28,7 +28,15 @@ namespace InfoManager.Service
          return clases;
          }
 
-        public async Task PostProyecto(ClaseDTO clase)
+        public async Task<IEnumerable<ClaseDTO>> GetClase(string id)
+        {
+
+            IEnumerable<ClaseDTO> clases = await _httpJsonProvider.GetAsync(Constants.CLASE_URL + "/" + id);
+
+            return clases;
+        }
+
+        public async Task PostClase(ClaseDTO clase)
             {
                 try
                 {

@@ -15,23 +15,17 @@ public partial class DashboardViewModel : ViewModelBase
 {
     private readonly IHttpJsonProvider<ClaseDTO> _httpJsonProvider;
 
+    private readonly List<ClaseDTO> Clases;
+
+    [ObservableProperty]
+    private ObservableCollection<ClaseDTO> _clasesMostradas;
     public DashboardViewModel(IHttpJsonProvider<ClaseDTO> httpJsonProvider)
     {
         _httpJsonProvider = httpJsonProvider;
-
-
         Clases = [];
         _clasesMostradas = [];
 
     }
-
-    private readonly List<ClaseDTO> Clases; 
-
-    [ObservableProperty]
-    private readonly ObservableCollection<ClaseDTO> _clasesMostradas;
-
-
- 
     public override async Task LoadAsync()
     {
         try
@@ -62,6 +56,13 @@ public partial class DashboardViewModel : ViewModelBase
     {
         App.Current.Services.GetService<LoginDTO>().Token = "";
         App.Current.Services.GetService<MainViewModel>().SelectedViewModel = App.Current.Services.GetService<MainViewModel>().LoginViewModel;
+    }
+
+
+    [RelayCommand]
+    public async Task AñadirClase()
+    {
+        App.Current.Services.GetService<MainViewModel>().SelectedViewModel = App.Current.Services.GetService<MainViewModel>().DetallesViewModel;
     }
 
 }

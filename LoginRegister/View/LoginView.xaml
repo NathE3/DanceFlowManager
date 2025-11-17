@@ -14,12 +14,12 @@
 
     <UserControl.Background>
         <ImageBrush 
-            ImageSource="/Resources/Instituto.jpg" 
+            ImageSource="/Resources/BackgroundBailarina.png" 
             Stretch="UniformToFill" />
     </UserControl.Background>
 
 
-    <Grid>
+    <Grid Width="601" Height="284">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -36,18 +36,17 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Image Source="/Resources/IconComercio.png" Grid.Column="0" Grid.Row="0"/>
+        <Image Source="/Resources/HarteraphiaIcono.png" Grid.Column="0" Grid.Row="0" Margin="0,0,19,20"/>
 
 
         <TextBlock 
-            Text="Gestion de Proyectos" 
             FontSize="28" 
             FontWeight="SemiBold" 
             Foreground="Black" 
-            HorizontalAlignment="Center" 
-            Margin="0,0,0,20" 
+            HorizontalAlignment="Left" 
+            Margin="10,3,0,16" 
             Grid.Row="0"
-            Grid.Column="1"/>
+            Grid.Column="1"><Run Text="Harteraphia"/><LineBreak/><Run Language="es-es" Text="DanceSchool"/></TextBlock>
 
 
         <StackPanel 
@@ -58,11 +57,11 @@
             Width="Auto"
             Height="Auto"
             Margin="0,10,0,20">
-            <ui:TextBlock Text="Email:" Margin="0,0,0,-10"/>
+            <ui:TextBlock Text="Email:" Margin="0,0,0,-10" Height="13"/>
             <ui:TextBox
                 PlaceholderText="Usuario" 
                 Width="Auto"
-                Height="Auto"
+                Height="16"
                 Margin="0,10,0,10" 
                 Background="#F7F7F7"
                 Text="{Binding Name, Mode=TwoWay}" />
@@ -102,8 +101,8 @@
             Content="Login"
             Width="180" 
             Height="50" 
-            Background="LightSkyBlue" 
-            Foreground="Black"
+            Background="Black" 
+            Foreground="White"
             HorizontalAlignment="Center" 
             VerticalAlignment="Center" 
             CornerRadius="10"
