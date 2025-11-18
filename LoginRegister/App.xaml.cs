@@ -40,9 +40,9 @@ namespace InfoManager
 
             //view viewModels
             services.AddSingleton<MainViewModel>();
-            services.AddTransient<DashboardViewModel>();
-            services.AddTransient<InformacionViewModel>();
-            services.AddTransient<DetallesViewModel>();
+            services.AddTransient<ClasesViewModel>();
+            services.AddTransient<ListadoAlumnosViewModel>();
+            services.AddTransient<CrearClaseViewModel>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<RegistroViewModel>();
             services.AddTransient<ViewModelBase>();
@@ -53,8 +53,6 @@ namespace InfoManager
             services.AddSingleton<LoginDTO>();   
             services.AddSingleton<IClaseServiceToApi, ClaseServiceToApi>();
             services.AddSingleton(typeof(IHttpJsonProvider<>), typeof(HttpJsonService<>));
-            services.AddSingleton<IStringUtils, StringUtils>();
-            services.AddSingleton(typeof(IFileService<>), typeof(FileService<>));
             return services.BuildServiceProvider();
         }
     }

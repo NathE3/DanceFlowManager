@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModel="clr-namespace:InfoManager.ViewModel" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:view="clr-namespace:InfoManager.View" 
         mc:Ignorable="d"
         Title="InfoManager" Height="450" Width="800"
@@ -11,16 +12,16 @@
 
     <Window.Resources>
 
-        <DataTemplate DataType="{x:Type viewModel:DashboardViewModel}">
-            <view:DashboardView/>
+        <DataTemplate DataType="{x:Type viewModel:ClasesViewModel}">
+            <view:ClasesView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModel:InformacionViewModel}">
-            <view:InformacionView/>
+        <DataTemplate DataType="{x:Type viewModel:ListadoAlumnosViewModel}">
+            <view:ListadoAlumnosView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModel:DetallesViewModel}">
-            <view:DetallesView/>
+        <DataTemplate DataType="{x:Type viewModel:CrearClaseViewModel}">
+            <view:CrearClaseView/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModel:LoginViewModel}">
@@ -58,7 +59,7 @@
                 </Menu.Style>
                 <MenuItem Header="_Clases" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding DashboardViewModel}"/>
                 <MenuItem Header="_Crear Clase" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding DetallesViewModel}"/>
-                <MenuItem Header="_Alumnos" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding InformacionViewModel}"/>
+                <MenuItem Header="_Alumnos" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding ListadoAlumnosViewModel}"/>
             </Menu>
         </Grid>
 

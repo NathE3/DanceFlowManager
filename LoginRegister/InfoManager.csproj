@@ -15,7 +15,6 @@
     <None Remove="Resources\edificio.jpg" />
     <None Remove="Resources\HarteraphiaIcono.png" />
     <None Remove="Resources\IconComercio.png" />
-    <None Remove="Resources\Instituto.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,9 +44,6 @@
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Resource>
 	  <Resource Include="Resources\IconComercio.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Resource>
-	  <Resource Include="Resources\Instituto.jpg">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Resource>
 	</ItemGroup>

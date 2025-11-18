@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace InfoManager.View
 {
     /// <summary>
-    /// Логика взаимодействия для InformacionView.xaml
+    /// Логика взаимодействия для DetallesView.xaml
     /// </summary>
-    public partial class InformacionView : UserControl
+    public partial class CrearClaseView : UserControl
     {
-        public InformacionView()
+        public CrearClaseView()
         {
             InitializeComponent();
         }

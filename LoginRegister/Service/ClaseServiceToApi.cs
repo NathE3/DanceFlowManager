@@ -61,12 +61,12 @@ namespace InfoManager.Service
                 Console.WriteLine(ex.Message);
             }
         }
-        public async Task DeleteClase(ClaseDTO clase)
+        public async Task DeleteClase(string id)
         {
             try
             {
-                if (clase == null) return;
-                var response = await _httpJsonProvider.PutAsync(Constants.CLASE_URL + "/" + clase.Id_clase, clase);
+                if (id == null) return;
+                var response = await _httpJsonProvider.DeleteAsync(Constants.CLASE_URL + "/" + id);
             }
             catch (Exception ex)
             {

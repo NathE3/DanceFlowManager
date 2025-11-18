@@ -9,7 +9,7 @@ using System.Reflection.Metadata;
 
 namespace InfoManager.ViewModel
 {
-    public partial class InformacionViewModel : ViewModelBase
+    public partial class ListadoAlumnosViewModel : ViewModelBase
     {
         [ObservableProperty]
         private ObservableCollection<AlumnoDTO> items;
@@ -19,7 +19,7 @@ namespace InfoManager.ViewModel
         [ObservableProperty]
         private ViewModelBase? _selectedViewModel;
 
-        public InformacionViewModel(IHttpJsonProvider<AlumnoDTO> httpJsonProvider, DetallesViewModel detallesViewModel, IStringUtils stringUtils)
+        public ListadoAlumnosViewModel(IHttpJsonProvider<AlumnoDTO> httpJsonProvider, CrearClaseViewModel detallesViewModel)
         {
             _httpJsonProvider = httpJsonProvider;
             items = [];
@@ -32,8 +32,7 @@ namespace InfoManager.ViewModel
             var alumnosOrdenados = alumnos.OrderBy(a => a.Apellidos).ThenBy(a => a.Name);
             foreach (var alumno in alumnos)
             {
-
-                items.Add(alumno);
+                Items.Add(alumno);
             }
 
         }

@@ -47,7 +47,7 @@ namespace InfoManager.ViewModel
 
                 if (user != null && user.IsSuccess)
                 {
-                    App.Current.Services.GetService<MainViewModel>().SelectedViewModel = App.Current.Services.GetService<MainViewModel>().DashboardViewModel;
+                    App.Current.Services.GetService<MainViewModel>().SelectedViewModel = App.Current.Services.GetService<MainViewModel>().ClasesViewModel;
                     App.Current.Services.GetService<MainViewModel>().LoadAsync();
                     Name = string.Empty;
                     PasswordView = String.Empty;

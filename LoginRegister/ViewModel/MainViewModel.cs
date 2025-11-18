@@ -11,13 +11,13 @@ public partial class MainViewModel : ViewModelBase
     private ViewModelBase? _selectedViewModel;
     private bool _isMenuEnabled;
 
-    public MainViewModel(DetallesViewModel detallesViewModel, InformacionViewModel informacionViewModel, DashboardViewModel dashboardViewModel, LoginViewModel loginViewModel, RegistroViewModel registroViewModel)
+    public MainViewModel(CrearClaseViewModel crearClaseViewModel, ListadoAlumnosViewModel listadoAlumnosViewModel, ClasesViewModel clasesViewModel, LoginViewModel loginViewModel, RegistroViewModel registroViewModel)
     {
-        DashboardViewModel = dashboardViewModel;
+        ClasesViewModel = clasesViewModel;
         LoginViewModel = loginViewModel;
         RegistroViewModel = registroViewModel;
-        InformacionViewModel = informacionViewModel;
-        DetallesViewModel = detallesViewModel;
+        ListadoAlumnosViewModel = listadoAlumnosViewModel;
+        CrearClaseViewModel = crearClaseViewModel;
         _selectedViewModel = loginViewModel;
     }
 
@@ -40,10 +40,10 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
-    public DashboardViewModel DashboardViewModel { get; }
+    public ClasesViewModel ClasesViewModel { get; }
     public LoginViewModel LoginViewModel { get; }
-    public InformacionViewModel InformacionViewModel { get; }
-    public DetallesViewModel DetallesViewModel { get; }
+    public ListadoAlumnosViewModel ListadoAlumnosViewModel { get; }
+    public CrearClaseViewModel CrearClaseViewModel { get; }
     public RegistroViewModel RegistroViewModel { get; }
 
 

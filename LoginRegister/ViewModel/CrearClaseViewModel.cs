@@ -12,11 +12,11 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace InfoManager.ViewModel
 {
-    public partial class DetallesViewModel : ViewModelBase 
+    public partial class CrearClaseViewModel : ViewModelBase 
     {
 
         private string _profesorId;
-        private InformacionViewModel _informacionViewModel;
+        private ListadoAlumnosViewModel _listadoAlumnosViewModel;
         private readonly IClaseServiceToApi _claseServiceToApi;
 
         [ObservableProperty]
@@ -34,7 +34,7 @@ namespace InfoManager.ViewModel
         [ObservableProperty]
         private ProfesorDTO _Profesor;
 
-        public DetallesViewModel(IClaseServiceToApi claseServiceToApi)
+        public CrearClaseViewModel(IClaseServiceToApi claseServiceToApi)
         {
             _claseServiceToApi = claseServiceToApi;
         }
@@ -73,7 +73,7 @@ namespace InfoManager.ViewModel
                 var mainViewModel = App.Current.Services.GetService<MainViewModel>();
                 if (mainViewModel != null)
                 {
-                    mainViewModel.SelectedViewModel = mainViewModel.DashboardViewModel;
+                    mainViewModel.SelectedViewModel = mainViewModel.ClasesViewModel;
                 }
             }
             catch (Exception ex)
@@ -88,9 +88,9 @@ namespace InfoManager.ViewModel
         [RelayCommand]
         private async Task Cancelar(object? parameter)
         {
-            if (_informacionViewModel != null)
+            if (_listadoAlumnosViewModel != null)
             {
-                _informacionViewModel.SelectedViewModel = null;
+                _listadoAlumnosViewModel.SelectedViewModel = null;
             }
         }
 

@@ -4,9 +4,9 @@ using System.Windows.Controls;
 
 
 namespace InfoManager.View;
-public partial class DashboardView : UserControl
+public partial class ClasesView : UserControl
 {
-    public DashboardView()
+    public ClasesView()
     {
         InitializeComponent();
     }
