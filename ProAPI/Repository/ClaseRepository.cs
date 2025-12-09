@@ -99,25 +99,36 @@ namespace RestAPI.Repository
             return await Save();
         }
 
-        public async Task<bool> AnadirAlumno(Guid Id, AlumnoDTO AlumnoDTO)
+        public async Task<bool> AnadirAlumno(Guid claseId, AlumnoDTO alumnoDTO)
         {
-            var claseDTO = await GetClaseAsync(Id);
-            var clase = await MapClaseDTOtoEntity(claseDTO);
-            var alumno = await TransforDTOAlumnotoEntity(AlumnoDTO);
+            var clase = await _context.Clases
+                .Include(c => c.AlumnosInscritos)
+                .FirstOrDefaultAsync(c => c.Id == claseId);
 
-            if (clase == null || alumno == null)
-                return false;
+            if (clase == null) return false;
+
+            var alumno = await _context.Alumnos
+                .FirstOrDefaultAsync(a => a.Id == alumnoDTO.Id);
+
+            if (alumno == null)
+                return false; 
 
             var existeAlumno = clase.AlumnosInscritos.Any(a => a.Id == alumno.Id);
+
             if (!existeAlumno)
             {
-                clase.AlumnosInscritos.Add(alumno);
-                _context.Update(clase);
-                return await Save();
+                clase.AlumnosInscritos.Add(alumno);  
+                return await _context.SaveChangesAsync() > 0;
             }
 
-            return false; 
+            return false;
         }
+
+        public async Task<bool> SaveAsync()
+        {
+            return await _context.SaveChangesAsync() > 0;
+        }
+
 
         public async Task<bool> EliminarAlumno(Guid idClase, string idAlumno)
         {
@@ -125,14 +136,21 @@ namespace RestAPI.Repository
                 .Include(c => c.AlumnosInscritos)
                 .FirstOrDefaultAsync(c => c.Id == idClase);
 
-            if (clase == null) return false;
+            if (clase == null)
+                return false;
 
-            var alumno = clase.AlumnosInscritos.FirstOrDefault(a => a.Id == idAlumno);
-            if (alumno == null) return false;
+            var alumno = await _context.Alumnos
+                .FirstOrDefaultAsync(a => a.Id == idAlumno);
+
+            if (alumno == null)
+                return false;
+
+            if (!clase.AlumnosInscritos.Any(a => a.Id == idAlumno))
+                return false;
 
             clase.AlumnosInscritos.Remove(alumno);
-            _context.Update(clase);
-            return await Save();
+
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> DeleteAsync(Guid id)

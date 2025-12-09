@@ -1,6 +1,11 @@
 <header class="brand-header">
   <!-- Sección izquierda: nav + logo -->
   <div class="left-section">
+    <a routerLink="/principal" aria-label="Ir a la página principal">
+      <img class="brand-logo" src="/assets/HarteraphiaIcono.png" alt="logo" height="60"/>
+    </a>
+
+
     <nav class="main-nav" *ngIf="authService.isLoggedIn$ | async">
       <ul>
         <li><a routerLink="/principal">Inicio</a></li>
@@ -8,10 +13,6 @@
         <li><a routerLink="/noticias">Noticias</a></li>
       </ul>
     </nav>
-
-    <a routerLink="/principal" aria-label="Ir a la página principal">
-      <img class="brand-logo" src="/assets/HarteraphiaIcono.png" alt="logo" height="60"/>
-    </a>
   </div>
 
   <!-- Título centrado -->

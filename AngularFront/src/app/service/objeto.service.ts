@@ -74,7 +74,7 @@ export class ObjetoService {
 async anadirAlumno(id: string, partialAlumno: Partial<AlumnoDTO>): Promise<boolean> {
   try {
     const response = await fetch(`${this.baseUrl}/${id}/anadir-alumno`, {
-      method: "PUT",
+      method: "POST",
       headers: {
         ...this.getAuthHeaders(),
         "Content-Type": "application/json"

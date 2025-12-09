@@ -6,7 +6,7 @@ namespace RestAPI.Models.Entity
     public class ClaseEntity
     {
         [Key]
-        public Guid Id { get; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
         [MaxLength(50)]

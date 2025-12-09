@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using RestAPI.Data;
 using RestAPI.Models.DTOs.Alumnos;
 using RestAPI.Models.DTOs.Clases;
+using RestAPI.Models.DTOs.Inscripcion;
 using RestAPI.Models.Entity;
 using RestAPI.Repository.IRepository;
 using System.Security.Claims;
@@ -16,12 +19,15 @@ namespace RestAPI.Controllers
         {
             private readonly IClasesRepository _claseRepository;
             private readonly IMapper _mapper;
-            
+            private readonly ApplicationDbContext _context;
 
-        public ClaseController(IClasesRepository repository, IMapper mapper)
+
+
+        public ClaseController(IClasesRepository repository, IMapper mapper, ApplicationDbContext context)
             {
                 _claseRepository = repository;
-                _mapper = mapper;                
+                _mapper = mapper;            
+                _context = context; 
             }
 
         [HttpGet]
@@ -146,23 +152,33 @@ namespace RestAPI.Controllers
             }
         }
 
-        [HttpPost("{id}/anadir-alumno")]
+        [HttpPost("{claseId}/anadir-alumno/{alumnoId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AnadirAlumno(Guid Id, AlumnoDTO Alumno)
+        public async Task<bool> AnadirAlumno(Guid claseId, string alumnoId)
         {
-            try
-            {
-                var entity = await _claseRepository.AnadirAlumno(Id, Alumno);
-                if (entity == false) return NotFound();
+            var clase = await _context.Clases
+                .Include(c => c.AlumnosInscritos)
+                .FirstOrDefaultAsync(c => c.Id == claseId);
 
-                return Ok();
-            }
-            catch (Exception ex)
+            if (clase == null)
+                return false;
+
+            var alumno = await _context.Alumnos
+                .FirstOrDefaultAsync(a => a.Id == alumnoId);
+
+            if (alumno == null)
+                return false;
+
+            if (!clase.AlumnosInscritos.Any(a => a.Id == alumno.Id))
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                clase.AlumnosInscritos.Add(alumno);
+                return await _context.SaveChangesAsync() > 0;
             }
+
+            return false;
         }
+
 
 
         [HttpDelete("{idClase}/eliminar-alumno/{idAlumno}")]
@@ -170,18 +186,14 @@ namespace RestAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> EliminarAlumno(Guid idClase, string idAlumno)
         {
-            try
-            {
-                var result = await _claseRepository.EliminarAlumno(idClase, idAlumno);
-                if (!result) return NotFound();
+            var resultado = await _claseRepository.EliminarAlumno(idClase, idAlumno);
 
-                return Ok(true);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            if (!resultado)
+                return NotFound("No se pudo eliminar al alumno o no estaba inscrito.");
+
+            return Ok(true);
         }
+
 
 
 

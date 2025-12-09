@@ -8,29 +8,23 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class AuthService {
+
   readonly baseUrl = 'https://localhost:7777/DanceFlowApi/User';
   private loginUrl = `${this.baseUrl}/login`;
   private registerUrl = `${this.baseUrl}/register`;
 
-  private token: string | null = null;
+  /** Cargamos el token ANTES de crear el BehaviorSubject */
+  private token: string | null = localStorage.getItem('authToken');
 
-  /** 🔔 Estado reactivo del login */
-  private loggedIn$ = new BehaviorSubject<boolean>(this.hasToken());
+  /** Estado reactivo del login (corregido) */
+  private loggedIn$ = new BehaviorSubject<boolean>(!!this.token);
 
-  /** Observable público para los componentes */
+  /** Observable público */
   isLoggedIn$ = this.loggedIn$.asObservable();
 
-  constructor(private toastr: ToastrService) {
-    // Recuperar token almacenado al iniciar
-    this.token = localStorage.getItem('authToken');
-  }
+  constructor(private toastr: ToastrService) {}
 
-  /** Comprueba si hay token guardado */
-  private hasToken(): boolean {
-    return !!localStorage.getItem('authToken');
-  }
-
-  /** 🔑 LOGIN */
+  /** LOGIN */
   login(credentials: LoginDTO): Observable<any> {
     return new Observable<any>(observer => {
       fetch(this.loginUrl, {
@@ -40,13 +34,14 @@ export class AuthService {
       })
         .then(response => response.json())
         .then(data => {
-          console.log('Login response:', data);
-          if (data?.result?.token) {
-            this.setToken(data.result.token);
-            this.loggedIn$.next(true); 
+
+          if (data?.token) {
+            this.setToken(data.token);
+            this.loggedIn$.next(true);
           } else {
-            this.toastr.warning('⚠️ No se recibió un token válido:', data);
+            this.toastr.warning('⚠️ No se recibió un token válido');
           }
+
           observer.next(data);
           observer.complete();
         })
@@ -54,7 +49,7 @@ export class AuthService {
     });
   }
 
-  /** 📝 REGISTRO */
+  /** REGISTRO */
   register(registroDto: RegistroDTO): Observable<any> {
     return new Observable<any>(observer => {
       fetch(this.registerUrl, {
@@ -64,63 +59,67 @@ export class AuthService {
       })
         .then(async response => {
           const data = await response.json();
-          this.toastr.success('Registro - Respuesta de la API:', data);
 
           if (response.ok) {
             observer.next(data);
             observer.complete();
           } else {
-            observer.error(new Error(data?.message || 'Error en el registro, compruebe los campos'));
+            observer.error(new Error(data?.message || 'Error en el registro'));
           }
         })
         .catch(error => observer.error(error));
     });
   }
 
-  /** 💾 Guarda el token */
+  /** Guarda el token */
   setToken(token: string): void {
     this.token = token;
     localStorage.setItem('authToken', token);
   }
 
-  /** 🔍 Obtiene el token actual */
+  /** Obtiene el token */
   getToken(): string | null {
     return this.token || localStorage.getItem('authToken');
   }
 
-  /** 🧩 Decodifica el ID del usuario desde el token */
-  getAlumnoIdFromToken(): string | null {
-    const token = this.getToken();
-    if (!token) return null;
+getAlumnoIdFromToken(): string | null {
+  const token = this.getToken(); 
+  if (!token) return null;
 
-    try {
-      const parts = token.split('.');
-      if (parts.length !== 3) {
-        this.toastr.warning('Token con formato inválido');
-        return null;
-      }
+  try {
+    const payload = token.split('.')[1];
+    if (!payload) return null;
 
-      const payload = parts[1];
-      const decodedPayload = atob(payload);
-      const parsedPayload = JSON.parse(decodedPayload);
-
-      const id = parsedPayload.id ?? parsedPayload.sub ?? null;
-
-      return id ? String(id) : null;
-    } catch {
-      this.toastr.error('Error al decodificar el token');
-      return null;
+    // Base64Url -> Base64 estándar
+    let base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+    // Añadir padding si falta
+    while (base64.length % 4) {
+      base64 += '=';
     }
-  }
 
-  /** 🚪 Cierra sesión */
+    const decoded = atob(base64);
+    const json = JSON.parse(decoded);
+
+    console.log('Token decodificado:', json); 
+    return json.nameid ?? null;
+
+  } catch (error) {
+    console.error('Error decodificando token:', error);
+    this.toastr.error('Error al decodificar token');
+    return null;
+  }
+}
+
+
+
+  /** LOGOUT */
   logout(): void {
     this.token = null;
     localStorage.removeItem('authToken');
-    this.loggedIn$.next(false); 
+    this.loggedIn$.next(false);
   }
 
-
+  /** Getter práctico */
   get isLoggedIn(): boolean {
     return this.loggedIn$.value;
   }

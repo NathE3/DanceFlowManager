@@ -27,7 +27,7 @@ public partial class MainViewModel : ViewModelBase
         set
         {
             SetProperty(ref _selectedViewModel, value);
-            if (value is LoginViewModel)
+            if (value is LoginViewModel || value is RegistroViewModel)
             {
                 IsMenuEnabled = false;
                 

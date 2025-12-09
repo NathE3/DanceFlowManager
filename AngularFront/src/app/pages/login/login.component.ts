@@ -28,14 +28,14 @@ export class LoginComponent {
       token: ''
     };
     try {
-      const response = await firstValueFrom(this.authService.login(loginDto));
-      if (response?.token) {
-        localStorage.setItem('token', response.token);
-        this.toastr.success('Has iniciado sesión correctamente', 'Éxito');
-        this.router.navigate(['/principal']);
+      const success = await firstValueFrom(this.authService.login(loginDto));
+      if (success) { 
+      this.toastr.success('Has iniciado sesión correctamente', 'Éxito');
+      this.router.navigate(['/principal']); 
       } else {
-       this.toastr.error('Usuario o contraseña incorrectos.', 'Error');
-      }      
+      this.toastr.error('Usuario o contraseña incorrectos.', 'Error');
+  }
+    
     } catch (error: any) {
      this.toastr.error(error.message || 'Ocurrió un error inesperado', 'Error');
     }

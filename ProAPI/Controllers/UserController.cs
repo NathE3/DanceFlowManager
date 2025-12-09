@@ -17,13 +17,11 @@ namespace RestAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
         protected ResponseApi _reponseApi;
         public UserController(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _reponseApi = new ResponseApi();
-            _mapper = mapper;
         }
 
         [AllowAnonymous]

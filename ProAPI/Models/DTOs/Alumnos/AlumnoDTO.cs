@@ -1,4 +1,5 @@
 ﻿using RestAPI.Models.DTOs.Clases;
+using System.Text.Json.Serialization;
 
 
 namespace RestAPI.Models.DTOs.Alumnos
@@ -16,6 +17,7 @@ namespace RestAPI.Models.DTOs.Alumnos
 
         public int Telefono { get; set; }
 
+        [JsonIgnore]
         public ICollection<ClaseDTO> ClasesInscritas { get; set; }
             = new List<ClaseDTO>();
     }

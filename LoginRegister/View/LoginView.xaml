@@ -9,7 +9,7 @@
     xmlns:viewmodels="clr-namespace:InfoManager.ViewModel" 
     d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}"
     mc:Ignorable="d"
-    Height="Auto" Width="Auto" Loaded="UserControl_Loaded">
+    Height="384" Width="789" Loaded="UserControl_Loaded">
 
 
     <UserControl.Background>
