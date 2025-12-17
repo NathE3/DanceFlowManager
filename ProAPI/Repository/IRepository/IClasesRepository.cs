@@ -6,16 +6,21 @@ namespace RestAPI.Repository.IRepository
 {
     public interface IClasesRepository 
     {
-        Task<bool> Save();
-        void ClearCache();
         Task<List<ClaseDTO>> GetAllAsync();
         Task<List<ClaseDTO>> GetAllFromProfesorAsync(string id);
         Task<ClaseDTO> GetClaseAsync(Guid id);
         Task<bool> ExistsAsync(Guid id);
-        Task<bool> CreateAsync(CreateClaseDTO claseDTO);
-        Task<bool> UpdateAsync(ClaseDTO claseDTO);
+        Task<bool> CreateAsync(CreateClaseDTO dto);
+        Task<bool> UpdateAsync(ClaseDTO dto);
         Task<bool> DeleteAsync(Guid id);
-        Task<bool> EliminarAlumno(Guid Id, string AlumnoDTO);
-        Task<bool> AnadirAlumno(Guid Id, AlumnoDTO AlumnoDTO);
+
+        Task<bool> AnadirAlumno(Guid claseId, string idAlumno);
+        Task<bool> EliminarAlumno(Guid idClase, string idAlumno);
+
+        Task<List<AlumnoDTO>> GetAlumnosDeClase(Guid claseId);
+
+        Task<List<ClaseDTO>> GetClasesDeAlumno(string alumnoId);
+
+        Task<bool> Save();
     }
 }

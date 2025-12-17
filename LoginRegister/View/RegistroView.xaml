@@ -9,62 +9,131 @@
     d:DataContext="{d:DesignInstance Type=viewmodels:RegistroViewModel}"
     mc:Ignorable="d">
 
-    <!-- Fondo con imagen -->
     <UserControl.Background>
         <ImageBrush ImageSource="/Resources/BannerBailarina.png" Stretch="UniformToFill"/>
     </UserControl.Background>
 
-    <!-- Contenedor central -->
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="400" >
-        <Border Background="#CCFFFFFF" Padding="30" SnapsToDevicePixels="True">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="400">
+        <Border Background="#CCFFFFFF"
+                Padding="30"
+                BorderBrush="#C9A24D"
+                BorderThickness="2"
+                SnapsToDevicePixels="True">
 
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Stretch" >
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Stretch">
 
                 <!-- Título -->
-                <TextBlock Text="Registro" FontSize="32" FontWeight="Bold" Foreground="#1E1E1E" HorizontalAlignment="Center" Margin="0,0,0,25"/>
+                <TextBlock Text="Registro"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Foreground="#1E1E1E"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,25"/>
 
                 <!-- Nombre -->
-                <TextBlock Text="Nombre Completo" FontSize="14" Foreground="#1E1E1E" Margin="0,0,0,5"/>
-                <ui:TextBox Text="{Binding Name, Mode=TwoWay}" PlaceholderText="Ingrese su nombre completo"
-                            FontSize="14" Padding="10" BorderBrush="#4A90E2" BorderThickness="1" Background="White"
-                            Margin="0,0,0,15" />
+                <TextBlock Text="Nombre Completo"
+                           FontSize="14"
+                           Foreground="#1E1E1E"
+                           Margin="0,0,0,5"/>
+
+                <ui:TextBox Text="{Binding Name, Mode=TwoWay}"
+                            PlaceholderText="Ingrese su nombre completo"
+                            FontSize="14"
+                            Padding="10"
+                            BorderBrush="#C9A24D"
+                            BorderThickness="1"
+                            Background="White"
+                            Margin="0,0,0,15"/>
 
                 <!-- Apellido -->
-                <TextBlock Text="Apellido" FontSize="14" Foreground="#1E1E1E" Margin="0,0,0,5"/>
-                <ui:TextBox Text="{Binding Apellido, Mode=TwoWay}" PlaceholderText="Ingrese su apellido"
-                            FontSize="14" Padding="10" BorderBrush="#4A90E2" BorderThickness="1" Background="White"
-                            Margin="0,0,0,15" />
+                <TextBlock Text="Apellido"
+                           FontSize="14"
+                           Foreground="#1E1E1E"
+                           Margin="0,0,0,5"/>
+
+                <ui:TextBox Text="{Binding Apellido, Mode=TwoWay}"
+                            PlaceholderText="Ingrese su apellido"
+                            FontSize="14"
+                            Padding="10"
+                            BorderBrush="#C9A24D"
+                            BorderThickness="1"
+                            Background="White"
+                            Margin="0,0,0,15"/>
 
                 <!-- Usuario -->
-                <TextBlock Text="Nombre de Usuario" FontSize="14" Foreground="#1E1E1E" Margin="0,0,0,5"/>
-                <ui:TextBox Text="{Binding UserName, Mode=TwoWay}" PlaceholderText="Ingrese su usuario"
-                            FontSize="14" Padding="10" BorderBrush="#4A90E2" BorderThickness="1" Background="White"
-                            Margin="0,0,0,15" />
+                <TextBlock Text="Nombre de Usuario"
+                           FontSize="14"
+                           Foreground="#1E1E1E"
+                           Margin="0,0,0,5"/>
+
+                <ui:TextBox Text="{Binding UserName, Mode=TwoWay}"
+                            PlaceholderText="Ingrese su usuario"
+                            FontSize="14"
+                            Padding="10"
+                            BorderBrush="#C9A24D"
+                            BorderThickness="1"
+                            Background="White"
+                            Margin="0,0,0,15"/>
 
                 <!-- Email -->
-                <TextBlock Text="Correo Electrónico" FontSize="14" Foreground="#1E1E1E" Margin="0,0,0,5"/>
-                <ui:TextBox Text="{Binding Email, Mode=TwoWay}" PlaceholderText="ejemplo@correo.com"
-                            FontSize="14" Padding="10" BorderBrush="#4A90E2" BorderThickness="1" Background="White"
-                            Margin="0,0,0,15" />
+                <TextBlock Text="Correo Electrónico"
+                           FontSize="14"
+                           Foreground="#1E1E1E"
+                           Margin="0,0,0,5"/>
+
+                <ui:TextBox Text="{Binding Email, Mode=TwoWay}"
+                            PlaceholderText="ejemplo@correo.com"
+                            FontSize="14"
+                            Padding="10"
+                            BorderBrush="#C9A24D"
+                            BorderThickness="1"
+                            Background="White"
+                            Margin="0,0,0,15"/>
 
                 <!-- Teléfono -->
-                <TextBlock Text="Teléfono" FontSize="14" Foreground="#1E1E1E" Margin="0,0,0,5"/>
-                <ui:TextBox Text="{Binding Telefono, Mode=TwoWay}" PlaceholderText="Ingrese su teléfono"
-                            FontSize="14" Padding="10" BorderBrush="#4A90E2" BorderThickness="1" Background="White"
-                            Margin="0,0,0,15" />
+                <TextBlock Text="Teléfono"
+                           FontSize="14"
+                           Foreground="#1E1E1E"
+                           Margin="0,0,0,5"/>
+
+                <ui:TextBox Text="{Binding Telefono, Mode=TwoWay}"
+                            PlaceholderText="Ingrese su teléfono"
+                            FontSize="14"
+                            Padding="10"
+                            BorderBrush="#C9A24D"
+                            BorderThickness="1"
+                            Background="White"
+                            Margin="0,0,0,15"/>
 
                 <!-- Contraseña -->
-                <TextBlock Text="Contraseña" FontSize="14" Foreground="#1E1E1E" Margin="0,0,0,5"/>
-                <ui:PasswordBox Password="{Binding Password, Mode=TwoWay}" PlaceholderText="Ingrese su contraseña"
-                                FontSize="14" Padding="10" BorderBrush="#4A90E2" BorderThickness="1" Background="White"
-                                Margin="0,0,0,20" />
+                <TextBlock Text="Contraseña"
+                           FontSize="14"
+                           Foreground="#1E1E1E"
+                           Margin="0,0,0,5"/>
+
+                <ui:PasswordBox Password="{Binding Password, Mode=TwoWay}"
+                                PlaceholderText="Ingrese su contraseña"
+                                FontSize="14"
+                                Padding="10"
+                                BorderBrush="#C9A24D"
+                                BorderThickness="1"
+                                Background="White"
+                                Margin="0,0,0,20"/>
 
                 <!-- Botón -->
-                <ui:Button Content="Registrarse" Command="{Binding RegistroCommand}" Width="220" Height="50"
-                           Background="#4A90E2" Foreground="White" FontSize="16" HorizontalAlignment="Center"
-                           Padding="10" Margin="0,0,0,0" />
+                <ui:Button Content="Registrarse"
+                           Command="{Binding RegistroCommand}"
+                           Width="220"
+                           Height="50"
+                           Background="#1E1E1E"
+                           Foreground="#C9A24D"
+                           FontSize="16"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           Padding="10"/>
 
             </StackPanel>
         </Border>
     </Grid>
 </UserControl>
+

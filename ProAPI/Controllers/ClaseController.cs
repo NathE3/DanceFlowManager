@@ -194,7 +194,28 @@ namespace RestAPI.Controllers
             return Ok(true);
         }
 
+        [HttpGet("{id}/alumnos")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAlumnosDeClase(Guid id)
+        {
+            var alumnos = await _claseRepository.GetAlumnosDeClase(id);
+            return Ok(alumnos);
+        }
 
+
+        [HttpGet("alumno/{alumnoId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetClasesDeAlumno(string alumnoId)
+        {
+            var clases = await _claseRepository.GetClasesDeAlumno(alumnoId);
+
+            if (clases == null || clases.Count == 0)
+                return NotFound("El alumno no está inscrito en ninguna clase.");
+
+            return Ok(clases);
+        }
 
 
     }

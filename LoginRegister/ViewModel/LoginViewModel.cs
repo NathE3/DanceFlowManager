@@ -19,7 +19,7 @@ namespace InfoManager.ViewModel
         private string _name;
 
         [ObservableProperty]
-        private string _passwordView;
+        private string _password;
 
         public LoginViewModel(IHttpJsonProvider<UserDTO> httpJsonProvider)
         {
@@ -31,10 +31,10 @@ namespace InfoManager.ViewModel
         {
 
             App.Current.Services.GetService<LoginDTO>().Email = Name;
-            App.Current.Services.GetService<LoginDTO>().Password = PasswordView;
+            App.Current.Services.GetService<LoginDTO>().Password = Password;
             
 
-            if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(PasswordView))
+            if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Password))
             {
                 MessageBox.Show("Por favor, rellene ambos campos.", "Error de Inicio de Sesión", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -50,7 +50,7 @@ namespace InfoManager.ViewModel
                     App.Current.Services.GetService<MainViewModel>().SelectedViewModel = App.Current.Services.GetService<MainViewModel>().ClasesViewModel;
                     App.Current.Services.GetService<MainViewModel>().LoadAsync();
                     Name = string.Empty;
-                    PasswordView = String.Empty;
+                    Password = String.Empty;
                  
                 }
                 else

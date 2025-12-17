@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Components.Forms.Mapping;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using RestAPI.Data;
 using RestAPI.Models.DTOs.Alumnos;
 using RestAPI.Models.DTOs.Clases;
-using RestAPI.Models.DTOs.Profesores;
 using RestAPI.Models.Entity;
 using RestAPI.Repository.IRepository;
 
@@ -15,9 +13,10 @@ namespace RestAPI.Repository
     {
         private readonly ApplicationDbContext _context;
         private readonly IMemoryCache _cache;
-        private readonly string ClaseEntityCacheKey = "ClaseEntityCacheKey";
-        private readonly int CacheExpirationTime = 3600;
         private readonly IMapper _mapper;
+
+        private const string ClaseEntityCacheKey = "ClaseEntityCacheKey";
+        private const int CacheExpirationTime = 3600;
 
         public ClaseRepository(ApplicationDbContext context, IMemoryCache cache, IMapper mapper)
         {
@@ -29,54 +28,49 @@ namespace RestAPI.Repository
         public async Task<bool> Save()
         {
             var result = await _context.SaveChangesAsync() >= 0;
-            if (result)
-            {
-                ClearCache();
-            }
+            if (result) _cache.Remove(ClaseEntityCacheKey);
             return result;
-        }
-
-        public void ClearCache()
-        {
-            _cache.Remove(ClaseEntityCacheKey);
         }
 
         public async Task<List<ClaseDTO>> GetAllAsync()
         {
-            if (_cache.TryGetValue(ClaseEntityCacheKey, out List<ClaseEntity> ClaseCached))
-                return TransForListEntityToDTO(ClaseCached);
+            if (_cache.TryGetValue(ClaseEntityCacheKey, out List<ClaseEntity> cache))
+                return _mapper.Map<List<ClaseDTO>>(cache);
 
-            var ClaseFromDb = await _context.Clases.OrderBy(c => c.Nombre).ToListAsync();
-            var ClasesMapped = TransForListEntityToDTO(ClaseFromDb);
-            var cacheEntryOptions = new MemoryCacheEntryOptions()
-                  .SetAbsoluteExpiration(TimeSpan.FromSeconds(CacheExpirationTime));
+            var data = await _context.Clases.OrderBy(c => c.Nombre).ToListAsync();
+            var mapped = _mapper.Map<List<ClaseDTO>>(data);
 
-            _cache.Set(ClaseEntityCacheKey, ClasesMapped, cacheEntryOptions);
-            return ClasesMapped;
+            _cache.Set(ClaseEntityCacheKey, mapped,
+                new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(CacheExpirationTime)));
+
+            return mapped;
         }
 
         public async Task<List<ClaseDTO>> GetAllFromProfesorAsync(string id)
         {
-            var ClaseFromDb = await _context.Clases.OrderBy(c => c.Nombre).Where(e => e.IdProfesor == id).ToListAsync();
-            var ClasesMapped = TransForListEntityToDTO(ClaseFromDb);
-            var cacheEntryOptions = new MemoryCacheEntryOptions()
-                  .SetAbsoluteExpiration(TimeSpan.FromSeconds(CacheExpirationTime));
+            var data = await _context.Clases
+                .Where(e => e.IdProfesor == id)
+                .OrderBy(c => c.Nombre)
+                .ToListAsync();
 
-            _cache.Set(ClaseEntityCacheKey, ClasesMapped, cacheEntryOptions);
-            return ClasesMapped;
+            var mapped = _mapper.Map<List<ClaseDTO>>(data);
+
+            _cache.Set(ClaseEntityCacheKey, mapped,
+                new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(CacheExpirationTime)));
+
+            return mapped;
         }
 
         public async Task<ClaseDTO> GetClaseAsync(Guid id)
         {
-            if (_cache.TryGetValue(ClaseEntityCacheKey, out List<ClaseDTO> ClasesCached))
+            if (_cache.TryGetValue(ClaseEntityCacheKey, out List<ClaseDTO> cache))
             {
-                var Clases = ClasesCached.FirstOrDefault(c => c.Id == id);
-                if (Clases != null)
-                    return Clases;
+                var found = cache.FirstOrDefault(c => c.Id == id);
+                if (found != null) return found;
             }
-            var ClaseEntity = await _context.Clases.FirstOrDefaultAsync(c => c.Id == id);
-            var ClasesMapped = TransforEntitytoDTO(ClaseEntity);
-            return await ClasesMapped;
+
+            var entity = await _context.Clases.FirstOrDefaultAsync(c => c.Id == id);
+            return _mapper.Map<ClaseDTO>(entity);
         }
 
         public async Task<bool> ExistsAsync(Guid id)
@@ -84,22 +78,31 @@ namespace RestAPI.Repository
             return await _context.Clases.AnyAsync(c => c.Id == id);
         }
 
-        public async Task<bool> CreateAsync(CreateClaseDTO ClaseDTO)
+        public async Task<bool> CreateAsync(CreateClaseDTO dto)
         {
-            var clase = await TransforCreateDTOtoDTO(ClaseDTO);
-            if (clase == null) return false;
-            _context.Clases.Add(clase);
+            var entity = _mapper.Map<ClaseEntity>(dto);
+            _context.Clases.Add(entity);
             return await Save();
         }
 
-        public async Task<bool> UpdateAsync(ClaseDTO ClaseDTO)
+        public async Task<bool> UpdateAsync(ClaseDTO dto)
         {
-            var clase = await MapClaseDTOtoEntity(ClaseDTO);
-            _context.Update(clase);
+            var entity = _mapper.Map<ClaseEntity>(dto);
+            _context.Update(entity);
             return await Save();
         }
 
-        public async Task<bool> AnadirAlumno(Guid claseId, AlumnoDTO alumnoDTO)
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            var dto = await GetClaseAsync(id);
+            if (dto == null) return false;
+
+            var entity = _mapper.Map<ClaseEntity>(dto);
+            _context.Clases.Remove(entity);
+            return await Save();
+        }
+
+        public async Task<bool> AnadirAlumno(Guid claseId, string idAlumno)
         {
             var clase = await _context.Clases
                 .Include(c => c.AlumnosInscritos)
@@ -107,28 +110,15 @@ namespace RestAPI.Repository
 
             if (clase == null) return false;
 
-            var alumno = await _context.Alumnos
-                .FirstOrDefaultAsync(a => a.Id == alumnoDTO.Id);
+            var alumno = await _context.Alumnos.FirstOrDefaultAsync(a => a.Id == idAlumno);
+            if (alumno == null) return false;
 
-            if (alumno == null)
-                return false; 
+            var exists = clase.AlumnosInscritos.Any(a => a.Id == idAlumno);
+            if (exists) return false;
 
-            var existeAlumno = clase.AlumnosInscritos.Any(a => a.Id == alumno.Id);
-
-            if (!existeAlumno)
-            {
-                clase.AlumnosInscritos.Add(alumno);  
-                return await _context.SaveChangesAsync() > 0;
-            }
-
-            return false;
-        }
-
-        public async Task<bool> SaveAsync()
-        {
+            clase.AlumnosInscritos.Add(alumno);
             return await _context.SaveChangesAsync() > 0;
         }
-
 
         public async Task<bool> EliminarAlumno(Guid idClase, string idAlumno)
         {
@@ -136,61 +126,34 @@ namespace RestAPI.Repository
                 .Include(c => c.AlumnosInscritos)
                 .FirstOrDefaultAsync(c => c.Id == idClase);
 
-            if (clase == null)
-                return false;
+            if (clase == null) return false;
 
-            var alumno = await _context.Alumnos
-                .FirstOrDefaultAsync(a => a.Id == idAlumno);
-
-            if (alumno == null)
-                return false;
-
-            if (!clase.AlumnosInscritos.Any(a => a.Id == idAlumno))
-                return false;
+            var alumno = clase.AlumnosInscritos.FirstOrDefault(a => a.Id == idAlumno);
+            if (alumno == null) return false;
 
             clase.AlumnosInscritos.Remove(alumno);
-
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<List<AlumnoDTO>> GetAlumnosDeClase(Guid claseId)
         {
-            var Clase = await GetClaseAsync(id);
-            var ClaseMapped = await MapClaseDTOtoEntity(Clase);
-            if (Clase == null)
-                return false;
+            var clase = await _context.Clases
+                .Include(c => c.AlumnosInscritos)
+                .FirstOrDefaultAsync(c => c.Id == claseId);
 
-            _context.Clases.Remove(ClaseMapped);
-            return await Save();
+            if (clase == null) return new List<AlumnoDTO>();
+
+            return _mapper.Map<List<AlumnoDTO>>(clase.AlumnosInscritos);
         }
 
-        private async Task<ClaseDTO> TransforEntitytoDTO(ClaseEntity claseEntity)
+        public async Task<List<ClaseDTO>> GetClasesDeAlumno(string alumnoId)
         {
-            var clase = _mapper.Map<ClaseDTO>(claseEntity);
-            return clase;
-        }
+            var clases = await _context.Clases
+                .Include(c => c.AlumnosInscritos)
+                .Where(c => c.AlumnosInscritos.Any(a => a.Id == alumnoId))
+                .ToListAsync();
 
-        private List<ClaseDTO> TransForListEntityToDTO(List<ClaseEntity> claseEntity)
-        {
-            return _mapper.Map<List<ClaseDTO>>(claseEntity);
-        }
-
-        private async Task<ClaseEntity> MapClaseDTOtoEntity(ClaseDTO claseDTO)
-        {
-            var clase = _mapper.Map<ClaseEntity>(claseDTO);
-            return clase;
-        }
-
-        private async Task<AlumnoEntity> TransforDTOAlumnotoEntity(AlumnoDTO alumnoDTO)
-        {
-            var alumno = _mapper.Map<AlumnoEntity>(alumnoDTO);
-            return alumno;
-        }
-
-        private async Task<ClaseEntity> TransforCreateDTOtoDTO(CreateClaseDTO claseDTO)
-        {
-            var clase =  _mapper.Map<ClaseEntity>(claseDTO);
-            return  clase;
+            return _mapper.Map<List<ClaseDTO>>(clases);
         }
 
     }

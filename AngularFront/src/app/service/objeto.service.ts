@@ -50,59 +50,36 @@ export class ObjetoService {
 }
 
 
-  async getClaseByUsuario(id: string): Promise<ClaseDTO[]> {
+async getClaseByUsuario(alumnoId: string): Promise<ClaseDTO[]> {
   try {
-    const response = await fetch(`${this.baseUrl}/alumno/${id}`, {
-      method: 'GET',
-      headers: this.getAuthHeaders()
+    const response = await fetch(`${this.baseUrl}/alumno/${alumnoId}`, {
+      method: "GET",
+      headers: {
+        ...this.getAuthHeaders(),
+        "Content-Type": "application/json"
+      }
     });
 
     if (!response.ok) {
-      this.toastr.error('Error al obtener las clases:');
-      return [];
+      throw new Error(`Error HTTP: ${response.status}`);
     }
 
-    const data: ClaseDTO[] = await response.json();
-    return data ?? [];
+    const data = await response.json();
+    return data as ClaseDTO[];
+
   } catch (error) {
-    this.toastr.error('Error en la petición:');
-    return [];
+    console.error("Error obteniendo clases por usuario:", error);
+    throw error;
   }
 }
 
 
-async anadirAlumno(id: string, partialAlumno: Partial<AlumnoDTO>): Promise<boolean> {
+async anadirAlumno(idClase: string, idAlumno: string): Promise<boolean> {
   try {
-    const response = await fetch(`${this.baseUrl}/${id}/anadir-alumno`, {
+    const response = await fetch(`${this.baseUrl}/${idClase}/anadir-alumno/${idAlumno}`, {
       method: "POST",
       headers: {
-        ...this.getAuthHeaders(),
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(partialAlumno)
-    });
-
-    if (!response.ok) {
-      this.toastr.error(`Error HTTP: ${response.status}`);
-      return false;
-    }
-
-    const result = await response.json();
-    return Boolean(result); 
-  } catch (error) {
-    this.toastr.error("Error en la petición");
-    return false;
-  }
-}
-
-
-async eliminarAlumno(idClase: string, idAlumno: string): Promise<boolean> {
-  try {
-    const response = await fetch(`${this.baseUrl}/${idClase}/eliminar-alumno/${idAlumno}`, {
-      method: "DELETE",
-      headers: {
-        ...this.getAuthHeaders(),
-        "Content-Type": "application/json"
+        ...this.getAuthHeaders()
       }
     });
 
@@ -118,6 +95,30 @@ async eliminarAlumno(idClase: string, idAlumno: string): Promise<boolean> {
     return false;
   }
 }
+
+
+async eliminarAlumno(idClase: string, idAlumno: string): Promise<boolean> {
+  try {
+    const response = await fetch(`${this.baseUrl}/${idClase}/eliminar-alumno/${idAlumno}`, {
+      method: "DELETE",
+      headers: {
+        ...this.getAuthHeaders()
+      }
+    });
+
+    if (!response.ok) {
+      this.toastr.error(`Error HTTP: ${response.status}`);
+      return false;
+    }
+
+    const result = await response.json();
+    return Boolean(result);
+  } catch (error) {
+    this.toastr.error("Error en la petición");
+    return false;
+  }
+}
+
 
 
   async updateClase(id: string, partialClase: Partial<ClaseDTO>): Promise<ClaseDTO> {

@@ -3,26 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModel="clr-namespace:InfoManager.ViewModel" 
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:view="clr-namespace:InfoManager.View" 
+        xmlns:viewModel="clr-namespace:InfoManager.ViewModel"
+        xmlns:view="clr-namespace:InfoManager.View"
         mc:Ignorable="d"
-        Title="InfoManager" Height="450" Width="800"
-        d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel}">
+        Title="InfoManager"
+        MinWidth="900"
+        MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize">
 
     <Window.Resources>
-
-        <DataTemplate DataType="{x:Type viewModel:ClasesViewModel}">
-            <view:ClasesView/>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewModel:ListadoAlumnosViewModel}">
-            <view:ListadoAlumnosView/>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewModel:CrearClaseViewModel}">
-            <view:CrearClaseView/>
-        </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModel:LoginViewModel}">
             <view:LoginView/>
@@ -32,40 +22,74 @@
             <view:RegistroView/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewModel:ClasesViewModel}">
+            <view:ClasesView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:CrearClaseViewModel}">
+            <view:CrearClaseView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:ListadoAlumnosViewModel}">
+            <view:ListadoAlumnosView/>
+        </DataTemplate>
+
     </Window.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
 
-        <Grid Visibility="{Binding IsVisible}" Grid.Row="0" Background="Black">
-            <Menu IsEnabled="{Binding IsMenuEnabled}"  Background="Black" Foreground="White"  
-          FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+
+        </Grid.RowDefinitions>
+   
+        <Border Grid.Row="0" Background="Black">
+
+            <Menu Background="Black"
+                  Foreground="White"
+                  FontSize="15"
+                  HorizontalAlignment="Center"
+                  IsEnabled="{Binding IsMenuEnabled}">
+
                 <Menu.Style>
                     <Style TargetType="Menu">
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding SelectedViewModel}" Value="{x:Type viewModel:LoginViewModel}">
+                            <DataTrigger Binding="{Binding SelectedViewModel}"
+                                         Value="{x:Type viewModel:LoginViewModel}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding SelectedViewModel}" Value="{x:Type viewModel:RegistroViewModel}">
+                            <DataTrigger Binding="{Binding SelectedViewModel}"
+                                         Value="{x:Type viewModel:RegistroViewModel}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Menu.Style>
-                <MenuItem Header="_Clases" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding DashboardViewModel}"/>
-                <MenuItem Header="_Crear Clase" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding DetallesViewModel}"/>
-                <MenuItem Header="_Alumnos" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding ListadoAlumnosViewModel}"/>
-            </Menu>
-        </Grid>
 
-        <ContentControl  Grid.Row="1" Content="{Binding SelectedViewModel}"/>
+                <MenuItem Header="Clases"
+                          Command="{Binding SelectViewModelCommand}"
+                          CommandParameter="{Binding ClasesViewModel}"/>
+
+                <MenuItem Header="Crear Clase"
+                          Command="{Binding SelectViewModelCommand}"
+                          CommandParameter="{Binding CrearClaseViewModel}"/>
+
+                <MenuItem Header="Alumnos"
+                          Command="{Binding SelectViewModelCommand}"
+                          CommandParameter="{Binding ListadoAlumnosViewModel}"/>
+
+            </Menu>
+        </Border>
+
+        <ContentControl Grid.Row="1"
+                        Content="{Binding SelectedViewModel}"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"/>
 
     </Grid>
 </Window>
+
 
 
