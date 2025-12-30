@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace InfoManager.View
 {
-    /// <summary>
-    /// Логика взаимодействия для DetallesView.xaml
-    /// </summary>
     public partial class CrearClaseView : UserControl
     {
         public CrearClaseView()

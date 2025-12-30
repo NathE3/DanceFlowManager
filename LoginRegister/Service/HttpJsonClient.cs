@@ -18,18 +18,20 @@ namespace InfoManager.Services
         {
             try
             {
+                var loginDTO = App.Current.Services.GetService<LoginDTO>(); 
                 using HttpClient httpClient = new HttpClient();
+
+                httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
+                HttpResponseMessage request = await httpClient.GetAsync($"{Constants.BASE_URL}{path}");
+
+                if (request.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
-                    HttpResponseMessage request = await httpClient.GetAsync($"{Constants.BASE_URL}{path}");
-                    if (request.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                    {
-                        await Authenticate(path, httpClient, request);
-                        request = await httpClient.GetAsync($"{Constants.BASE_URL}{path}");
-                    }
-                    string dataRequest = await request.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<IEnumerable<T>>(dataRequest);
+                    await Authenticate(path, httpClient, request);
+                    request = await httpClient.GetAsync($"{Constants.BASE_URL}{path}");
                 }
+
+                string dataRequest = await request.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<IEnumerable<T>>(dataRequest, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             }
             catch (Exception ex)
             {
@@ -40,16 +42,21 @@ namespace InfoManager.Services
 
         public async Task Authenticate(string path, HttpClient httpClient, HttpResponseMessage request)
         {
-            HttpContent httpContent = new StringContent(JsonSerializer.Serialize(loginDTO), Encoding.UTF8, "application/json");
+            var loginDTO = App.Current.Services.GetService<LoginDTO>();
+            var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+            HttpContent httpContent = new StringContent(JsonSerializer.Serialize(loginDTO, options), Encoding.UTF8, "application/json");
 
             HttpResponseMessage requestToken = await httpClient.PostAsync($"{Constants.BASE_URL}{Constants.LOGIN_PATH}", httpContent);
-
             string dataTokenRequest = await requestToken.Content.ReadAsStringAsync();
-            UserDTO tokenUser = JsonSerializer.Deserialize<UserDTO>(dataTokenRequest);
 
-            loginDTO.Token = tokenUser?.Result?.Token ?? string.Empty;
-            httpClient.DefaultRequestHeaders.Remove("Authorization");
-            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
+            UserDTO tokenUser = JsonSerializer.Deserialize<UserDTO>(dataTokenRequest, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (tokenUser != null)
+            {
+                loginDTO.Token = tokenUser.Token; // Actualiza el Singleton
+                httpClient.DefaultRequestHeaders.Remove("Authorization");
+                httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
+            }
         }
 
         public async Task<T?> PostAsync(string path, T data)
@@ -61,10 +68,8 @@ namespace InfoManager.Services
 
                     httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
 
-                    // Serializar el objeto 'data' (LoginDTO) a JSON
                     string jsonContent = JsonSerializer.Serialize(data);
 
-                    // Crear el contenido HTTP con el tipo adecuado para enviar JSON
                     var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
                     HttpResponseMessage response = await httpClient.PostAsync($"{Constants.BASE_URL}{path}", content);
@@ -74,13 +79,10 @@ namespace InfoManager.Services
                        
                         await Authenticate(path, httpClient, response);
 
-                        // Realizar la solicitud POST
                         response = await httpClient.PostAsync($"{Constants.BASE_URL}{path}", content);
 
-                        // Verificar si la respuesta fue exitosa
                         if (response.IsSuccessStatusCode)
                         {
-                            // Leer el contenido de la respuesta y deserializarlo
                             string responseBody = await response.Content.ReadAsStringAsync();
                             return JsonSerializer.Deserialize<T>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                         }
@@ -101,33 +103,26 @@ namespace InfoManager.Services
         }
 
 
-        public async Task<T?> LoginPostAsync(string path, LoginDTO data) 
-            {
+        public async Task<T?> LoginPostAsync(string path, LoginDTO data)
+        {
             try
             {
                 using (HttpClient httpClient = new HttpClient())
                 {
-
-                    //httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
-
-                    // Serializar el objeto 'data' () a JSON
-                    string jsonContent = JsonSerializer.Serialize(data);
-
-                    // Crear el contenido HTTP con el tipo adecuado para enviar JSON
+                    var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+                    string jsonContent = JsonSerializer.Serialize(data, options);
                     var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
                     HttpResponseMessage response = await httpClient.PostAsync($"{Constants.BASE_URL}{path}", content);
-
-                    // Leer el contenido de la respuesta y deserializarlo
                     string responseBody = await response.Content.ReadAsStringAsync();
+
                     return JsonSerializer.Deserialize<T>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error en la solicitud POST: {ex.Message}");
+                throw new Exception($"Error de conexión: {ex.Message}");
             }
-            return default;
         }
 
         public async Task<T?> RegisterPostAsync(string path, UserRegistroDTO data)
@@ -136,25 +131,19 @@ namespace InfoManager.Services
             {
                 using (HttpClient httpClient = new HttpClient())
                 {
-
-                    //httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
-
-                    // Serializar el objeto 'data' (UserRegistroDTO) a JSON
-                    string jsonContent = JsonSerializer.Serialize(data);
-
-                    // Crear el contenido HTTP con el tipo adecuado para enviar JSON
+                    var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+                    string jsonContent = JsonSerializer.Serialize(data, options);
                     var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
                     HttpResponseMessage response = await httpClient.PostAsync($"{Constants.BASE_URL}{path}", content);
-
-                    // Leer el contenido de la respuesta y deserializarlo
                     string responseBody = await response.Content.ReadAsStringAsync();
+
                     return JsonSerializer.Deserialize<T>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error en la solicitud POST: {ex.Message}");
+                Console.WriteLine($"Error en registro: {ex.Message}");
             }
             return default;
         }

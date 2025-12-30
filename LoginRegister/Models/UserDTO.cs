@@ -3,27 +3,17 @@
 
 namespace InfoManager.Models
 {
-        // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
 
-        public class UserDTO
-        {
-            [JsonPropertyName("statusCode")]
-            public int StatusCode { get; set; }
+    public class UserDTO
+    {
+        [JsonPropertyName("status")]
+        public int Status { get; set; } 
 
-            [JsonPropertyName("isSuccess")]
-            public bool IsSuccess { get; set; }
+        [JsonPropertyName("token")]
+        public string Token { get; set; }
 
-            [JsonPropertyName("errorMessages")]
-            public List<object> ErrorMessages { get; set; }
-
-            [JsonPropertyName("result")]
-            public Result Result { get; set; }
-        }
-
-        public class Result
-        {
-            [JsonPropertyName("token")]
-            public string Token { get; set; }
-        }
+        [JsonPropertyName("user")]
+        public object User { get; set; }     
+    }
 }
 

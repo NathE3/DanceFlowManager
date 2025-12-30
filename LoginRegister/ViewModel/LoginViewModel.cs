@@ -29,42 +29,30 @@ namespace InfoManager.ViewModel
         [RelayCommand]
         public async Task Login()
         {
-
             App.Current.Services.GetService<LoginDTO>().Email = Name;
             App.Current.Services.GetService<LoginDTO>().Password = Password;
-            
-
-            if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Password))
-            {
-                MessageBox.Show("Por favor, rellene ambos campos.", "Error de Inicio de Sesión", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
+            App.Current.Services.GetService<LoginDTO>().IsProfesor = true;
 
             try
             {
-               
-                UserDTO user = await _httpJsonProvider.LoginPostAsync(Constants.LOGIN_PATH, App.Current.Services.GetService<LoginDTO>());
+                UserDTO response = await _httpJsonProvider.LoginPostAsync(Constants.LOGIN_PATH, App.Current.Services.GetService<LoginDTO>());
 
-                if (user != null && user.IsSuccess)
+                if (response != null && response.Status == 0)
                 {
-                    App.Current.Services.GetService<MainViewModel>().SelectedViewModel = App.Current.Services.GetService<MainViewModel>().ClasesViewModel;
-                    App.Current.Services.GetService<MainViewModel>().LoadAsync();
-                    Name = string.Empty;
-                    Password = String.Empty;
-                 
+                    App.Current.Services.GetService<LoginDTO>().Token = response.Token;
+
+                    App.Current.Services.GetService<MainViewModel>();
+                    App.Current.Services.GetService<MainViewModel>().SelectedViewModel = App.Current.Services.GetService<MainViewModel>().ClasesViewModel;                                
                 }
                 else
                 {
-                  
-                    MessageBox.Show("Credenciales incorrectas. Intente de nuevo.", "Error de Inicio de Sesión", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Credenciales incorrectas.");
                 }
             }
             catch (Exception ex)
             {
-                
-                MessageBox.Show($"Ocurrió un error durante el inicio de sesión: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error de conexión: {ex.Message}");
             }
-
         }
 
         [RelayCommand]

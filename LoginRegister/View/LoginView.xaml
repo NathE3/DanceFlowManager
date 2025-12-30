@@ -16,10 +16,10 @@
                     Stretch="UniformToFill"/>
     </UserControl.Background>
 
-    <!-- CONTENEDOR TOTAL -->
+   
     <Grid MinHeight="600" MinWidth="900">
 
-        <!-- TARJETA CENTRADA -->
+      
         <Border
             Width="460"
             Padding="40"

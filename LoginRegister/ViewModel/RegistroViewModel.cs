@@ -67,7 +67,7 @@ namespace InfoManager.ViewModel
             try
             {
                 UserDTO user = await _httpJsonProvider.RegisterPostAsync(Constants.REGISTER_PATH, userRegistroDTO);
-                if (user != null && user.IsSuccess) {
+                if (user != null && user.Status == 0) {
                  App.Current.Services.GetService<MainViewModel>().SelectedViewModel = App.Current.Services.GetService<MainViewModel>().LoginViewModel;
                    
 

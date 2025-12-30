@@ -13,13 +13,10 @@ export class AuthService {
   private loginUrl = `${this.baseUrl}/login`;
   private registerUrl = `${this.baseUrl}/register`;
 
-  /** Cargamos el token ANTES de crear el BehaviorSubject */
   private token: string | null = localStorage.getItem('authToken');
 
-  /** Estado reactivo del login (corregido) */
   private loggedIn$ = new BehaviorSubject<boolean>(!!this.token);
 
-  /** Observable público */
   isLoggedIn$ = this.loggedIn$.asObservable();
 
   constructor(private toastr: ToastrService) {}
