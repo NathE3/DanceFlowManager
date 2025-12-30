@@ -53,7 +53,7 @@ namespace InfoManager.ViewModel
             {
                 MessageBox.Show($"Error de conexión: {ex.Message}");
             }
-        }
+        } 
 
         [RelayCommand]
         private async void Register()
