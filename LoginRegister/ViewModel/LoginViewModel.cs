@@ -42,6 +42,7 @@ namespace InfoManager.ViewModel
                     App.Current.Services.GetService<LoginDTO>().Token = response.Token;
 
                     App.Current.Services.GetService<MainViewModel>();
+                    App.Current.Services.GetService<MainViewModel>().ClasesViewModel.LoadAsync();
                     App.Current.Services.GetService<MainViewModel>().SelectedViewModel = App.Current.Services.GetService<MainViewModel>().ClasesViewModel;                                
                 }
                 else

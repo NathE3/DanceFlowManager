@@ -13,15 +13,16 @@ namespace RestAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ClaseEntity>()
-                .HasKey(c => c.Id);
+            modelBuilder.Entity<ClaseEntity>(entity =>
+            {
+                entity.HasKey(c => c.Id);
 
-            modelBuilder.Entity<ClaseEntity>()
-                .HasOne(c => c.Profesor)
-                .WithMany(p => p.ClasesCreadas)
-                .HasForeignKey(c => c.IdProfesor)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne<ProfesorEntity>()
+                    .WithMany(p => p.ClasesCreadas)
+                    .HasForeignKey(c => c.IdProfesor) 
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Restrict);              
+            });
 
             modelBuilder.Entity<ClaseEntity>()
                 .HasMany(c => c.AlumnosInscritos)

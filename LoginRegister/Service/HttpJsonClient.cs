@@ -59,47 +59,46 @@ namespace InfoManager.Services
             }
         }
 
-        public async Task<T?> PostAsync(string path, T data)
+        public async Task<bool> PostAsync(string path, T data)
         {
             try
             {
                 using (HttpClient httpClient = new HttpClient())
                 {
-
                     httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
 
                     string jsonContent = JsonSerializer.Serialize(data);
-
                     var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
                     HttpResponseMessage response = await httpClient.PostAsync($"{Constants.BASE_URL}{path}", content);
 
                     if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                     {
-                       
                         await Authenticate(path, httpClient, response);
-
                         response = await httpClient.PostAsync($"{Constants.BASE_URL}{path}", content);
-
-                        if (response.IsSuccessStatusCode)
-                        {
-                            string responseBody = await response.Content.ReadAsStringAsync();
-                            return JsonSerializer.Deserialize<T>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                        }
-                        else
-                        {
-                            Console.WriteLine("Error en la respuesta: " + response.StatusCode);
-                        }
                     }
-                    string dataRequest = await response.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<T>(dataRequest);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseBody = await response.Content.ReadAsStringAsync();
+
+                        if (responseBody.Trim().ToLower() == "false")
+                            return false;
+
+                        return true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error en la respuesta: {response.StatusCode}");
+                        return false;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error en la solicitud POST: {ex.Message}");
+                return false;
             }
-            return default;
         }
 
 

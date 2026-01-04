@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RestAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InicialLimpia : Migration
+    public partial class ActualizarClaseEntityIdProfesor : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -169,9 +169,9 @@ namespace RestAPI.Migrations
                 name: "Clases",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaClase = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Tipo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     IdProfesor = table.Column<string>(type: "nvarchar(450)", nullable: false)
@@ -192,7 +192,7 @@ namespace RestAPI.Migrations
                 columns: table => new
                 {
                     AlumnosInscritosId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClasesInscritasId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ClasesInscritasId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {

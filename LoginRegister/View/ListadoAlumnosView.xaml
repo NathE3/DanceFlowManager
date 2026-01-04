@@ -21,11 +21,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Título -->
         <TextBlock Text="Listado de Alumnos" FontSize="22" FontWeight="Bold" 
                Foreground="#333" Margin="10" Grid.Row="0"/>
 
-        <!-- Scrollable Items Section -->
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="10">
             <ItemsControl ItemsSource="{Binding Items}" >
                 <ItemsControl.ItemsPanel>
@@ -36,20 +34,41 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border Margin="8" CornerRadius="12" BorderBrush="#DDD" BorderThickness="1" Padding="10" Background="White">
-                            <StackPanel>
-                                <!-- Imagen y Botón -->
+                            <StackPanel Width="140">
                                 <Button Height="120" Width="120" Background="Transparent" BorderThickness="0"
-                                    Command="{Binding DataContext.SelectViewModelCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                    CommandParameter="{Binding Id}">
-                                    <Image Source="{Binding Image}" Stretch="Uniform" Width="100" Height="100"/>
+                        Command="{Binding DataContext.SelectViewModelCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        CommandParameter="{Binding Id}">
+
+                                    <Image Source="/Resources/ClaseBanner.png" 
+                           Stretch="UniformToFill" 
+                           Width="100" 
+                           Height="100">
+                                        <Image.Clip>
+                                            <EllipseGeometry Center="50,50" RadiusX="50" RadiusY="50" />
+                                        </Image.Clip>
+                                    </Image>
                                 </Button>
 
-                                <!-- Nombre con estilo -->
-                                <TextBlock Text="{Binding Nombre}" FontSize="16" FontWeight="SemiBold" 
-                                       Foreground="#444" HorizontalAlignment="Center" Margin="5"/>
+                                <StackPanel Margin="5">
+                                    <TextBlock Text="{Binding Nombre}" 
+                               FontSize="15" 
+                               FontWeight="Bold" 
+                               Foreground="#333" 
+                               HorizontalAlignment="Center"
+                               TextTrimming="CharacterEllipsis"/>
+
+                                    <TextBlock Text="{Binding Apellidos}" 
+                               FontSize="13" 
+                               FontWeight="Normal" 
+                               Foreground="#666" 
+                               HorizontalAlignment="Center"
+                               TextTrimming="CharacterEllipsis"/>
+                                </StackPanel>
+
                             </StackPanel>
+
                             <Border.Effect>
-                                <DropShadowEffect Color="Gray" BlurRadius="8" ShadowDepth="2"/>
+                                <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="1" Opacity="0.2"/>
                             </Border.Effect>
                         </Border>
                     </DataTemplate>
@@ -57,7 +76,6 @@
             </ItemsControl>
         </ScrollViewer>
 
-        <!-- Content Display Section -->
         <ContentControl Grid.Row="2" Content="{Binding SelectedViewModel}" Margin="10" 
                     Background="White" BorderBrush="#DDD" BorderThickness="1" Padding="15" 
                     MinWidth="450" MaxWidth="600" HorizontalAlignment="Center"/>

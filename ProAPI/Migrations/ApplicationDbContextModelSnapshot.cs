@@ -27,8 +27,8 @@ namespace RestAPI.Migrations
                     b.Property<string>("AlumnosInscritosId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ClasesInscritasId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("ClasesInscritasId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("AlumnosInscritosId", "ClasesInscritasId");
 
@@ -251,17 +251,17 @@ namespace RestAPI.Migrations
 
             modelBuilder.Entity("RestAPI.Models.Entity.ClaseEntity", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("FechaClase")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("IdProfesor")
                         .IsRequired()
@@ -396,13 +396,11 @@ namespace RestAPI.Migrations
 
             modelBuilder.Entity("RestAPI.Models.Entity.ClaseEntity", b =>
                 {
-                    b.HasOne("RestAPI.Models.Entity.ProfesorEntity", "Profesor")
+                    b.HasOne("RestAPI.Models.Entity.ProfesorEntity", null)
                         .WithMany("ClasesCreadas")
                         .HasForeignKey("IdProfesor")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Profesor");
                 });
 
             modelBuilder.Entity("RestAPI.Models.Entity.ProfesorEntity", b =>

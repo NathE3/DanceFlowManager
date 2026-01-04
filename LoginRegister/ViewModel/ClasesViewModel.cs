@@ -3,11 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using InfoManager.Helpers;
 using InfoManager.Interface;
 using InfoManager.Models;
-using InfoManager.View;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
-using System.Reflection.Metadata;
-using System.Windows.Controls;
+
 
 namespace InfoManager.ViewModel;
 
@@ -15,7 +13,6 @@ public partial class ClasesViewModel : ViewModelBase
 {
     private readonly IHttpJsonProvider<ClaseDTO> _httpJsonProvider;
 
-    private readonly List<ClaseDTO> Clases;
     private ClaseDTO _claseSeleccionada;
 
     [ObservableProperty]
@@ -23,7 +20,6 @@ public partial class ClasesViewModel : ViewModelBase
     public ClasesViewModel(IHttpJsonProvider<ClaseDTO> httpJsonProvider)
     {
         _httpJsonProvider = httpJsonProvider;
-        Clases = [];
         _clasesMostradas = [];
 
     }
@@ -43,21 +39,22 @@ public partial class ClasesViewModel : ViewModelBase
     {
         try
         {
+         
+            ClasesMostradas.Clear();
 
-            Clases.Clear();
+            var listaClases = await _httpJsonProvider.GetAsync(Constants.CLASE_URL);
 
-
-            IEnumerable<ClaseDTO> listaClases = await _httpJsonProvider.GetAsync(Constants.BASE_URL + Constants.CLASE_URL);
-            Clases.AddRange(listaClases.OrderBy(d => d.Id_Profesor));
-
-            foreach (ClaseDTO clase in Clases)
+            if (listaClases != null)
             {
-                _clasesMostradas.Add(clase);
+                var ordenadas = listaClases.OrderBy(d => d.IdProfesor);
+                foreach (var clase in ordenadas)
+                {
+                    ClasesMostradas.Add(clase);
+                }
             }
         }
         catch (Exception ex)
         {
-
             Console.WriteLine($"Error al cargar datos: {ex.Message}");
         }
     }
@@ -95,6 +92,7 @@ public partial class ClasesViewModel : ViewModelBase
             {
                 Console.WriteLine("Clase eliminada correctamente");
                 ClasesMostradas.Remove(ClaseSeleccionada);
+                LoadAsync();
             }
         }
         catch (Exception ex)

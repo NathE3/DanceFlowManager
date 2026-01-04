@@ -11,7 +11,7 @@ namespace InfoManager.Interface
     public interface IHttpJsonProvider<T> where T : class
     {
         Task<IEnumerable<T>> GetAsync(string api_url);
-        Task<T?> PostAsync(string path, T data);
+        Task<bool> PostAsync(string path, T data);
         Task<T?> PutAsync(string path, T data);
         Task<bool> DeleteAsync(string path);
         Task Authenticate(string path, HttpClient httpClient, HttpResponseMessage request);

@@ -11,7 +11,7 @@ namespace RestAPI.Models.Entity
         [Required]
         [MaxLength(50)]
         public string Nombre { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime FechaClase { get; set; }
 
         [Required]
         [MaxLength(200)]
@@ -23,8 +23,6 @@ namespace RestAPI.Models.Entity
 
         [ForeignKey("IdProfesor")]
         public string? IdProfesor { get; set; }
-        public ProfesorEntity Profesor { get; set; }
-
         public ICollection<AlumnoEntity> AlumnosInscritos { get; set; } = new List<AlumnoEntity>();
     }
 

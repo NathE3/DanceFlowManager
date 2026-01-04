@@ -87,9 +87,9 @@ getAlumnoIdFromToken(): string | null {
     const payload = token.split('.')[1];
     if (!payload) return null;
 
-    // Base64Url -> Base64 estándar
+  
     let base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
-    // Añadir padding si falta
+
     while (base64.length % 4) {
       base64 += '=';
     }
@@ -107,16 +107,13 @@ getAlumnoIdFromToken(): string | null {
   }
 }
 
-
-
-  /** LOGOUT */
   logout(): void {
     this.token = null;
     localStorage.removeItem('authToken');
     this.loggedIn$.next(false);
   }
 
-  /** Getter práctico */
+  
   get isLoggedIn(): boolean {
     return this.loggedIn$.value;
   }

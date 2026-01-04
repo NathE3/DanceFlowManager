@@ -5,19 +5,18 @@ using InfoManager.Interface;
 using InfoManager.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
+using System.IdentityModel.Tokens.Jwt;
 using System.Windows;
 using System.Xml.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 
 namespace InfoManager.ViewModel
 {
     public partial class CrearClaseViewModel : ViewModelBase 
     {
-
-        private string _profesorId;
         private ListadoAlumnosViewModel _listadoAlumnosViewModel;
-        private readonly IClaseServiceToApi _claseServiceToApi;
+        private readonly IHttpJsonProvider<ClaseDTO> _claseServiceToApi;
 
         [ObservableProperty]
         private string _nombre;
@@ -29,46 +28,58 @@ namespace InfoManager.ViewModel
         private string _tipo;
 
         [ObservableProperty]
-        private Date _fechaClase;
+        private DateTime? _fechaClase;
 
         [ObservableProperty]
-        private ProfesorDTO _Profesor;
+        private string _horaClase;
 
-        public CrearClaseViewModel(IClaseServiceToApi claseServiceToApi)
+        public CrearClaseViewModel(IHttpJsonProvider<ClaseDTO> claseServiceToApi)
         {
             _claseServiceToApi = claseServiceToApi;
         }
 
-        public void SetIdProfesor(string id)
-        {
-            _profesorId = id;
-        }
 
         [RelayCommand]
         private async Task CrearClase() 
         {
             if (string.IsNullOrEmpty(Nombre) ||
                string.IsNullOrEmpty(Descripcion) ||
-               string.IsNullOrEmpty(Tipo))
+               string.IsNullOrEmpty(Tipo) || FechaClase == null)
             {
                 MessageBox.Show("Por favor, rellene todos los campos.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            
+
+            TimeSpan time = TimeSpan.Parse(HoraClase);
+            DateTime fechaCompleta = FechaClase.Value.Date.Add(time);
+
+            string token = App.Current.Services.GetService<LoginDTO>().Token;
+            string idProfesorDesdeToken = ObtenerIdDesdeJwt(token);
+
+
             ClaseDTO clase = new()
             {
                 Nombre = Nombre,
                 Descripcion = Descripcion,
                 Tipo = Tipo,
-                FechaClase = DateTime.Parse(FechaClase.ToString()),
-                Id_Profesor = _profesorId,
+                FechaClase = fechaCompleta,
+                IdProfesor = idProfesorDesdeToken,
                 Id_clase = "",
                 AlumnosInscritos = []
 
             };
             try
             {
-                await _claseServiceToApi.PostClase(clase);
+                var exito = await _claseServiceToApi.PostAsync(Constants.CLASE_URL, clase);
+
+                if (exito)
+                {
+                    MessageBox.Show("Clase publicada correctamente.");
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo publicar la clase. Revisa la consola.");
+                }
 
                 var mainViewModel = App.Current.Services.GetService<MainViewModel>();
                 if (mainViewModel != null)
@@ -82,6 +93,25 @@ namespace InfoManager.ViewModel
             }
 
 
+        }
+
+        private static string ObtenerIdDesdeJwt(string token)
+        {
+            if (string.IsNullOrWhiteSpace(token)) return string.Empty;
+
+            try
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+
+                var claim = jwtToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == "sub");
+
+                return claim?.Value ?? string.Empty;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
         }
 
 

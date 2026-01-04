@@ -95,6 +95,10 @@
 
                 <TextBlock Text="Fecha de Clase:" Style="{StaticResource SectionTitle}"/>
                 <DatePicker SelectedDate="{Binding FechaClase, Mode=TwoWay}"/>
+
+                <TextBlock Text="Hora de Clase (HH:mm):" Style="{StaticResource SectionTitle}"/>
+                <TextBox Text="{Binding HoraClase, Mode=TwoWay}"/>
+                
             </StackPanel>
 
             <UniformGrid Columns="3" Margin="74,1,-27,0" Grid.Row="1">

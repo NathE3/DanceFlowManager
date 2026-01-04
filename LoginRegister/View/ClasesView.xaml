@@ -21,7 +21,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Botón de logout -->
+       
         <Button
             Command="{Binding LogoutCommand}"
             Content="Logout"
@@ -35,7 +35,7 @@
 
         <Button
      Command="{Binding EliminarClaseCommand}"
-     Content="Logout"
+     Content="Eliminar Clase"
      Background="Black"
      Foreground="White"
      Height="30"
@@ -51,7 +51,6 @@
                     <DataTemplate>
                         <Border BorderBrush="Gray" BorderThickness="1" Padding="10" Margin="5" Background="#AAFFFFFF">
                             <StackPanel>
-                                <TextBlock Text="{Binding Id_clase}" FontWeight="Bold" FontSize="14"/>
                                 <TextBlock Text="{Binding Nombre}" FontWeight="Bold" FontSize="14"/>
                                 <TextBlock Text="{Binding Descripcion}" FontStyle="Italic"/>
                                 <TextBlock Text="{Binding Tipo}" FontStyle="Italic"/>
