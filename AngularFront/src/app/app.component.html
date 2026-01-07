@@ -1,5 +1,4 @@
 <header class="brand-header">
-  <!-- Sección izquierda: nav + logo -->
   <div class="left-section">
     <a routerLink="/principal" aria-label="Ir a la página principal">
       <img class="brand-logo" src="/assets/HarteraphiaIcono.png" alt="logo" height="60"/>
@@ -15,10 +14,8 @@
     </nav>
   </div>
 
-  <!-- Título centrado -->
   <h1 class="brand-title">Harteraphia</h1>
 
-  <!-- Logout a la derecha -->
   <ng-container *ngIf="authService.isLoggedIn$ | async">
     <a (click)="logout()" class="logout">Logout</a>
   </ng-container>

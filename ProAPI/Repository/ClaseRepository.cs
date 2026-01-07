@@ -94,11 +94,17 @@ namespace RestAPI.Repository
 
         public async Task<bool> DeleteAsync(Guid id)
         {
-            var dto = await GetClaseAsync(id);
-            if (dto == null) return false;
+            var clase = await _context.Clases
+                .Include(c => c.AlumnosInscritos) 
+                .FirstOrDefaultAsync(c => c.Id == id);
 
-            var entity = _mapper.Map<ClaseEntity>(dto);
-            _context.Clases.Remove(entity);
+            if (clase == null) return false;
+
+
+            clase.AlumnosInscritos.Clear();
+
+            _context.Clases.Remove(clase);
+
             return await Save();
         }
 

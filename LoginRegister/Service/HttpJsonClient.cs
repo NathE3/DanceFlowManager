@@ -53,7 +53,7 @@ namespace InfoManager.Services
 
             if (tokenUser != null)
             {
-                loginDTO.Token = tokenUser.Token; // Actualiza el Singleton
+                loginDTO.Token = tokenUser.Token; 
                 httpClient.DefaultRequestHeaders.Remove("Authorization");
                 httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
             }
@@ -155,21 +155,17 @@ namespace InfoManager.Services
             {
                 using (HttpClient httpClient = new HttpClient())
                 {
-                    // Agregar encabezado Authorization si es necesario
                     httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
 
-                    // Serializar el objeto 'data' (dto) a JSON
                     string jsonContent = JsonSerializer.Serialize(data,
                      new JsonSerializerOptions
                      {
                          DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
-                         WriteIndented = true  // Hace que el JSON sea más legible (con saltos de línea y espacios)
+                         WriteIndented = true  
                      });
 
-                    // Crear el contenido HTTP con el tipo adecuado para enviar JSON
                     var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-                    // Realizar la solicitud PATCH
                     HttpResponseMessage request = await httpClient.PutAsync($"{Constants.BASE_URL}{path}", content);
 
                     if (request.StatusCode == System.Net.HttpStatusCode.Unauthorized)

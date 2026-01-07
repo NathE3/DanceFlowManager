@@ -21,7 +21,6 @@ export class AuthService {
 
   constructor(private toastr: ToastrService) {}
 
-  /** LOGIN */
   login(credentials: LoginDTO): Observable<any> {
     return new Observable<any>(observer => {
       fetch(this.loginUrl, {
@@ -46,7 +45,6 @@ export class AuthService {
     });
   }
 
-  /** REGISTRO */
   register(registroDto: RegistroDTO): Observable<any> {
     return new Observable<any>(observer => {
       fetch(this.registerUrl, {
@@ -68,13 +66,11 @@ export class AuthService {
     });
   }
 
-  /** Guarda el token */
   setToken(token: string): void {
     this.token = token;
     localStorage.setItem('authToken', token);
   }
 
-  /** Obtiene el token */
   getToken(): string | null {
     return this.token || localStorage.getItem('authToken');
   }

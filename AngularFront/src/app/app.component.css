@@ -1,4 +1,3 @@
-/* --- Header general cinematográfico --- */
 header.brand-header {
   display: flex;
   align-items: center;
@@ -15,7 +14,6 @@ header.brand-header {
   overflow: hidden;
 }
 
-/* Luz difusa del logo */
 .brand-logo {
   height: 60px;
   width: auto;
@@ -30,7 +28,6 @@ header.brand-header {
           drop-shadow(0 0 40px rgba(244,194,113,0.7));
 }
 
-/* Sección izquierda: nav + logo */
 .left-section {
   display: flex;
   align-items: center;
@@ -38,7 +35,6 @@ header.brand-header {
   
 }
 
-/* Navbar tipo neón dorado */
 .main-nav ul {
   display: flex;
   gap: 30px;
@@ -78,7 +74,6 @@ header.brand-header {
   transform: scale(1.08);
 }
 
-/* Título centrado con animación glow intensa */
 .brand-title {
   position: absolute;
   left: 50%;
@@ -101,14 +96,12 @@ header.brand-header {
   transform: translateX(-50%) scale(1.12);
 }
 
-/* Animación glow del título */
 @keyframes glowTitle {
   0% { text-shadow: 0 0 8px #f4c271, 0 0 20px rgba(244,194,113,0.7), 0 0 40px rgba(244,194,113,0.5); }
   50% { text-shadow: 0 0 12px #f4c271, 0 0 30px rgba(244,194,113,0.8), 0 0 60px rgba(244,194,113,0.6); }
   100% { text-shadow: 0 0 8px #f4c271, 0 0 20px rgba(244,194,113,0.7), 0 0 40px rgba(244,194,113,0.5); }
 }
 
-/* Logout premium con gradiente animado */
 .logout {
   text-decoration: none;
   background: linear-gradient(90deg, #f4c271, #9c784f, #f4c271);
