@@ -5,6 +5,7 @@ using InfoManager.Interface;
 using InfoManager.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 
 namespace InfoManager.ViewModel;
@@ -12,16 +13,20 @@ namespace InfoManager.ViewModel;
 public partial class ClasesViewModel : ViewModelBase
 {
     private readonly IHttpJsonProvider<ClaseDTO> _httpJsonProvider;
+    private readonly IHttpJsonProvider<AlumnoDTO> _httpJsonProviderAlumnos;
 
     private ClaseDTO _claseSeleccionada;
 
     [ObservableProperty]
     private ObservableCollection<ClaseDTO> _clasesMostradas;
-    public ClasesViewModel(IHttpJsonProvider<ClaseDTO> httpJsonProvider)
+
+    private int _alumnosContados;
+
+    public ClasesViewModel(IHttpJsonProvider<ClaseDTO> httpJsonProvider, IHttpJsonProvider<AlumnoDTO> httpJsonProviderAlumnos)
     {
         _httpJsonProvider = httpJsonProvider;
         _clasesMostradas = [];
-
+        _httpJsonProviderAlumnos = httpJsonProviderAlumnos;
     }
 
 
@@ -52,6 +57,7 @@ public partial class ClasesViewModel : ViewModelBase
                     ClasesMostradas.Add(clase);
                 }
             }
+            CargarAlumnosDeTodasLasClases((List<ClaseDTO>)listaClases);
         }
         catch (Exception ex)
         {
@@ -100,6 +106,29 @@ public partial class ClasesViewModel : ViewModelBase
             Console.WriteLine($"Error al borrar la clase: {ex.Message}");
         }
     }
+
+    [RelayCommand]
+    private async Task CargarAlumnosDeTodasLasClases(List<ClaseDTO> clases)
+    {
+        foreach (var clase in clases)
+        {
+            try
+            {
+                IEnumerable<AlumnoDTO> alumnosEnumerable = await _httpJsonProviderAlumnos.GetAsync(
+                    $"{Constants.CLASE_URL}/{clase.Id_clase}/alumnos");
+
+                _alumnosContados = alumnosEnumerable?.Count() ?? 0;
+
+                clase.AlumnosContados = _alumnosContados;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al cargar alumnos de la clase {clase.Nombre}: {ex.Message}");
+                _alumnosContados = 0;
+            }
+        }
+    }
+
 
 
 }

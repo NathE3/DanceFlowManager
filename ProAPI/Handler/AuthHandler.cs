@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RestAPI.Data;
 using RestAPI.Models.DTOs.Commons;
@@ -27,13 +28,17 @@ namespace RestAPI.Handler
         public async Task<UserLoginResponse> AuthenticateAsync(UserLoginRequest request)
         {
             AppUser? user = request.IsProfesor
-                ? _context.Profesores.FirstOrDefault(u => u.Email.ToLower() == request.Email.ToLower())
-                : _context.Alumnos.FirstOrDefault(u => u.Email.ToLower() == request.Email.ToLower());
+                ? await _context.Profesores.FirstOrDefaultAsync(u => u.Email == request.Email)
+                : await _context.Alumnos.FirstOrDefaultAsync(u => u.Email == request.Email);
 
-            if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
-            {
+
+            if (user == null)
                 return new UserLoginResponse { Status = Status.ERROR };
-            }
+
+            var isValid = await _userManager.CheckPasswordAsync(user, request.Password);
+
+            if (!isValid)
+                return new UserLoginResponse { Status = Status.ERROR };
 
             var token = GenerarJwtToken(user);
 
@@ -44,6 +49,7 @@ namespace RestAPI.Handler
                 User = user
             };
         }
+
 
         private string GenerarJwtToken(AppUser user)
         {
@@ -68,5 +74,5 @@ namespace RestAPI.Handler
         }
     }
 }
-    
+
 

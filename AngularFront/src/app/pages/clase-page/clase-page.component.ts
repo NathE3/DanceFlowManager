@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { ObjetoService } from 'src/app/service/objeto.service';
-import { ClaseDTO } from '../../models/claseDTO';
-import { CommonModule } from '@angular/common';
+import { Location, CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';
-import { AlumnoDTO } from 'src/app/models/alumnoDTO';
-import { AuthService } from 'src/app/service/Auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { ObjetoService } from '../../service/objeto.service';
+import { AuthService } from '../../service/Auth.service';
+import { ClaseDTO } from '../../models/claseDTO';
+import { AlumnoDTO } from '../../models/alumnoDTO';
 
 @Component({
   selector: 'app-clase-page',

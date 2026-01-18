@@ -27,6 +27,9 @@ namespace InfoManager.Models
         [JsonPropertyName("alumnosInscritos")]
         public List<AlumnoDTO> AlumnosInscritos { get; set; } = new();
 
+        [System.Text.Json.Serialization.JsonIgnore] 
+        public int AlumnosContados { get; set; }
+
 
     }
 }

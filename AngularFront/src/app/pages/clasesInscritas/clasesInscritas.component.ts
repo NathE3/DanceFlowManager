@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { ClaseComponent } from 'src/app/component/clase/clase.component';
-import { ClaseDTO } from 'src/app/models/claseDTO';
-import { AuthService } from 'src/app/service/Auth.service';
-import { ObjetoService } from 'src/app/service/objeto.service';
-
+import { ClaseComponent } from '../../component/clase/clase.component'; 
+import { ClaseDTO } from '../../models/claseDTO'; 
+import { AuthService } from '../../service/Auth.service';
+import { ObjetoService } from '../../service/objeto.service';
 @Component({
   selector: 'app-clasesInscritas',
   standalone: true,

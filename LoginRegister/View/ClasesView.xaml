@@ -55,7 +55,7 @@
                                 <TextBlock Text="{Binding Descripcion}" FontStyle="Italic"/>
                                 <TextBlock Text="{Binding Tipo}" FontStyle="Italic"/>
                                 <TextBlock Text="{Binding FechaClase}" FontStyle="Italic"/>
-                                <TextBlock Text="{Binding AlumnosInscritos}" FontStyle="Italic"/>
+                                <TextBlock Text="{Binding AlumnosContados}" FontStyle="Italic"/>
                             </StackPanel>
                         </Border>
                     </DataTemplate>

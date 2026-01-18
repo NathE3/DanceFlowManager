@@ -1,4 +1,4 @@
-// node_modules/@angular/animations/fesm2022/private_export-faY_wCkZ.mjs
+// ../node_modules/@angular/animations/fesm2022/private_export-faY_wCkZ.mjs
 var AnimationMetadataType;
 (function(AnimationMetadataType2) {
   AnimationMetadataType2[AnimationMetadataType2["State"] = 0] = "State";
@@ -306,4 +306,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-TZLKYN5K.js.map
+//# sourceMappingURL=chunk-5GD2TDJ5.js.map
